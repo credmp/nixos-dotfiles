@@ -153,6 +153,10 @@
       appimage-run # to run stack appimage
       polkit_gnome
       okular # my goto for presentations
+      hunspell
+      hunspellDicts.nl_NL
+      hunspellDicts.en_US
+      tmux
       # direnv
       direnv
       nix-direnv
