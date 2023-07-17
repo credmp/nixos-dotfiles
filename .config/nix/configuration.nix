@@ -39,6 +39,7 @@
   hardware.bluetooth.enable = true;
 
   programs.dconf.enable = true;
+  programs.zsh.enable = true;
 
   services.picom.enable = true;
   services.blueman.enable = true;
@@ -136,6 +137,7 @@
     isNormalUser = true;
     description = "Arjen Wiersma";
     extraGroups = [ "networkmanager" "wheel" "docker" ];
+    shell = pkgs.zsh;
     packages = with pkgs; [
       # desktop apps
       firefox
@@ -172,7 +174,6 @@
       nerdfonts
       inter
       # shell
-      zsh
       fzf
       # sound and display 
       pavucontrol

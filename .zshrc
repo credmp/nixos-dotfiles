@@ -70,7 +70,7 @@ ZSH_THEME="amuse"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git direnv docker docker-compose fzf)
+plugins=(git direnv docker docker-compose fzf zsh-autosuggestions sudo dirhistory)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -108,3 +108,6 @@ eval "$(direnv hook zsh)"
 
 alias dotfiles='/etc/profiles/per-user/arjen/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias createdirenv='nix --extra-experimental-features "nix-command flakes" flake new -t github:nix-community/nix-direnv .'
+
+setopt inc_append_history
+setopt share_history
