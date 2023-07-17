@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: writeup
+# key: writeup
+# condition: t
+# --
+#+TITLE: Advent of CTF - Challenge 3
+#+SUBTITLE: "Javascript"
+
+* Challenge
+
+* Solution
+
+Go back to the [[../../index.org][homepage]].

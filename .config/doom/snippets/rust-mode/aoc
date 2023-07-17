@@ -1,0 +1,29 @@
+# -*- mode: snippet -*-
+# name: aoc
+# key: aoc
+# --
+
+#[aoc_generator(day$1)]
+fn input_generator(input: &str) -> Vec<usize> {
+    input.split('\n').map(|l| 1).collect()
+}
+
+#[aoc(day$1, part1)]
+fn part1(input: &[usize]) -> usize {
+    0
+}
+
+#[aoc(day$1, part2)]
+fn part2(input: &[usize]) -> usize {
+    0
+}
+
+#[cfg(test)]
+mod tests {
+#[test]
+fn examples_part1() {}
+
+#[test]
+fn examples_part2() {}
+
+}

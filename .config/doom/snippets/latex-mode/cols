@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: cols
+# key: cols
+# --
+\\begin{columns}
+\\column{0.5\\textwidth}
+    $0
+\\column{0.5\\textwidth}
+
+\\end{columns}

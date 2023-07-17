@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: get
+# --
+
+proxies = {
+   'http': 'http://127.0.0.1:8080',
+}
+r = requests.get('https://%s/path/to/file' % target, params='key=value', verify=False, proxies=proxies)

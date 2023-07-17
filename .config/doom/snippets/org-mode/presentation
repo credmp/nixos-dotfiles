@@ -1,0 +1,76 @@
+# -*- mode: snippet -*-
+# name: presentation
+# key: pres
+# --
+
+#+TITLE: $1
+#+STARTUP: indent contents
+#+REVEAL_ROOT: /v2/reveal.js
+#+REVEAL_REVEAL_JS_VERSION: 4
+#+OPTIONS: toc:nil num:nil
+#+OPTIONS: html-style:nil
+#+REVEAL_INIT_OPTIONS: center:true, progress:true, history: true, controls:false, defaultTiming:120
+#+REVEAL_EXTRA_CSS: /v2/css/custom.css
+#+REVEAL_EXTRA_CSS: /v2/css/cards.css
+#+REVEAL_EXTRA_JS: 
+#+REVEAL_THEME: metronom
+#+AAREVEAL_TITLE_SLIDE_BACKGROUND: #ECDF5B
+#+REVEAL_TITLE_SLIDE: <h1 class="bebas">%t</h1><br/>%a
+#+REVEAL_SLIDE_HEADER: 
+#+REVEAL_SLIDE_FOOTER: 
+#+REVEAL_HIGHLIGHT_CSS: /v2/reveal.js/lib/css/zenburn.css
+#+AAREVEAL_DEFAULT_SLIDE_BACKGROUND: #f4f3c9
+#+REVEAL_PLUGINS: (notes highlight zoom chalkboard)
+#+REVEAL_EXTERNAL_PLUGINS: 
+#+REVEAL_PREAMBLE:   <div id="footer"> <img class="footer-img" id="footer-left" src="/v2/img/logo.png" style="width:50px" alt="footer-left"> <img class="footer-img" id="footer-right" src="/v2/img/hacker.png"  alt="footer-right"> </div>
+#+REVEAL_POSTAMBLE:<script src="/v2/js/jquery-3.3.1.slim.min.js"></script><script>document.body.className = 'dark'</script>
+#+REVEAL_INIT_SCRIPT: 
+#+REVEAL_EXTRA_SCRIPT: Reveal.addEventListener( 'slidechanged', function( event ) { $('.footer-img').each(function( ) { $(this).css('display', Reveal.isFirstSlide() ? 'none' : 'unset'); } ) ; });
+
+#+MACRO: color @@html:<font color="\$1">\$2</font>@@
+#+MACRO: graph-start @@html:<div class="flex-wrap">@@
+#+MACRO: card @@html:<div class="card card-space" data-id="\$1"><p class="fragment fade-in" data-fragment-index="\$2">\$3</p></div>@@
+#+MACRO: graph-end @@html:</div>@@
+
+#+MACRO: graph-outer-start @@html:<div class="outer card-bg" style="width: 98%; margin-top: 0.75em; height: 3em; margin-left: 0.3em"  data-id="blackbg">@@
+#+MACRO: graph-outer-text @@html:<div class="inner center fragment fade-in-then-out" data-fragment-index="\$1" style="width: 99%"><span class="fira">\$2</span></div>@@
+#+MACRO: graph-outer-end @@html:</div>@@
+
+* Welkom 🙋🏽
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: center
+:reveal_background_opacity: 0.2
+:reveal_background: /_base/stock/educate.jpg
+:END:
+
+* Recording
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: center noheader
+:END:
+
+#+HTML: <div class="list-bg" >
+#+HTML: <h3>Recording</h3>
+🎙
+#+HTML: </div>
+
+* Agenda
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: center
+:END:
+
+#+ATTR_REVEAL: :frag (fade-in)
+- $2
+
+* Knowledge Share
+:PROPERTIES:
+:HTML_CONTAINER_CLASS: center
+:END:
+
+* Breakout
+:PROPERTIES:
+:reveal_background: /_base/opdracht.jpg
+:reveal_background_opacity: 0.2
+:HTML_CONTAINER_CLASS: center
+:END:
+
+- Werk als groepje door de Case Study

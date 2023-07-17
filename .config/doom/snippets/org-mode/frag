@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name:frag
+# key:frag
+# --
+
+#+ATTR_REVEAL: :frag (fade-in)

@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: ab
+# key: ab
+# --
+\\begin{adjustbox}{max totalsize={.9\\textwidth}{.8\\textheight}, center}    
+\\includegraphics[width=0.8\\linewidth, keepaspectratio]{$1}
+\\end{adjustbox}
+$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: log
+# key: log
+# --
+public static final Logger log = LoggerFactory.getLogger(`(yas-java-class-name)`.class);

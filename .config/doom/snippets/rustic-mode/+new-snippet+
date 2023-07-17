@@ -1,0 +1,30 @@
+# -*- mode: snippet -*-
+# name: Rust AOC template
+# key: raoc
+# --
+
+#[aoc_generator(day$1)]
+pub fn input_generator(input: &str) -> $2 {
+    input.split("\n").map(|x| x.to_string()).collect()
+}
+
+#[aoc(day$1, part1)]
+pub fn part1(input: $2) -> $3 {}
+
+#[aoc(day$1, part2)]
+pub fn part2(input: $2) -> $3 {}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn part1_example() {
+        let input = "";
+        let data = input_generator(input);
+        assert_eq!(0, part1(&data));
+    }
+
+    #[test]
+    fn part2_example() {}
+}

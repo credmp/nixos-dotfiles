@@ -1,0 +1,35 @@
+# -*- mode: snippet -*-
+# name: test
+# key: test
+# --
+
+public class Day$1Test {
+    @Rule
+    public DayInputExternalResource input = new DayInputExternalResource($1);
+
+    Day$1 day;
+    
+    @Before
+    public void before() {
+        day = new Day$1();
+    }
+
+    @Test
+    public void testSample() {
+        List<String> input = new ArrayList<>() {{
+        
+        }};
+
+        assertEquals($3, day.part1(input));
+    }
+
+    @Test
+    public void part1() {
+        assertEquals($3, day.part1(input.getLines()));
+    }
+    
+    @Test
+    public void part2() {
+        assertEquals($3, day.part2(input.getLines()));
+    }
+}

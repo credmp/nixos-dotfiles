@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: post
+# --
+proxies = {'http':'http://localhost:8080'}
+headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+payload = {'key':'value'} # dict, will be converted/encoded
+#payload = "key=value" # Direct use, no further processing
+
+r = requests.post('http://%s/path/to/file' % target, data=payload, verify=False,proxies=proxies,headers=headers)

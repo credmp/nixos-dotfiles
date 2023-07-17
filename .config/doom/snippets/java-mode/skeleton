@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: sk
+# key: sk
+# --
+
+import nl.arjenwiersma.aoc.common.NewDay;
+
+public class Day$1 extends NewDay<$0> {
+
+    
+}

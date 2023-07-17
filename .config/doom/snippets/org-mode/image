@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name:image
+# key: image
+# --
+
+#+ATTR_HTML: :width 75% :align center
