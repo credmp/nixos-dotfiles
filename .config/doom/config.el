@@ -320,8 +320,8 @@
   (setq cljr-warn-on-eval nil))
 
 (after! org
-  (add-load-path! (concat doom-user-dir "org-protocol-capture-html"))
-  (require 'org-protocol-capture-html)
+  ;; (add-load-path! (concat doom-user-dir "org-protocol-capture-html"))
+  ;; (require 'org-protocol-capture-html)
   (setq! org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/Notebook/notes.org" "Personal" "Series")
                                   "* %?\n%T" :prepend t)
                                  ("t" "todo" entry
@@ -403,7 +403,7 @@
 
 ;; JAVA - add lombok
 
-(setq path-to-lombok "/home/arjen/.m2/repository/org/projectlombok/lombok/1.18.22/lombok-1.18.22.jar")
+(setq path-to-lombok "/home/arjen/.m2/repository/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar")
 
 (setq lsp-java-vmargs
       `("-noverify"
@@ -855,13 +855,13 @@ Here is the text:" prefix))
   )
 
 ;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+;; (use-package! copilot
+;;   :hook (prog-mode . copilot-mode)
+;;   :bind (:map copilot-completion-map
+;;               ("<tab>" . 'copilot-accept-completion)
+;;               ("TAB" . 'copilot-accept-completion)
+;;               ("C-TAB" . 'copilot-accept-completion-by-word)
+;;               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
 (use-package! whisper
   :config
@@ -869,3 +869,5 @@ Here is the text:" prefix))
         whisper-model "base"
         whisper-language "nl"
         whisper-translate nil))
+
+(setq ispell-program-name "hunspell")
