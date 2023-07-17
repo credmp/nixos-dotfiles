@@ -46,6 +46,12 @@
   services.gnome.gnome-keyring.enable = true; # stack will start without asking for password
   
   security.polkit.enable = true;
+  services.pcscd.enable = true;
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryFlavor = "gtk2";
+    enableSSHSupport = true;
+  };
 
   virtualisation.docker.enable = true;
   virtualisation.vmware.host.enable = true;
