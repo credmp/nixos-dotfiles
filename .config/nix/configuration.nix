@@ -160,6 +160,7 @@
       hunspellDicts.nl_NL
       hunspellDicts.en_US
       tmux
+      flameshot
       # direnv
       direnv
       nix-direnv
