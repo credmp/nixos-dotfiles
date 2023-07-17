@@ -43,7 +43,8 @@
 
   services.picom.enable = true;
   services.blueman.enable = true;
-
+  services.gnome.gnome-keyring.enable = true; # stack will start without asking for password
+  
   security.polkit.enable = true;
 
   virtualisation.docker.enable = true;
