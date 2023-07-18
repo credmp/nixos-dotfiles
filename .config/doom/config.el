@@ -871,3 +871,4 @@ Here is the text:" prefix))
         whisper-translate nil))
 
 (setq ispell-program-name "hunspell")
+(use-package! lsp-tailwindcss)

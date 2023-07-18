@@ -118,3 +118,4 @@
   :recipe (:host github :repo "natrys/whisper.el" :files ("*.el")))
 
 (package! org-web-tools)
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))

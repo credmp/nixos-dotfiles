@@ -116,7 +116,11 @@
   services.thermald.enable = true;
   services.tlp.enable = true;
   services.auto-cpufreq.enable = true;
-  powerManagement.powertop.enable = true;
+  
+  powerManagement = {
+    enable = true;
+    powertop.enable = true;
+  };
 
   # Enable sound with pipewire.
   sound.enable = true;
