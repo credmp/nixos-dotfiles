@@ -150,55 +150,6 @@
     extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
-      # desktop apps
-      firefox
-      chromium
-      git
-      emacs
-      ripgrep
-      coreutils
-      fd
-      clang
-      xfce.thunar
-      xfce.thunar-volman
-      bitwarden
-      gnupg
-      appimage-run # to run stack appimage
-      polkit_gnome
-      okular # my goto for presentations
-      hunspell
-      hunspellDicts.nl_NL
-      hunspellDicts.en_US
-      tmux
-      flameshot
-      # direnv
-      direnv
-      nix-direnv
-      # i3 environment
-      polybarFull
-      kitty
-      alacritty
-      rofi
-      nitrogen
-      xss-lock
-      pulseaudio
-      # fonts
-      nerdfonts
-      inter
-      # shell
-      fzf
-      # sound and display 
-      pavucontrol
-      mons
-      lxappearance
-      # networking
-      networkmanager
-      networkmanager_dmenu
-      protonvpn-gui
-      # lockscreen
-      betterlockscreen
-      # docker
-      docker-compose
     ];
   };
 
