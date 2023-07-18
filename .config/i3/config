@@ -32,7 +32,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- betterlockscreen -l
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-exec --no-startup-id nm-applet
+#exec --no-startup-id nm-applet
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -51,6 +51,8 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 bindsym $mod+Shift+p exec flameshot gui
+bindsym $mod+Shift+x exec betterlockscreen -l
+
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -show drun
 # A more modern dmenu replacement is rofi:
@@ -236,7 +238,7 @@ bindsym XF86MonBrightnessDown exec xbacklight -dec 10
 bindsym $mod+b exec firefox
 
 #nemo
-bindsym $mod+n exec nemo
+bindsym $mod+n exec thunar
 
 #nitrogen
 exec_always --no-startup-id nitrogen --restore;
