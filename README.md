@@ -4,25 +4,36 @@ These are my collection of dotfiles. I switched to using **nixos** and decided t
 
 Currently my setup is not fully managed by nixos. When I switch to home-manager this will be completed fully.
 
-## tmux
 
-In order to fully load tmux you will need to pull in *tpm*
+## Create your own
 
-``` shell
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-```
-
-And then source the configuration while tmux is already running.
+To create this type of configuration for yourself, use git to create your initial repository.
 
 ``` shell
-tmux source ~/.tmux.conf
+git init --bare $HOME/.dotfiles
 ```
 
-The package manager will the retrieve all the plugins.
+Then create an alias (and also add it to your shell config) to work with this repository.
 
-## ZSH
+``` shell
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+```
 
-**zsh** has the same issue. It can be fully managed by nix, but due to not using home-manager it is not. You will need to manually install oh-my-zsh (https://ohmyz.sh/). 
+Make sure that the repository does not show untracked files, otherwise you will always get to see all your home folder files.
+
+``` shell
+dotfiles config --local status.showUntrackedFiles no
+```
+
+You can then use the `dotfiles` command as if it is `git`.
+
+## Restore on another computer
+
+``` shell
+git clone --bare https://github.com/USERNAME/dotfiles.git $HOME/.dotfiles
+# Make sure you have the alias setup
+dotfiles checkout
+```
 
 ## Stackstorage
 
