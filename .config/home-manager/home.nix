@@ -6,6 +6,8 @@
   home.username = "arjen";
   home.homeDirectory = "/home/arjen";
 
+  nixpkgs.config.allowUnfree = true;
+
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new Home Manager release introduces backwards
@@ -39,6 +41,7 @@
     hunspellDicts.nl_NL
     hunspellDicts.en_US
     flameshot
+    discord
     # direnv
     direnv
     nix-direnv
@@ -106,6 +109,7 @@
     enable = true;
     shellAliases = {
       dotfiles="/home/$USER/.nix-profile/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME";
+      createdirenv="nix --extra-experimental-features \"nix-command flakes\" flake new -t github:nix-community/nix-direnv .";
     };
     plugins = [
       {
