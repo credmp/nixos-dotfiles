@@ -67,6 +67,9 @@
 ;; (package! rascal-mode
 ;;   :recipe (:local-repo "nursery/rascal-mode"))
 
+;; Fix for org-roam link issue
+(package! org :pin "ca873f7")
+
 (package! org-roam-dblocks
  :recipe (:host github :repo "chrisbarrett/nursery"
           :files ("lisp/*.el")))

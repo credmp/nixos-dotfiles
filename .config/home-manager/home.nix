@@ -42,6 +42,7 @@
     hunspellDicts.en_US
     flameshot
     discord
+    zotero
     # direnv
     direnv
     nix-direnv
@@ -70,7 +71,9 @@
     betterlockscreen
     # docker
     docker-compose
-    
+    # tmux-yank dependency
+    xsel
+    xclip
   ];
   programs.git = {
     enable = true;
@@ -133,5 +136,9 @@
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
+  };
+
+  home.sessionVariables = rec {
+    OPENAI_API_KEY="$(cat ~/.config/openai/key)";
   };
 }

@@ -51,7 +51,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+q kill
 
 bindsym $mod+Shift+p exec flameshot gui
-bindsym $mod+Shift+x exec betterlockscreen -l
+bindsym $mod+Esc exec betterlockscreen -l
 
 # start dmenu (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -show drun

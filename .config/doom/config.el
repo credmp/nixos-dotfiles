@@ -745,15 +745,16 @@
 
 (use-package! lsp-ltex
   :after lsp
-  :hook (text-mode . (lambda ()
-                       (require 'lsp-ltex)
-                       (lsp)))  ; or lsp-deferred
+  ;; :hook (text-mode . (lambda ()
+  ;;                      (require 'lsp-ltex)
+  ;;                      (lsp)))  ; or lsp-deferred
   :init
   (setq lsp-ltex-version "15.2.0")
   (setq lsp-ltex-check-frequency "save")
 
   :config
 
+  (setq lsp-ltex-check-frequency "save")
   (add-to-list 'lsp-language-id-configuration
                '(mu4e-compose-mode . "org"))
   (add-to-list 'lsp-language-id-configuration
