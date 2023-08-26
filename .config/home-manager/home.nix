@@ -74,6 +74,8 @@
     # tmux-yank dependency
     xsel
     xclip
+    # Office
+    libreoffice
   ];
   programs.git = {
     enable = true;

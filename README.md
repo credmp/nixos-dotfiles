@@ -4,6 +4,12 @@ These are my collection of dotfiles. I switched to using **nixos** and decided t
 
 Currently my setup is not fully managed by nixos. When I switch to home-manager this will be completed fully.
 
+To run this configuration you will need to install `home-manager` and add the channels for nixos-hardware:
+
+``` shell
+sudo nix-channel --add https://github.com/NixOS/nixos-hardware/archive/master.tar.gz nixos-hardware
+sudo nix-channel --update
+```
 
 ## Create your own
 

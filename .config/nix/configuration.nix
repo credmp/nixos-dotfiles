@@ -6,7 +6,9 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+       <nixos-hardware/dell/xps/13-9380>
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
@@ -28,6 +30,8 @@
   };
   hardware.opengl = {
     enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
     extraPackages = with pkgs; [
       #intel-media-driver # LIBVA_DRIVER_NAME=iHD
       vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
@@ -41,7 +45,12 @@
   programs.dconf.enable = true;
   programs.zsh.enable = true;
 
-  services.picom.enable = true;
+  services.picom = {
+    enable = true;
+    backend = "xr_glx_hybrid";
+    vSync = true;
+  };
+
   services.blueman.enable = true;
   services.gnome.gnome-keyring.enable = true; # stack will start without asking for password
   
@@ -122,6 +131,8 @@
     powertop.enable = true;
   };
 
+  services.fwupd.enable = true;
+  
   # Enable sound with pipewire.
   sound.enable = true;
   hardware.pulseaudio.enable = false;

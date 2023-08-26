@@ -41,14 +41,14 @@
  default-nice-size 12.0
  doom-font-increment 1
  doom-font (font-spec :family default-font
-                      :size default-font-size)
+                      :size default-font-size))
  ;; doom-variable-pitch-font (font-spec :family "IBM Plex Sans Condensed"
  ;;                                     :size default-font-size)
  ;; doom-unicode-font (font-spec :family "IBM Plex Mono"
  ;;                              :size default-font-size)
  ;; doom-serif-font (font-spec :family "IBM Plex Serif"
  ;;                            :size default-nice-size)
- )
+ 
 
 ;; (defvar *arjen-theme-dark* 'catppuccin)
 ;; (defvar *arjen-theme-light* 'modus-operandi)
@@ -82,11 +82,11 @@
       (setq catppuccin-flavor 'latte) ;; or 'latte, 'macchiato, or 'mocha
       (catppuccin-reload))
 
-      (progn
-        (setq *is-light* t)
-        (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
-        (catppuccin-reload))
-    ))
+    (progn
+      (setq *is-light* t)
+      (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
+      (catppuccin-reload))))
+    
 
 (global-set-key [f5] 'arjen/toggle-theme)
 
@@ -311,10 +311,10 @@
 
   (map! :map latex-mode-map
         :localleader
-        "n i" #'citar-insert-citation
-        )
+        "n i" #'citar-insert-citation))
+        
 
-  )
+  
 
 (after! cider
   (setq cljr-warn-on-eval nil))
@@ -695,13 +695,13 @@
                                     (org-agenda-remove-tags t)
                                     (org-agenda-todo-ignore-scheduled 'all)
                                     (org-agenda-prefix-format "   %-2i %?b")
-                                    (org-agenda-todo-keyword-format "")))
+                                    (org-agenda-todo-keyword-format ""))))))))
 
 
-            ))
-          ))
+            
+          
 
-  )
+  
 
 ;; (use-package! citar-denote
 ;;   :after denote
@@ -758,8 +758,8 @@
   (add-to-list 'lsp-language-id-configuration
                '(mu4e-compose-mode . "org"))
   (add-to-list 'lsp-language-id-configuration
-               '(org-msg-edit-mode . "org"))
-  )
+               '(org-msg-edit-mode . "org")))
+  
 
 (use-package! org-ref)
 
@@ -769,7 +769,23 @@
 ;;  (setq org-modern-block-fringe 2)
   (setq org-modern-table nil)
 
-  (global-org-modern-mode))
+  (global-org-modern-mode)
+    ;; Ignore optie voor header exports
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+
+  ;; Toevoeging van LaTeX book class zonder parts
+  (add-to-list 'org-latex-classes
+               '("chapterbook"
+                 "\\documentclass{book}"
+                 ("\\chapter{%s}" . "\\chapter{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}"))))
+
+
+ 
+
 
 ;; (use-package! org-sticky-header
 ;;   :hook
@@ -809,15 +825,15 @@ Here is the text:" prefix))
 
   (map! :map text-mode-map
         :localleader
-        "j a" #'chatgpt-shell-academic-region
-        )
+        "j a" #'chatgpt-shell-academic-region)
+        
 
   (map! :map TeX-mode-map
         :localleader
-        "j a" #'chatgpt-shell-academic-region
-        )
+        "j a" #'chatgpt-shell-academic-region))
+        
 
-  )
+  
 
 
 
@@ -852,8 +868,8 @@ Here is the text:" prefix))
 
   (org-remark-create "yellow"
                      'org-remark-highlighter-yellow
-                     '(CATEGORY "important"))
-  )
+                     '(CATEGORY "important")))
+  
 
 ;; accept completion from copilot and fallback to company
 ;; (use-package! copilot
