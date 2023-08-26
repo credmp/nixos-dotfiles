@@ -45,12 +45,6 @@
   programs.dconf.enable = true;
   programs.zsh.enable = true;
 
-  services.picom = {
-    enable = true;
-    backend = "xr_glx_hybrid";
-    vSync = true;
-  };
-
   services.blueman.enable = true;
   services.gnome.gnome-keyring.enable = true; # stack will start without asking for password
   

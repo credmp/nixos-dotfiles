@@ -143,4 +143,11 @@
   home.sessionVariables = rec {
     OPENAI_API_KEY="$(cat ~/.config/openai/key)";
   };
+
+  services.picom = {
+    enable = true;
+    backend = "glx";
+    vSync = true;
+    shadow = false;
+  };
 }
