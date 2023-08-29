@@ -25,11 +25,12 @@
     # desktop apps
     firefox
     chromium
-    emacs
+    emacs29
     ripgrep
     coreutils
     fd
     clang
+    graphviz
     xfce.thunar
     xfce.thunar-volman
     bitwarden
@@ -54,6 +55,9 @@
     nitrogen
     xss-lock
     pulseaudio
+    gtk-engine-murrine
+    catppuccin-gtk
+    gnome.gnome-themes-extra
     # fonts
     nerdfonts
     inter
@@ -131,7 +135,7 @@
     oh-my-zsh = {
       enable = true;
       theme = "amuse";
-      plugins = ["git" "direnv" "docker" "docker-compose" "fzf" "sudo" "mvn"];
+      plugins = ["git" "direnv" "docker" "docker-compose" "fzf" "sudo" "mvn" "virtualenv"];
     };
   };
 
@@ -149,5 +153,10 @@
     backend = "glx";
     vSync = true;
     shadow = false;
+  };
+
+  services.emacs = {
+    enable = true;
+    package = pkgs.emacs29; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 }

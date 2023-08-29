@@ -52,6 +52,8 @@
 ;; Tailwind CSS
 ;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
+(package! benchmark-init)
+
 (package! org-transclusion)
 
 ;; (package! denote)
@@ -59,7 +61,6 @@
 
 ;; (package! denote-citar
 ;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))
-
 (package! citar-org-roam)
 
 (package! rascal-mode
@@ -74,10 +75,10 @@
  :recipe (:host github :repo "chrisbarrett/nursery"
           :files ("lisp/*.el")))
 
-(package! org-drill)
-(package! org-roam-review
- :recipe (:host github :repo "chrisbarrett/nursery"
-          :files ("lisp/*.el")))
+;; (package! org-drill)
+;; (package! org-roam-review
+;;  :recipe (:host github :repo "chrisbarrett/nursery"
+;;           :files ("lisp/*.el")))
 
 (unpin! org-roam)
 (package! org-roam-ui)
@@ -112,7 +113,7 @@
 
 
 ;; Great package for Tiago Forte's [[id:eb517970-7045-49db-8c5b-6bef6ef1e611][Progressive Summarization]]
-(package! org-remark)
+;; (package! org-remark)
 
 (package! copilot
   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
@@ -121,4 +122,4 @@
   :recipe (:host github :repo "natrys/whisper.el" :files ("*.el")))
 
 (package! org-web-tools)
-(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))

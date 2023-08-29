@@ -30,6 +30,13 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 
+;; When you want to profile your startup time
+;; (use-package! benchmark-init
+;;   :ensure t
+;;   :config
+;;   (add-hook 'doom-first-input-hook #'benchmark-init/deactivate))
+
+
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
@@ -226,6 +233,13 @@
                       "#+title: ${title}\n#+filetags: :security:\n")
            :immediate-finish t
            :unnarrowed t)
+          ("t"
+           "thesis" plain "%?"
+           :if-new
+           (file+head "thesis/%<%Y%m%d%H%M%S>-${slug}.org"
+                      "#+title: ${title}\n#+filetags: :thesis:\n")
+           :immediate-finish nil
+           :unnarrowed t)
           ("o"
            "OU Study Notes" plain "%?"
            :if-new
@@ -235,24 +249,24 @@
            :unnarrowed t)))
   (require 'org-roam-protocol))
 
-(use-package! org-roam-review
-  :commands (org-roam-review
-             org-roam-review-list-by-maturity
-             org-roam-review-list-recently-added)
-  ;; Optional - tag all newly-created notes as seedlings
-  :hook (org-roam-capture-new-node . org-roam-review-set-seedling)
-  :general
-  ;; Optional - bindings for evil-mode compatability.
-  (:states '(normal) :keymaps 'org-roam-review-mode-map
-   "TAB" 'magit-section-cycle
-   "g r" 'org-roam-review-refresh)
-  (:keymaps 'org-mode-map
-   "C-c r r" '(org-roam-review-accept :wk "accept")
-   "C-c r u" '(org-roam-review-bury :wk "bury")
-   "C-c r x" '(org-roam-review-set-excluded :wk "set excluded")
-   "C-c r b" '(org-roam-review-set-budding :wk "set budding")
-   "C-c r s" '(org-roam-review-set-seedling :wk "set seedling")
-   "C-c r e" '(org-roam-review-set-evergreen :wk "set evergreen")))
+;; (use-package! org-roam-review
+;;   :commands (org-roam-review
+;;              org-roam-review-list-by-maturity
+;;              org-roam-review-list-recently-added)
+;;   ;; Optional - tag all newly-created notes as seedlings
+;;   :hook (org-roam-capture-new-node . org-roam-review-set-seedling)
+;;   :general
+;;   ;; Optional - bindings for evil-mode compatability.
+;;   (:states '(normal) :keymaps 'org-roam-review-mode-map
+;;    "TAB" 'magit-section-cycle
+;;    "g r" 'org-roam-review-refresh)
+;;   (:keymaps 'org-mode-map
+;;    "C-c r r" '(org-roam-review-accept :wk "accept")
+;;    "C-c r u" '(org-roam-review-bury :wk "bury")
+;;    "C-c r x" '(org-roam-review-set-excluded :wk "set excluded")
+;;    "C-c r b" '(org-roam-review-set-budding :wk "set budding")
+;;    "C-c r s" '(org-roam-review-set-seedling :wk "set seedling")
+;;    "C-c r e" '(org-roam-review-set-evergreen :wk "set evergreen")))
 
 ;; Ensure that you have languagetool 5.8 extracted in .doom.d
 ;; wget https://languagetool.org/download/LanguageTool-5.8.zip
@@ -266,7 +280,7 @@
   ;;        ("\C-x44" . langtool-show-message-at-point)
   ;;        ("\C-x4c" . langtool-correct-buffer))
 
-(require 'find-lisp)
+;; (require 'find-lisp)
 
 
 (after! org
@@ -279,17 +293,15 @@
   ;;       "L x" #'langtool-correct-buffer)
 
 
-  (setq! org-agenda-files (append
-                            (find-lisp-find-files "/home/arjen/stack/Notebook/" ".org$"))
+  (setq! org-agenda-files ;; (append
+                          ;;   (find-lisp-find-files "/home/arjen/stack/Notebook/" ".org$"))
                             ;;(find-lisp-find-files "/home/arjen/stack/roam-new/" ".org$")
 
 
-         ;; '("/home/arjen/stack/Notebook/notes.org"
-         ;;   "/home/arjen/stack/Notebook/inbox.org"
-         ;;   "/home/arjen/stack/Notebook/tickler.org"
-         ;;   "/home/arjen/stack/Notebook/gcal-novi.org"
-         ;;   "/home/arjen/stack/Notebook/gcal-gezin.org"
-         ;;   "/home/arjen/stack/Notebook/gcal-ou.org")
+         '("/home/arjen/stack/Notebook/notes.org"
+           "/home/arjen/stack/Notebook/inbox.org"
+           "/home/arjen/stack/Notebook/tickler.org")
+
 
          org-refile-targets '(("~/stack/Notebook/notes.org" :maxlevel . 4)
                               ("~/stack/Notebook/tickler.org" :maxlevel . 2)
@@ -297,29 +309,8 @@
 
   (setq org-id-link-to-org-use-id t)
   (setq org-image-actual-width 800)
-  (setq org-log-into-drawer t))
+  (setq org-log-into-drawer t)
 
-
-(after! citar
-  (setq! reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"
-         bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
-         citar-file-note-org-include '(org-id org-roam-ref)
-         citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib")
-         citar-notes-paths '("~/stack/roam/papers")
-         citar-library-paths '("~/stack/Zotero/pdf"))
-
-
-  (map! :map latex-mode-map
-        :localleader
-        "n i" #'citar-insert-citation))
-        
-
-  
-
-(after! cider
-  (setq cljr-warn-on-eval nil))
-
-(after! org
   ;; (add-load-path! (concat doom-user-dir "org-protocol-capture-html"))
   ;; (require 'org-protocol-capture-html)
   (setq! org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/Notebook/notes.org" "Personal" "Series")
@@ -340,6 +331,30 @@
                                   :immediate-finish t :empty-lines 1)
                                  ("e" "email" entry (file+headline "~/stack/Notebook/inbox.org" "Tasks from Email")
                                   "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
+
+(after! citar
+  (setq! reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"
+         bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
+         citar-file-note-org-include '(org-id org-roam-ref)
+         citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib")
+         citar-notes-paths '("~/stack/roam/papers")
+         citar-library-paths '("~/stack/Zotero/pdf"))
+
+
+  (map! :map latex-mode-map
+        :localleader
+        "n i" #'citar-insert-citation)
+  (map! :map org-mode-map
+           :localleader
+           "n i" #'citar-insert-citation))
+
+        
+
+  
+
+(after! cider
+  (setq cljr-warn-on-eval nil))
+
 
 ;; Add word count to mode-line, only useful for modes like org and markdown
 ;; for writing papers and articles
@@ -373,33 +388,33 @@
 
 
 ;; (lsp-session-folders (lsp-session))
-(setq rmh-elfeed-org-files '("/home/arjen/stack/Notebook/elfeed.org"))
+;; (setq rmh-elfeed-org-files '("/home/arjen/stack/Notebook/elfeed.org"))
 
 ;; Rust Debugging
 (setq dap-cpptools-extension-version "1.12.4")
 
-(with-eval-after-load 'lsp-rust
-        (require 'dap-cpptools))
+;; (with-eval-after-load 'lsp-rust
+;;         (require 'dap-cpptools))
 
-(with-eval-after-load 'dap-cpptools
-        ;; Add a template specific for debugging Rust programs.
-        ;; It is used for new projects, where I can M-x dap-edit-debug-template
-        (dap-register-debug-template "Rust::CppTools Run Configuration"
-                                           (list :type "cppdbg"
-                                                 :request "launch"
-                                                 :name "Rust::Run"
-                                                 :MIMode "gdb"
-                                                 :miDebuggerPath "rust-gdb"
-                                                 :environment []
-                                                 :program "${workspaceFolder}/target/debug/hello / replace with binary"
-                                                 :cwd "${workspaceFolder}"
-                                                 :console "external"
-                                                 :dap-compilation "cargo build"
-                                                 :dap-compilation-dir "${workspaceFolder}")))
+;; (with-eval-after-load 'dap-cpptools
+;;         ;; Add a template specific for debugging Rust programs.
+;;         ;; It is used for new projects, where I can M-x dap-edit-debug-template
+;;         (dap-register-debug-template "Rust::CppTools Run Configuration"
+;;                                            (list :type "cppdbg"
+;;                                                  :request "launch"
+;;                                                  :name "Rust::Run"
+;;                                                  :MIMode "gdb"
+;;                                                  :miDebuggerPath "rust-gdb"
+;;                                                  :environment []
+;;                                                  :program "${workspaceFolder}/target/debug/hello / replace with binary"
+;;                                                  :cwd "${workspaceFolder}"
+;;                                                  :console "external"
+;;                                                  :dap-compilation "cargo build"
+;;                                                  :dap-compilation-dir "${workspaceFolder}")))
 
-(with-eval-after-load 'dap-mode
-        (setq dap-default-terminal-kind "integrated") ;; Make sure that terminal programs open a term for I/O in an Emacs buffer
-        (dap-auto-configure-mode +1))
+;; (with-eval-after-load 'dap-mode
+;;         (setq dap-default-terminal-kind "integrated") ;; Make sure that terminal programs open a term for I/O in an Emacs buffer
+;;         (dap-auto-configure-mode +1))
 
 ;; JAVA - add lombok
 
@@ -611,14 +626,14 @@
       ("study" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
       ("notes" ,(list (all-the-icons-faicon "clipboard")) nil nil :ascent center)))
 
-(setq org-gcal-client-id "1038002603885-7ni0fk8f5tv57iaqja2ki02eond95nf7.apps.googleusercontent.com"
-      org-gcal-client-secret "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"
-      org-gcal-local-timezone "Europe/Amsterdam"
-      org-gcal-fetch-file-alist '(("0l9sq2hr7ipgb2r01u7l8o7qa4@group.calendar.google.com" .  "~/stack/Notebook/gcal-ou.org")
-                                  ("dl8pntmql0pqrggd0r2ena6tvc@group.calendar.google.com" . "~/stack/Notebook/gcal-novi.org")
-                                  ("family00321679463603242617@group.calendar.google.com" . "~/stack/Notebook/gcal-gezin.org")))
-                                  
-(require 'org-gcal)
+;; (setq org-gcal-client-id "1038002603885-7ni0fk8f5tv57iaqja2ki02eond95nf7.apps.googleusercontent.com"
+;;       org-gcal-client-secret "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"
+;;       org-gcal-local-timezone "Europe/Amsterdam"
+;;       org-gcal-fetch-file-alist '(("0l9sq2hr7ipgb2r01u7l8o7qa4@group.calendar.google.com" .  "~/stack/Notebook/gcal-ou.org")
+;;                                   ("dl8pntmql0pqrggd0r2ena6tvc@group.calendar.google.com" . "~/stack/Notebook/gcal-novi.org")
+;;                                   ("family00321679463603242617@group.calendar.google.com" . "~/stack/Notebook/gcal-gezin.org")))
+
+;; (require 'org-gcal)
 
 (use-package! org-super-agenda
   :after org-agenda
@@ -779,7 +794,7 @@
                '("chapterbook"
                  "\\documentclass{book}"
                  ("\\chapter{%s}" . "\\chapter{%s}")
-                 ("\\subsection{%s}" . "\\subsection*{%s}")
+                 ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
                  ("\\paragraph{%s}" . "\\paragraph*{%s}"))))
 
@@ -817,11 +832,12 @@
 With PREFIX, invert `chatgpt-shell-insert-queries-inline' choice."
     (interactive "P")
     (chatgpt-shell-send-region-with-header
-     "As an English spelling corrector and improver, your task is to improve the structure of a provided paragraph while also correcting any spelling errors. You should should make the text fit for academics, without changing the meaning.
+     (concat
+       "As an English spelling corrector and improver, your task is to improve the structure of a provided paragraph while also correcting any spelling errors. You should should make the text fit for academics, without changing the meaning.
 
 Your response should only include corrections and improvements to the original text. Please do not provide explanations or additional commentary. Your goal is to create a more literary version of the paragraph that maintains its original meaning but presents it in a more sophisticated manner.
 
-Here is the text:" prefix))
+Here is the text:" prefix)))
 
   (map! :map text-mode-map
         :localleader
@@ -846,30 +862,30 @@ Here is the text:" prefix))
 ;;         "L m" #'langtool-show-message-at-point
 ;;         "L x" #'langtool-correct-buffer)
 ;;   )
-(org-remark-global-tracking-mode +1)
-(after! org-remark
-  (defface org-remark-highlighter-yellow
-    '((((class color) (min-colors 88) (background light))
-       :underline "#d0bc00" :background "goldenrod1")
-      (((class color) (min-colors 88) (background dark))
-       :underline "#d0bc00" :background "MediumPurple4")
-      (t
-       :inherit highlight))
-    "Face for the yellow highlighter pen.")
+;; (org-remark-global-tracking-mode +1)
+;; (after! org-remark
+;;   (defface org-remark-highlighter-yellow
+;;     '((((class color) (min-colors 88) (background light))
+;;        :underline "#d0bc00" :background "goldenrod1")
+;;       (((class color) (min-colors 88) (background dark))
+;;        :underline "#d0bc00" :background "MediumPurple4")
+;;       (t
+;;        :inherit highlight))
+;;     "Face for the yellow highlighter pen.")
 
-  ;; (defface org-remark-highlighter
-  ;;   '((((class color) (min-colors 88) (background light))
-  ;;      :underline "#d0bc00" :background "goldenrod1")
-  ;;     (((class color) (min-colors 88) (background dark))
-  ;;      :underline "#d0bc00" :background "dark magenta")
-  ;;     (t
-  ;;      :inherit highlight))
-  ;;   "Face for the default highlighter pen.")
+;;   ;; (defface org-remark-highlighter
+;;   ;;   '((((class color) (min-colors 88) (background light))
+;;   ;;      :underline "#d0bc00" :background "goldenrod1")
+;;   ;;     (((class color) (min-colors 88) (background dark))
+;;   ;;      :underline "#d0bc00" :background "dark magenta")
+;;   ;;     (t
+;;   ;;      :inherit highlight))
+;;   ;;   "Face for the default highlighter pen.")
 
-  (org-remark-create "yellow"
-                     'org-remark-highlighter-yellow
-                     '(CATEGORY "important")))
-  
+;;   (org-remark-create "yellow"
+;;                      'org-remark-highlighter-yellow
+;;                      '(CATEGORY "important")))
+
 
 ;; accept completion from copilot and fallback to company
 ;; (use-package! copilot
@@ -880,12 +896,12 @@ Here is the text:" prefix))
 ;;               ("C-TAB" . 'copilot-accept-completion-by-word)
 ;;               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
-(use-package! whisper
-  :config
-  (setq whisper-install-directory "/tmp/"
-        whisper-model "base"
-        whisper-language "nl"
-        whisper-translate nil))
+;; (use-package! whisper
+;;   :config
+;;   (setq whisper-install-directory "/tmp/"
+;;         whisper-model "base"
+;;         whisper-language "nl"
+;;         whisper-translate nil))
 
 (setq ispell-program-name "hunspell")
-(use-package! lsp-tailwindcss)
+;; (use-package! lsp-tailwindcss)
