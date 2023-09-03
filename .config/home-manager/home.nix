@@ -44,6 +44,7 @@
     flameshot
     discord
     zotero
+    emote
     # direnv
     direnv
     nix-direnv

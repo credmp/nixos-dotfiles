@@ -330,7 +330,9 @@
                                   "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
                                   :immediate-finish t :empty-lines 1)
                                  ("e" "email" entry (file+headline "~/stack/Notebook/inbox.org" "Tasks from Email")
-                                  "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
+                                  "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
+  ;; export code listings for latex
+  (setq org-latex-listings t))
 
 (after! citar
   (setq! reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"
