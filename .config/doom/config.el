@@ -207,6 +207,12 @@
                               "#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t)
+          ("c"
+           "comics" plain "%?"
+           :if-new
+           (file+head "comics/%<%Y%m%d%H%M%S>-${slug}.org"
+                      "#+title: ${title}\n#+filetags: :area:comics:\n")
+           :unnarrowed t)
           ("p"
            "papers" plain "%?"
            :if-new
@@ -247,8 +253,16 @@
                       "#+title: ${title}\n#+filetags: :study:\n")
            :immediate-finish nil
            :unnarrowed t)))
-  (require 'org-roam-protocol))
+  (require 'org-roam-protocol)
+  (defun my/preview-fetcher ()
+    (let* ((elem (org-element-context))
+           (parent (org-element-property :parent elem)))
+      ;; TODO: alt handling for non-paragraph elements
+      (string-trim-right (buffer-substring-no-properties
+                          (org-element-property :begin parent)
+                          (org-element-property :end parent)))))
 
+  (setq org-roam-preview-function #'my/preview-fetcher))
 ;; (use-package! org-roam-review
 ;;   :commands (org-roam-review
 ;;              org-roam-review-list-by-maturity
@@ -907,3 +921,9 @@ Here is the text:" prefix)))
 
 (setq ispell-program-name "hunspell")
 ;; (use-package! lsp-tailwindcss)
+
+(use-package! delve
+  :after org-roam
+
+  :config
+  (setq delve-storage-paths "~/stack/org/"))

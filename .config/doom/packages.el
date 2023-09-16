@@ -123,3 +123,6 @@
 
 (package! org-web-tools)
 ;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+
+(package! delve
+  :recipe (:host github :repo "publicimageltd/delve" :files ("*.el")))

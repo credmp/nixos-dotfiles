@@ -31,8 +31,6 @@
     fd
     clang
     graphviz
-    xfce.thunar
-    xfce.thunar-volman
     bitwarden
     gnupg
     appimage-run # to run stack appimage
@@ -59,6 +57,8 @@
     gtk-engine-murrine
     catppuccin-gtk
     gnome.gnome-themes-extra
+    gnome.nautilus
+    evince
     # fonts
     nerdfonts
     inter
