@@ -75,7 +75,7 @@
  :recipe (:host github :repo "chrisbarrett/nursery"
           :files ("lisp/*.el")))
 
-;; (package! org-drill)
+(package! org-drill)
 ;; (package! org-roam-review
 ;;  :recipe (:host github :repo "chrisbarrett/nursery"
 ;;           :files ("lisp/*.el")))

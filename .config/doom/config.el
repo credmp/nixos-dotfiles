@@ -189,10 +189,24 @@
 (use-package! org-roam
   :config
   (setq org-roam-capture-ref-templates '(("r"
-                                          "ref" plain "%?"
+                                          "ref" plain "* Notes
+
+- %?
+
+* Key takeaways
+
+-
+
+* Quotes
+
+#+begin_quote
+#+end_quote
+
+* Summary
+"
                                           :if-new
                                           (file+head "links/${slug}.org"
-                                                     "#+title: ${title}\n#+filetags: :link:\n")
+                                                     "#+title: ${title}\n#+filetags: :reading:notstarted:\n")
                                           :unnarrowed t)
                                          ("c"
                                           "collection" entry "** ${title}\n:PROPERTIES:\n:ID: %(org-id-uuid)\n:ROAM_REFS: ${ref}\n:END:"
@@ -676,6 +690,7 @@
   (org-super-agenda-mode))
 
 (after! org
+  (use-package! org-drill)
   ;; https://www.reddit.com/r/emacs/comments/hnf3cw/my_orgmode_agenda_much_better_now_with_category/
   (setq org-agenda-custom-commands
         '(

@@ -81,6 +81,14 @@
     xclip
     # Office
     libreoffice
+    (makeDesktopItem {
+      name = "org-protocol";
+      exec = "emacsclient -- %u";
+      comment = "Org protocol";
+      desktopName = "org-protocol";
+      type = "Application";
+      mimeTypes = ["x-scheme-handler/org-protocol"];
+    })
   ];
   programs.git = {
     enable = true;
