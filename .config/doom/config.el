@@ -276,7 +276,35 @@
                           (org-element-property :begin parent)
                           (org-element-property :end parent)))))
 
-  (setq org-roam-preview-function #'my/preview-fetcher))
+  (setq org-roam-preview-function #'my/preview-fetcher)
+  (setq org-roam-dailies-capture-templates
+        '(("d" "default" entry "* TODO %?"
+           :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "#+TITLE: %<%B %d, %Y>
+#+filetags: dailies
+
+- tags :: [[id:6b2b4539-b6c0-4966-ae41-ff9048be1e86][Daily Notes]]
+
+* 📅 Daily questions
+
+** 🌙 Last night, I...
+
+** 🚀 Today I plan to accomplish...
+
+** 👏 One thing I am excited about right now...
+
+** 👎 Currently I am struggling with..
+
+* Routine
+
+- [ ] Plan the day
+- [ ] Work on thesis
+- [ ] Close the day, no open tasks
+
+* Captured items
+")))))
+
+
+  
 ;; (use-package! org-roam-review
 ;;   :commands (org-roam-review
 ;;              org-roam-review-list-by-maturity
@@ -814,7 +842,7 @@
 (after! org
 ;;  (setq org-modern-block-fringe 2)
   (setq org-modern-table nil)
-
+  (setq org-modern-timestamp nil)
   (global-org-modern-mode)
     ;; Ignore optie voor header exports
   (require 'ox-extra)
