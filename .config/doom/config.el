@@ -971,3 +971,15 @@ Here is the text:" prefix)))
 
   :config
   (setq delve-storage-paths "~/stack/org/"))
+
+;;https://dschrempf.github.io/emacs/2023-03-02-emacs-java-and-nix/
+(after! lsp-java
+  (defun lsp-java--ls-command ()
+    (list "jdt-language-server"
+          "-configuration" "../config-linux"
+          "-data" "../java-workspace")))
+
+(after! cc-mode
+  (defun my-set-lsp-path ()
+    (setq lsp-java-server-install-dir (getenv "JDTLS_PATH")))
+  (add-hook 'java-mode-hook #'my-set-lsp-path))
