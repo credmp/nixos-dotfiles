@@ -230,8 +230,8 @@
           ("p"
            "papers" plain "%?"
            :if-new
-           (file+head "papers/%<%Y%m%d%H%M%S>-${slug}.org"
-                      "#+title: ${title}\n#+filetags: :paper:bib:\n")
+           (file+head "papers/%<%Y%m%d%H%M%S>-${citar-citekey}-${citar-date}.org"
+                      "#+title: ${citar-citekey} (${citar-date}). ${note-title}.\n#+created: %U\n#+last_modified: %U\n#+filetags: :paper:bib:\n\n\n")
            :unnarrowed t)
           ("h"
            "home" plain "%?"
@@ -640,7 +640,8 @@
 
 (use-package! citar-org-roam
   :config
-  (setq citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: ${tags}")
+  (setq citar-org-roam-capture-template-key "p")
+  ;;(setq citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: ${tags}")
   (citar-org-roam-mode))
 
 ;;(setq rascal-language-server-command
