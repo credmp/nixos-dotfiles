@@ -48,14 +48,16 @@
  default-nice-size 12.0
  doom-font-increment 1
  doom-font (font-spec :family default-font
-                      :size default-font-size))
- ;; doom-variable-pitch-font (font-spec :family "IBM Plex Sans Condensed"
- ;;                                     :size default-font-size)
- ;; doom-unicode-font (font-spec :family "IBM Plex Mono"
- ;;                              :size default-font-size)
- ;; doom-serif-font (font-spec :family "IBM Plex Serif"
- ;;                            :size default-nice-size)
- 
+                      :size default-font-size)
+ doom-unicode-font (font-spec :family default-font
+                              :size default-font-size))
+;; doom-variable-pitch-font (font-spec :family "IBM Plex Sans Condensed"
+;;                                     :size default-font-size)
+;; doom-unicode-font (font-spec :family "IBM Plex Mono"
+;;                              :size default-font-size)
+;; doom-serif-font (font-spec :family "IBM Plex Serif"
+;;                            :size default-nice-size)
+
 
 ;; (defvar *arjen-theme-dark* 'catppuccin)
 ;; (defvar *arjen-theme-light* 'modus-operandi)
@@ -84,16 +86,16 @@
 (defun arjen/toggle-theme()
   (interactive)
   (if *is-light*
-    (progn
-      (setq *is-light* nil)
-      (setq catppuccin-flavor 'latte) ;; or 'latte, 'macchiato, or 'mocha
-      (catppuccin-reload))
+      (progn
+        (setq *is-light* nil)
+        (setq catppuccin-flavor 'latte) ;; or 'latte, 'macchiato, or 'mocha
+        (catppuccin-reload))
 
     (progn
       (setq *is-light* t)
       (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
       (catppuccin-reload))))
-    
+
 
 (global-set-key [f5] 'arjen/toggle-theme)
 
@@ -105,7 +107,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/stack/Notebook/")
+(setq org-directory "~/stack/roam-new/")
 (setq org-roam-directory "~/stack/roam-new/")
 
 
@@ -149,7 +151,7 @@
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-sideline-show-code-actions nil)
   (setq lsp-ui-sideline-enable nil))
-  
+
 
 
 ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
@@ -184,14 +186,14 @@
                         (user-mail-address      . "arjenw@gmail.com")    ;; only needed for mu < 1.4
                         (mu4e-compose-signature . "---\nYours truly\nThe Baz"))
                       t))
-  
+
 
 (use-package! org-roam
   :config
   (setq org-roam-capture-ref-templates '(("r"
                                           "ref" plain "* Notes
 
-- %?
+- ${body}%?
 
 * Key takeaways
 
@@ -240,12 +242,12 @@
                       "#+title: ${title}\n#+filetags: :home:\n")
            :unnarrowed t)
           ("n"
-            "novi" plain "%?"
-            :if-new
-            (file+head "novi/%<%Y%m%d%H%M%S>-${slug}.org"
-                       "#+title: ${title}\n#+filetags: :novi:\n")
-            :immediate-finish t
-            :unnarrowed t)
+           "novi" plain "%?"
+           :if-new
+           (file+head "novi/%<%Y%m%d%H%M%S>-${slug}.org"
+                      "#+title: ${title}\n#+filetags: :novi:\n")
+           :immediate-finish t
+           :unnarrowed t)
           ("s"
            "security" plain "* Background %?\n\n* Examples\n\n\n* References\n\n"
            :if-new
@@ -284,27 +286,32 @@
 
 - tags :: [[id:6b2b4539-b6c0-4966-ae41-ff9048be1e86][Daily Notes]]
 
-* 📅 Daily questions
+* 📅 Dagelijkse vragen
 
-** 🌙 Last night, I...
+** 🌙 Gisteravond heb ik...
 
-** 🚀 Today I plan to accomplish...
+** 🚀 Vandaag wil ik bereiken...
 
-** 👏 One thing I am excited about right now...
+** 👏 Iets waar ik naar uit kijk...
 
-** 👎 Currently I am struggling with..
+** 👎 Hier worstel ik momenteel mee...
 
 * Routine
 
-- [ ] Plan the day
-- [ ] Work on thesis
-- [ ] Close the day, no open tasks
+- [ ] Plan de dag
+- [ ] Werken aan mijn thesis
+- [ ] De dag afsluiten, geen open taken
 
 * Captured items
+
+* Meta
+# Local Variables:
+# ispell-dictionary: \"nl_NL\"
+# End:
 ")))))
 
 
-  
+
 ;; (use-package! org-roam-review
 ;;   :commands (org-roam-review
 ;;              org-roam-review-list-by-maturity
@@ -330,11 +337,11 @@
 
 (after! langtool
   (setq langtool-language-tool-server-jar (concat doom-user-dir "/LanguageTool-5.8/languagetool-server.jar")))
-  ;; :bind (("\C-x4w" . langtool-check)
-  ;;        ("\C-x4W" . langtool-check-done)
-  ;;        ("\C-x4l" . langtool-switch-default-language)
-  ;;        ("\C-x44" . langtool-show-message-at-point)
-  ;;        ("\C-x4c" . langtool-correct-buffer))
+;; :bind (("\C-x4w" . langtool-check)
+;;        ("\C-x4W" . langtool-check-done)
+;;        ("\C-x4l" . langtool-switch-default-language)
+;;        ("\C-x44" . langtool-show-message-at-point)
+;;        ("\C-x4c" . langtool-correct-buffer))
 
 ;; (require 'find-lisp)
 
@@ -350,18 +357,18 @@
 
 
   (setq! org-agenda-files ;; (append
-                          ;;   (find-lisp-find-files "/home/arjen/stack/Notebook/" ".org$"))
-                            ;;(find-lisp-find-files "/home/arjen/stack/roam-new/" ".org$")
+         ;;   (find-lisp-find-files "/home/arjen/stack/Notebook/" ".org$"))
+         ;;(find-lisp-find-files "/home/arjen/stack/roam-new/" ".org$")
 
 
-         '("/home/arjen/stack/Notebook/notes.org"
-           "/home/arjen/stack/Notebook/inbox.org"
-           "/home/arjen/stack/Notebook/tickler.org")
+         '("/home/arjen/stack/roam-new/20231008105247-planning.org"
+           "/home/arjen/stack/roam-new/📥 Inbox.org"
+           "/home/arjen/stack/roam-new/20231008105710-tickler.org")
 
 
-         org-refile-targets '(("~/stack/Notebook/notes.org" :maxlevel . 4)
-                              ("~/stack/Notebook/tickler.org" :maxlevel . 2)
-                              ("~/stack/Notebook/someday.org" :maxlevel . 1)))
+         org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
+                              ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
+
 
   (setq org-id-link-to-org-use-id t)
   (setq org-image-actual-width 800)
@@ -403,12 +410,12 @@
         :localleader
         "n i" #'citar-insert-citation)
   (map! :map org-mode-map
-           :localleader
-           "n i" #'citar-insert-citation))
+        :localleader
+        "n i" #'citar-insert-citation))
 
-        
 
-  
+
+
 
 (after! cider
   (setq cljr-warn-on-eval nil))
@@ -484,13 +491,13 @@
         "-XX:+UseG1GC"
         "-XX:+UseStringDeduplication"
         ,(concat "-javaagent:" path-to-lombok)))
-        ;;,(concat "-Xbootclasspath/a:" path-to-lombok)
+;;,(concat "-Xbootclasspath/a:" path-to-lombok)
 
 ;; Copy full path of item in direct
 
 (defun tl/dired-copy-path-at-point ()
-    (interactive)
-    (dired-copy-filename-as-kill 0))
+  (interactive)
+  (dired-copy-filename-as-kill 0))
 
 (after! dired
   (define-key dired-mode-map (kbd "W") 'tl/dired-copy-path-at-point))
@@ -649,7 +656,7 @@
 
 (after! lsp-mode
   (add-to-list 'lsp-language-id-configuration
-   '(".*\\.rsc$" . "rascal"))
+               '(".*\\.rsc$" . "rascal"))
 
   (setq lsp-semantic-tokens-enable t)
   (defun lsp-rascal-tcp-connect-to-port ()
@@ -666,24 +673,25 @@
      :test? (lambda () t)))
 
   (lsp-register-client
-    (make-lsp-client :new-connection (lsp-rascal-tcp-connect-to-port)
-                     :major-modes '(rascal-mode)
-                     :server-id 'rascal-lsp)))
+   (make-lsp-client :new-connection (lsp-rascal-tcp-connect-to-port)
+                    :major-modes '(rascal-mode)
+                    :server-id 'rascal-lsp)))
 
 (add-to-list 'auto-mode-alist '("\\.rsc$" . rascal-mode))
 
+(require 'all-the-icons)
 (customize-set-value
-    'org-agenda-category-icon-alist
-    `(
-      ("inbox" ,(list (all-the-icons-faicon "inbox")) nil nil :ascent center)
-      ("gcal-novi" ,(list (all-the-icons-faicon "building-o")) nil nil :ascent center)
-      ("gcal-gezin" ,(list (all-the-icons-faicon "users")) nil nil :ascent center)
-      ("gcal-ou" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
-      ("daily" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
-      ("work" ,(list (all-the-icons-faicon "cogs")) nil nil :ascent center)
-      ("habit" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
-      ("study" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
-      ("notes" ,(list (all-the-icons-faicon "clipboard")) nil nil :ascent center)))
+ 'org-agenda-category-icon-alist
+ `(
+   ("inbox" ,(list (all-the-icons-faicon "inbox")) nil nil :ascent center)
+   ("gcal-novi" ,(list (all-the-icons-faicon "building-o")) nil nil :ascent center)
+   ("gcal-gezin" ,(list (all-the-icons-faicon "users")) nil nil :ascent center)
+   ("gcal-ou" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
+   ("daily" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
+   ("work" ,(list (all-the-icons-faicon "cogs")) nil nil :ascent center)
+   ("habit" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
+   ("study" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
+   ("notes" ,(list (all-the-icons-faicon "clipboard")) nil nil :ascent center)))
 
 ;; (setq org-gcal-client-id "1038002603885-7ni0fk8f5tv57iaqja2ki02eond95nf7.apps.googleusercontent.com"
 ;;       org-gcal-client-secret "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"
@@ -773,10 +781,10 @@
                                     (org-agenda-todo-keyword-format ""))))))))
 
 
-            
-          
 
-  
+
+
+
 
 ;; (use-package! citar-denote
 ;;   :after denote
@@ -834,18 +842,18 @@
                '(mu4e-compose-mode . "org"))
   (add-to-list 'lsp-language-id-configuration
                '(org-msg-edit-mode . "org")))
-  
+
 
 (use-package! org-ref)
 
 ;; (use-package! base16-theme)
 
 (after! org
-;;  (setq org-modern-block-fringe 2)
+  ;;  (setq org-modern-block-fringe 2)
   (setq org-modern-table nil)
   (setq org-modern-timestamp nil)
   (global-org-modern-mode)
-    ;; Ignore optie voor header exports
+  ;; Ignore optie voor header exports
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
 
@@ -859,7 +867,7 @@
                  ("\\paragraph{%s}" . "\\paragraph*{%s}"))))
 
 
- 
+
 
 
 ;; (use-package! org-sticky-header
@@ -893,7 +901,7 @@ With PREFIX, invert `chatgpt-shell-insert-queries-inline' choice."
     (interactive "P")
     (chatgpt-shell-send-region-with-header
      (concat
-       "As an English spelling corrector and improver, your task is to improve the structure of a provided paragraph while also correcting any spelling errors. You should should make the text fit for academics, without changing the meaning.
+      "As an English spelling corrector and improver, your task is to improve the structure of a provided paragraph while also correcting any spelling errors. You should should make the text fit for academics, without changing the meaning.
 
 Your response should only include corrections and improvements to the original text. Please do not provide explanations or additional commentary. Your goal is to create a more literary version of the paragraph that maintains its original meaning but presents it in a more sophisticated manner.
 
@@ -902,14 +910,14 @@ Here is the text:" prefix)))
   (map! :map text-mode-map
         :localleader
         "j a" #'chatgpt-shell-academic-region)
-        
+
 
   (map! :map TeX-mode-map
         :localleader
         "j a" #'chatgpt-shell-academic-region))
-        
 
-  
+
+
 
 
 
@@ -972,6 +980,7 @@ Here is the text:" prefix)))
   :config
   (setq delve-storage-paths "~/stack/org/"))
 
+;; NixOS / nix use of Java together with Emacs
 ;;https://dschrempf.github.io/emacs/2023-03-02-emacs-java-and-nix/
 (after! lsp-java
   (defun lsp-java--ls-command ()
@@ -983,3 +992,16 @@ Here is the text:" prefix)))
   (defun my-set-lsp-path ()
     (setq lsp-java-server-install-dir (getenv "JDTLS_PATH")))
   (add-hook 'java-mode-hook #'my-set-lsp-path))
+
+;; When the font patches are part of the Doom distribution then
+;; this code becomes obsolete
+;; https://github.com/doomemacs/doomemacs/issues/7036
+(defun add-back-emoji-fallback-font-families ()
+  (when (fboundp 'set-fontset-font)
+    (let ((fn (doom-rpartial #'member (font-family-list))))
+      (when-let (font (cl-find-if fn doom-emoji-fallback-font-families))
+        (set-fontset-font t 'unicode font nil 'append)))))
+
+(add-hook 'after-setting-font-hook 'add-back-emoji-fallback-font-families)
+(add-to-list 'doom-symbol-fallback-font-families "Symbols Nerd Font")
+;; end future obsolete code

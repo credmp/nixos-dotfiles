@@ -61,9 +61,11 @@
     evince
     # fonts
     nerdfonts
+    emacs-all-the-icons-fonts
     inter
     # shell
     fzf
+    bat
     # sound and display 
     pavucontrol
     mons
@@ -168,4 +170,6 @@
     enable = true;
     package = pkgs.emacs29; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
+
+  fonts.fontconfig.enable = true;
 }
