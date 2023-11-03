@@ -50,9 +50,9 @@
  doom-font (font-spec :family default-font
                       :size default-font-size)
  doom-unicode-font (font-spec :family default-font
-                              :size default-font-size))
-;; doom-variable-pitch-font (font-spec :family "IBM Plex Sans Condensed"
-;;                                     :size default-font-size)
+                              :size default-font-size)
+ doom-variable-pitch-font (font-spec :family "iMWritingDuoNerdFont"
+                                     :size default-font-size))
 ;; doom-unicode-font (font-spec :family "IBM Plex Mono"
 ;;                              :size default-font-size)
 ;; doom-serif-font (font-spec :family "IBM Plex Serif"
@@ -876,18 +876,20 @@
 ;;   )
 
 ;; Non-wrapping tables
-(defun my/toggle-olivetti-and-line-wrap-for-org-table ()
-  "Toggle olivetti-mode and line wrap when inside an Org table."
-  (when
-      (derived-mode-p 'org-mode)
-    (if
-        (org-at-table-p)
-        (progn
-          (setq-local truncate-lines t))
-      (progn
-        (setq-local truncate-lines nil)))))
+;; (defun my/toggle-olivetti-and-line-wrap-for-org-table ()
+;;   "Toggle olivetti-mode and line wrap when inside an Org table."
+;;   (when
+;;       (derived-mode-p 'org-mode)
+;;     (if
+;;         (org-at-table-p)
+;;         (progn
+;;           (setq-local truncate-lines t))
+;;       (progn
+;;         (setq-local truncate-lines nil)))))
 
-(add-hook 'post-command-hook #'my/toggle-olivetti-and-line-wrap-for-org-table)
+;; (add-hook 'post-command-hook #'my/toggle-olivetti-and-line-wrap-for-org-table)
+
+
 (set-fontset-font t 'symbol "Noto Color Emoji" nil 'append)
 
 (custom-set-variables '(emojify-display-style 'unicode))
@@ -993,15 +995,15 @@ Here is the text:" prefix)))
     (setq lsp-java-server-install-dir (getenv "JDTLS_PATH")))
   (add-hook 'java-mode-hook #'my-set-lsp-path))
 
-;; When the font patches are part of the Doom distribution then
-;; this code becomes obsolete
-;; https://github.com/doomemacs/doomemacs/issues/7036
-(defun add-back-emoji-fallback-font-families ()
-  (when (fboundp 'set-fontset-font)
-    (let ((fn (doom-rpartial #'member (font-family-list))))
-      (when-let (font (cl-find-if fn doom-emoji-fallback-font-families))
-        (set-fontset-font t 'unicode font nil 'append)))))
+;; ;; When the font patches are part of the Doom distribution then
+;; ;; this code becomes obsolete
+;; ;; https://github.com/doomemacs/doomemacs/issues/7036
+;; (defun add-back-emoji-fallback-font-families ()
+;;   (when (fboundp 'set-fontset-font)
+;;     (let ((fn (doom-rpartial #'member (font-family-list))))
+;;       (when-let (font (cl-find-if fn doom-emoji-fallback-font-families))
+;;         (set-fontset-font t 'unicode font nil 'append)))))
 
-(add-hook 'after-setting-font-hook 'add-back-emoji-fallback-font-families)
-(add-to-list 'doom-symbol-fallback-font-families "Symbols Nerd Font")
-;; end future obsolete code
+;; (add-hook 'after-setting-font-hook 'add-back-emoji-fallback-font-families)
+;; (add-to-list 'doom-symbol-fallback-font-families "Symbols Nerd Font")
+;; ;; end future obsolete code

@@ -42,7 +42,7 @@
     flameshot
     discord
     zotero
-    emote
+    #emote
     # direnv
     direnv
     nix-direnv
@@ -66,6 +66,7 @@
     # shell
     fzf
     bat
+    termdown
     # sound and display 
     pavucontrol
     mons
