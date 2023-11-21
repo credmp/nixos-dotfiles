@@ -153,7 +153,6 @@
   (setq lsp-ui-sideline-enable nil))
 
 
-
 ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 (add-to-list 'load-path "/home/arjen/.nix-profile/share/emacs/site-lisp/mu4e")
 (after! mu4e
@@ -452,45 +451,17 @@
       (setq folders (cdr folders)))))
 
 
-;; (lsp-session-folders (lsp-session))
-;; (setq rmh-elfeed-org-files '("/home/arjen/stack/Notebook/elfeed.org"))
-
-;; Rust Debugging
-(setq dap-cpptools-extension-version "1.12.4")
-
-;; (with-eval-after-load 'lsp-rust
-;;         (require 'dap-cpptools))
-
-;; (with-eval-after-load 'dap-cpptools
-;;         ;; Add a template specific for debugging Rust programs.
-;;         ;; It is used for new projects, where I can M-x dap-edit-debug-template
-;;         (dap-register-debug-template "Rust::CppTools Run Configuration"
-;;                                            (list :type "cppdbg"
-;;                                                  :request "launch"
-;;                                                  :name "Rust::Run"
-;;                                                  :MIMode "gdb"
-;;                                                  :miDebuggerPath "rust-gdb"
-;;                                                  :environment []
-;;                                                  :program "${workspaceFolder}/target/debug/hello / replace with binary"
-;;                                                  :cwd "${workspaceFolder}"
-;;                                                  :console "external"
-;;                                                  :dap-compilation "cargo build"
-;;                                                  :dap-compilation-dir "${workspaceFolder}")))
-
-;; (with-eval-after-load 'dap-mode
-;;         (setq dap-default-terminal-kind "integrated") ;; Make sure that terminal programs open a term for I/O in an Emacs buffer
-;;         (dap-auto-configure-mode +1))
 
 ;; JAVA - add lombok
 
-(setq path-to-lombok "/home/arjen/.m2/repository/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar")
+;; (setq path-to-lombok "/home/arjen/.m2/repository/org/projectlombok/lombok/1.18.28/lombok-1.18.28.jar")
 
-(setq lsp-java-vmargs
-      `("-noverify"
-        "-Xmx1G"
-        "-XX:+UseG1GC"
-        "-XX:+UseStringDeduplication"
-        ,(concat "-javaagent:" path-to-lombok)))
+;; (setq lsp-java-vmargs
+;;       `("-noverify"
+;;         "-Xmx1G"
+;;         "-XX:+UseG1GC"
+;;         "-XX:+UseStringDeduplication"
+;;         ,(concat "-javaagent:" path-to-lombok)))
 ;;,(concat "-Xbootclasspath/a:" path-to-lombok)
 
 ;; Copy full path of item in direct
@@ -984,17 +955,24 @@ Here is the text:" prefix)))
 
 ;; NixOS / nix use of Java together with Emacs
 ;;https://dschrempf.github.io/emacs/2023-03-02-emacs-java-and-nix/
-(after! lsp-java
-  (defun lsp-java--ls-command ()
-    (list "jdt-language-server"
-          "-configuration" "../config-linux"
-          "-data" "../java-workspace")))
+;; (after! lsp-java
+;;   (defun lsp-java--ls-command ()
+;;     (add-to-list 'exec-path "/home/arjen/.local/jdt/bin")
+;;     (list "jdt-language-server"
+;;           "-configuration" "../config-linux"
+;;           "-data" "../java-workspace")))
 
-(after! cc-mode
-  (defun my-set-lsp-path ()
-    (setq lsp-java-server-install-dir (getenv "JDTLS_PATH")))
-  (add-hook 'java-mode-hook #'my-set-lsp-path))
+(after! java-mode
+  (add-to-list 'exec-path "/home/arjen/.local/jdt/bin"))
 
+;; (after! cc-mode
+;;   (defun my-set-lsp-path ()
+;;     ;; (add-to-list 'exec-path "/home/arjen/.local/jdt/bin")
+;;     (setq lsp-java-server-install-dir  (getenv "JDTLS_PATH")))
+;;   (add-hook 'java-mode-hook #'my-set-lsp-path))
+
+(setq lsp-java-format-on-type-enabled t)
+(setq projectile-create-missing-test-files t)
 ;; ;; When the font patches are part of the Doom distribution then
 ;; ;; this code becomes obsolete
 ;; ;; https://github.com/doomemacs/doomemacs/issues/7036

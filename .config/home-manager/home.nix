@@ -78,7 +78,7 @@
     # lockscreen
     betterlockscreen
     # docker
-    docker-compose
+    podman-compose
     # tmux-yank dependency
     xsel
     xclip
@@ -92,6 +92,7 @@
       type = "Application";
       mimeTypes = ["x-scheme-handler/org-protocol"];
     })
+    inotify-tools
   ];
   programs.git = {
     enable = true;
