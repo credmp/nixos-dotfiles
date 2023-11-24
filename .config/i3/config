@@ -229,8 +229,8 @@ client.urgent           $red $red $white $red $red
 
 #brightness control
 
-bindsym XF86MonBrightnessUp exec xbacklight -inc 10
-bindsym XF86MonBrightnessDown exec xbacklight -dec 10
+bindsym XF86MonBrightnessUp exec brightnessctl s +10%
+bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
 
 #application launch
 
@@ -248,7 +248,7 @@ exec --no-startup-id appimage-run /home/arjen/.local/bin/stack-linux-latest-x86_
 
 exec --no-startup-id /nix/store/$(ls -la /nix/store | grep 'polkit-gnome' | grep '4096' | awk '{print $9}' | sed -n '$p')/libexec/polkit-gnome-authentication-agent-1
 
-exec --no-startup-id emote
+# exec --no-startup-id emote
 
 ##### i3-gaps ##############
 for_window [class=".*"] border pixel 2 #*

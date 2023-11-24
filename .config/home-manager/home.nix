@@ -71,6 +71,7 @@
     pavucontrol
     mons
     lxappearance
+    brightnessctl
     # networking
     networkmanager
     networkmanager_dmenu

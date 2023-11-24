@@ -985,3 +985,5 @@ Here is the text:" prefix)))
 ;; (add-hook 'after-setting-font-hook 'add-back-emoji-fallback-font-families)
 ;; (add-to-list 'doom-symbol-fallback-font-families "Symbols Nerd Font")
 ;; ;; end future obsolete code
+(after! lsp-mode
+  (delete 'lsp-terraform lsp-client-packages))
