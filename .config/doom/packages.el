@@ -127,5 +127,5 @@
 (package! delve
   :recipe (:host github :repo "publicimageltd/delve" :files ("*.el")))
 
-(package! eglot-java
-  :recipe (:host github :repo "yveszoundi/eglot-java"))
+;; (package! eglot-java
+;;   :recipe (:host github :repo "yveszoundi/eglot-java"))

@@ -85,6 +85,7 @@
     xclip
     # Office
     libreoffice
+    xournalpp
     (makeDesktopItem {
       name = "org-protocol";
       exec = "emacsclient -- %u";
