@@ -987,3 +987,12 @@ Here is the text:" prefix)))
 ;; ;; end future obsolete code
 (after! lsp-mode
   (delete 'lsp-terraform lsp-client-packages))
+;; (after! go-mode
+;;   (defun lsp-go-install-save-hooks ()
+;;     (add-hook 'before-save-hook #'lsp-format-buffer t t)
+;;     (add-hook 'before-save-hook #'lsp-organize-imports t t))
+;;   (add-hook 'go-mode-hook #'lsp-go-install-save-hooks))
+
+(after! go-mode
+  (defun +eglot-organize-imports() (call-interactively 'eglot-code-action-organize-imports))
+  (add-hook 'before-save-hook '+eglot-organize-imports nil t))
