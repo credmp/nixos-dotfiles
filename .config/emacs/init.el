@@ -118,6 +118,15 @@
   :custom
   (chatgpt-shell-openai-key (get-openai-key)))
 
+(use-package olivetti
+  :ensure t)
+
+(use-package imenu-list
+  :ensure t
+  :bind (("C-c i" . imenu-list-smart-toggle))
+  :custom
+  (imenu-list-focus-after-activation t))
+
 ;; -- org-mode --
 
 (use-package org
@@ -420,7 +429,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+   '(imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
    '((lsp-ltex-language . "nl")
      (lsp-ltex-language . nl-NL)
