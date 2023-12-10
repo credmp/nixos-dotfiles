@@ -183,6 +183,24 @@
   (org-id-link-to-org-use-id t)
   (org-image-actual-width 800)
   (org-log-into-drawer t)
+	(org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/Notebook/notes.org" "Personal" "Series")
+                            "* %?\n%T" :prepend t)
+                           ("t" "todo" entry
+                            (file+headline "~/stack/Notebook/inbox.org" "Tasks")
+                            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+                           ("T" "Tickler" entry
+                            (file+headline "~/stack/Notebook/tickler.org" "Tickler")
+                            "* %i%? \n %U")
+                           ("w" "Web site" entry
+                            (file "")
+                            "* %a :website:\n\n%U %?\n\n%:initial")
+                           ("wN" "Web link" entry
+                            (file+headline ,(car org-agenda-files)
+                                           "Links to read later")
+                            "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
+                            :immediate-finish t :empty-lines 1)
+                           ("e" "email" entry (file+headline "~/stack/Notebook/inbox.org" "Tasks from Email")
+                            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))	
   )
 
 ;; (use-package org-plus-contrib
@@ -305,7 +323,7 @@
 (use-package org-bullets
   :ensure t
   :custom
-  (org-bullets-bullet-list '("❶" "❷" "❸" "❹"))
+  (org-bullets-bullet-list '("↦" "↳" "↳" "↳" "↳""↳""↳""↳"))
   :hook
   (org-mode . (lambda () (org-bullets-mode 1))))
 
@@ -361,7 +379,7 @@
   (reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
   (bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"))
 	(citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
-	(org-cite-global-bibliography citar-bibliography)
+	(org-cite-global-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
   (citar-file-note-org-include '(org-id org-roam-ref))
   (citar-notes-paths '("~/stack/roam/papers"))
   (citar-library-paths '("~/stack/Zotero/pdf"))
@@ -535,6 +553,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(package-selected-packages
 	 '(org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
