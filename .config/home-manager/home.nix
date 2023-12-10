@@ -26,6 +26,7 @@
     firefox
     chromium
     emacs29
+    neovim
     ripgrep
     coreutils
     fd

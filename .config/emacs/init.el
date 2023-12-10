@@ -6,12 +6,13 @@
 (defvar gnu '("gnu" . "https://elpa.gnu.org/packages/"))
 (defvar melpa '("melpa" . "https://melpa.org/packages/"))
 (defvar melpa-stable '("melpa-stable" . "https://stable.melpa.org/packages/"))
-
+(defvar org-stable '("org" . "https://orgmode.org/elpa/"))
 ;; Add marmalade to package repos
 (setq package-archives nil)
 (add-to-list 'package-archives melpa-stable t)
 (add-to-list 'package-archives melpa t)
 (add-to-list 'package-archives gnu t)
+(add-to-list 'package-archives org-stable t)
 
 (package-initialize)
 
@@ -21,15 +22,27 @@
   (package-refresh-contents))
 
 ;; -- LOOK AND FEEL --
-(global-prettify-symbols-mode 1)
-
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
-(setq mac-option-modifier 'none)
-(setq mac-command-modifier 'meta)
-(setq ns-function-modifier 'hyper)
+(use-package emacs
+  :config
+  (set-face-attribute 'default nil :font "JetbrainsMono Nerd Font-16")
+  :custom
+  (use-short-answers t)
+  (inhibit-startup-screen t)
+  (tab-width 2)
+	(global-prettify-symbols-mode 1)
+
+	(blink-cursor-mode 0)
+
+	(mac-option-modifier 'none)
+	(mac-command-modifier 'meta)
+	(ns-function-modifier 'hyper)
+	(backup-directory-alist `(("." . "~/.saves")))
+	(backup-by-copying t)
+	)
 
 ;; http://stackoverflow.com/questions/11679700/emacs-disable-beep-when-trying-to-move-beyond-the-end-of-the-document
 (defun my-bell-function ())
@@ -51,13 +64,6 @@
                    (flyspell-mode 1)
                    (visual-line-mode 1)
                    )))
-
-(use-package emacs
-  :config
-  (set-face-attribute 'default nil :font "JetbrainsMono Nerd Font-16")
-  :custom
-  (use-short-answers t)
-  (inhibit-startup-screen t))
 
 (use-package nerd-icons
   :ensure t)
@@ -89,9 +95,15 @@
 (use-package projectile-ripgrep
   :ensure t)
 
+(setq init-directory (file-name-directory user-init-file))
+
 (use-package undo-tree
   :ensure t
+	:custom
+	(undo-tree-history-directory-alist `(("." . ,(concat init-directory "undo-tree-hist/"))))
   :config
+	(setq undo-tree-visualizer-diff t
+				undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
 (defun nuke-all-buffers ()
@@ -113,10 +125,12 @@
             secret))
       nil)))
 
+(defun set-openai-key ()
+	(interactive)
+	(setq chatgpt-shell-openai-key (get-openai-key)))
+
 (use-package chatgpt-shell
-  :ensure t
-  :custom
-  (chatgpt-shell-openai-key (get-openai-key)))
+  :ensure t)
 
 (use-package olivetti
   :ensure t)
@@ -127,11 +141,35 @@
   :custom
   (imenu-list-focus-after-activation t))
 
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+	 ("C->" . mc/mark-next-like-this)
+	 ("C-<" . mc/mark-previous-like-this)
+	 ("C-c C-<" . mc/mark-all-like-this))
+  )
 ;; -- org-mode --
 
 (use-package org
+	:config
+	(org-babel-do-load-languages
+	 'org-babel-load-languages
+	 '((python . t)))
+
+	(with-eval-after-load 'ox-latex
+		;; Toevoeging van LaTeX book class zonder parts
+		(add-to-list 'org-latex-classes
+								 '("chapterbook"
+									 "\\documentclass{book}"
+									 ("\\chapter{%s}" . "\\chapter{%s}")
+									 ("\\section{%s}" . "\\section*{%s}")
+									 ("\\subsection{%s}" . "\\subsection*{%s}")
+									 ("\\paragraph{%s}" . "\\paragraph*{%s}"))))
   :custom
   (truncate-lines nil)
+	(org-adapt-indentation nil)
+	(org-startup-indented t)
+  (org-indent-mode t)
   (org-directory "~/stack/roam-new/")
   (org-agenda-files
          '("/home/arjen/stack/roam-new/20231008105247-planning.org"
@@ -145,8 +183,15 @@
   (org-id-link-to-org-use-id t)
   (org-image-actual-width 800)
   (org-log-into-drawer t)
-
   )
+
+;; (use-package org-plus-contrib
+;; 	:after org
+;; 	:ensure t
+;; 	:config
+;; 	;; ;; Ignore optie voor header exports
+;;   ;; (require 'ox-extra)
+;;   (ox-extras-activate '(ignore-headlines)))
 
 (use-package org-roam
       :ensure t
@@ -264,25 +309,87 @@
   :hook
   (org-mode . (lambda () (org-bullets-mode 1))))
 
+(use-package visual-fill-column
+	:ensure t
+	:custom
+	(visual-fill-column-width 110)
+	(visual-fill-column-center-text t)
+	)
+
+(defun my/present-start ()
+	(org-present-big)
+	(org-display-inline-images)
+	(visual-fill-column-mode 1)
+	(visual-line-mode 1)
+	;; (setq-local face-remapping-alist '((default (:height 1.5) variable-pitch)
+	;; 																	 (header-line (:height 4.0) variable-pitch)
+	;; 																	 (org-document-title (:height 1.75) org-document-title)
+	;; 																	 (org-code (:height 1.2) org-code)
+	;; 																	 (org-verbatim (:height 1.2) org-verbatim)
+	;; 																	 (org-block (:height 1.25) org-block)
+	;; 																	 (org-block-begin-line (:height 0.7) org-block)))
+	
+	(org-present-hide-cursor)
+	;;(org-present-read-only)
+	(flyspell-mode-off)
+	)	
+
+(defun my/present-end ()
+	(org-present-small)
+	(org-remove-inline-images)
+	(visual-fill-column-mode 0)
+	(visual-line-mode 0)
+	;; (setq-local face-remapping-alist '((default variable-pitch default)))
+	(org-present-show-cursor)
+	;;(org-present-read-write)
+	(flyspell-mode)
+)
+(use-package org-present
+	:ensure t
+	:after visual-fill-column
+	:hook
+	(org-present-mode . my/present-start)
+  (org-present-mode-quit . my/present-end)
+	)
+
 (use-package citar
   :ensure t
-  :bind (("C-c b" . citar-insert-citation)
+  :bind (("C-c b" . org-cite-insert)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
   :custom
   (reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
   (bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"))
+	(citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
+	(org-cite-global-bibliography citar-bibliography)
   (citar-file-note-org-include '(org-id org-roam-ref))
-  (citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
   (citar-notes-paths '("~/stack/roam/papers"))
-  (citar-library-paths '("~/stack/Zotero/pdf"))  
+  (citar-library-paths '("~/stack/Zotero/pdf"))
+  (org-cite-insert-processor 'citar)
+  (org-cite-follow-processor 'citar)
+  (org-cite-activate-processor 'citar)
+	(citar-indicators (list citar-indicator-files citar-indicator-notes))
   )
 
+;; (use-package citar-org
+;; 	:after citar org-cite
+;; 	:custom
+;; )
+	
 (use-package citar-org-roam
   :ensure t
   :after citar org-roam
   :no-require
   :config (citar-org-roam-mode))
+
+(use-package org-ref
+	:ensure t)
+
+(use-package org-roam-bibtex
+	:ensure t
+  :after org-roam
+  :config
+  (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 (use-package company-bibtex
   :ensure t
@@ -429,13 +536,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
-   '((lsp-ltex-language . "nl")
-     (lsp-ltex-language . nl-NL)
-     (ispell-dictionary . "nl")
-     (lsp-ltex-language . "nl-NL")
-     (ispell-dictionary . "nl_NL"))))
+	 '((flyspell-mode . 0)
+		 (lsp-ltex-language . "nl")
+		 (lsp-ltex-language . nl-NL)
+		 (ispell-dictionary . "nl")
+		 (lsp-ltex-language . "nl-NL")
+		 (ispell-dictionary . "nl_NL"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
