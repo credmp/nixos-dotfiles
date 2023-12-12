@@ -365,8 +365,8 @@
 
 (use-package org-bullets
   :ensure t
-  :custom
-  (org-bullets-bullet-list '("↦" "↳" "↳" "↳" "↳""↳""↳""↳"))
+  :config
+  (setq org-bullets-bullet-list '("↦" "↳" "↳" "↳" "↳""↳""↳""↳"))
   :hook
   (org-mode . (lambda () (org-bullets-mode 1))))
 
@@ -630,3 +630,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(let ((filename "~/.config/personal-emacs/personal.el"))
+	(if (file-exists-p filename)
+			(progn
+			 (load filename))))
