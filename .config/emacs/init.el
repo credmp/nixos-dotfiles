@@ -182,6 +182,7 @@
 	(org-startup-indented t)
   (org-indent-mode t)
   (org-directory "~/stack/roam-new/")
+	(org-attach-directory "~/stack/roam-new/.attach/")
   (org-agenda-files
          '("/home/arjen/stack/roam-new/20231008105247-planning.org"
            "/home/arjen/stack/roam-new/📥 Inbox.org"
@@ -216,6 +217,13 @@
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))	
   )
 
+(use-package org-attach
+	:config
+	(setq-default org-attach-id-dir (expand-file-name ".attach/" org-directory))
+	;; Add inline image previews for attachment links
+  (org-link-set-parameters "attachment" :image-data-fun #'+org-inline-image-data-fn)
+	)
+
 ;; (use-package org-plus-contrib
 ;; 	:after org
 ;; 	:ensure t
@@ -231,7 +239,8 @@
       (org-roam-complete-everywhere t)
 			(org-roam-dailies-capture-templates
         '(("d" "default" entry "* TODO %?"
-           :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "#+TITLE: %<%B %d, %Y>
+           :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "# -*- ispell-dictionary: \"nl_NL\" -*-
+#+TITLE: %<%B %d, %Y>
 #+filetags: dailies
 
 - tags :: [[id:6b2b4539-b6c0-4966-ae41-ff9048be1e86][Daily Notes]]
@@ -253,11 +262,6 @@
 - [ ] De dag afsluiten, geen open taken
 
 * Captured items
-
-* Meta
-# Local Variables:
-# ispell-dictionary: \"nl_NL\"
-# End:
 "))))
       :bind (("C-c r l" . org-roam-buffer-toggle)
              ("C-c r f" . org-roam-node-find)
@@ -375,6 +379,8 @@
 	:custom
 	(visual-fill-column-width 110)
 	(visual-fill-column-center-text t)
+	:hook
+	(org-mode . visual-fill-column-mode)
 	)
 
 (defun my/present-start ()
@@ -530,7 +536,8 @@
   ;;       #'command-completion-default-include-p)
 
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t)
+	(setq ispell-program-name "hunspell"))
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
