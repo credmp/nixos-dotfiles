@@ -73,16 +73,16 @@
   :config
   (nerd-icons-completion-mode))
 
-(use-package mini-frame
-	:ensure t
-	:init
-	(mini-frame-mode)
-	:custom
-	(mini-frame-color-shift-step 27)
-	(mini-frame-show-parameters
-   '((top . 0.35)
-     (width . 0.7)
-     (left . 0.5))))
+;; (use-package mini-frame
+;; 	:ensure t
+;; 	:init
+;; 	(mini-frame-mode)
+;; 	:custom
+;; 	(mini-frame-color-shift-step 27)
+;; 	(mini-frame-show-parameters
+ ;;   '((top . 0.35)
+  ;;    (width . 0.7)
+   ;;   (left . 0.5))))
 
 ;; -- Utilities ---
 (use-package which-key
