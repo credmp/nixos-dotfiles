@@ -185,7 +185,9 @@
   (org-agenda-files
          '("/home/arjen/stack/roam-new/20231008105247-planning.org"
            "/home/arjen/stack/roam-new/📥 Inbox.org"
-           "/home/arjen/stack/roam-new/20231008105710-tickler.org"))
+           "/home/arjen/stack/roam-new/20231008105710-tickler.org"
+           "/home/arjen/stack/Notebook/inbox.org"
+					 ))
 
 
   (org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
@@ -227,6 +229,36 @@
       :custom
       (org-roam-directory (file-truename "~/stack/roam-new/"))
       (org-roam-complete-everywhere t)
+			(org-roam-dailies-capture-templates
+        '(("d" "default" entry "* TODO %?"
+           :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "#+TITLE: %<%B %d, %Y>
+#+filetags: dailies
+
+- tags :: [[id:6b2b4539-b6c0-4966-ae41-ff9048be1e86][Daily Notes]]
+
+* 📅 Dagelijkse vragen
+
+** 🌙 Gisteravond heb ik...
+
+** 🚀 Vandaag wil ik bereiken...
+
+** 👏 Iets waar ik naar uit kijk...
+
+** 👎 Hier worstel ik momenteel mee...
+
+* Routine
+
+- [ ] Plan de dag
+- [ ] Werken aan mijn thesis
+- [ ] De dag afsluiten, geen open taken
+
+* Captured items
+
+* Meta
+# Local Variables:
+# ispell-dictionary: \"nl_NL\"
+# End:
+"))))
       :bind (("C-c r l" . org-roam-buffer-toggle)
              ("C-c r f" . org-roam-node-find)
              ("C-c r g" . org-roam-graph)
@@ -569,6 +601,12 @@
 
 (use-package ox-hugo
   :ensure t)
+
+;; -- Nursery projects
+;; git clone git@github.com:chrisbarrett/nursery.git nursery
+(add-to-list 'load-path "~/.config/emacs/nursery/lisp")
+(use-package org-roam-dblocks
+  :hook (org-mode . org-roam-dblocks-autoupdate-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
