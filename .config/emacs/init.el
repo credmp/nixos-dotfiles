@@ -159,6 +159,52 @@
 	 ("C-<" . mc/mark-previous-like-this)
 	 ("C-c C-<" . mc/mark-all-like-this))
   )
+
+(use-package neotree
+	:ensure t
+	:init
+  (setq neo-create-file-auto-open nil
+        neo-auto-indent-point nil
+        neo-autorefresh nil
+        neo-mode-line-type 'none
+        neo-window-width 30
+        neo-show-updir-line nil
+        neo-theme 'icons
+        neo-banner-message nil
+        neo-confirm-create-file #'off-p
+        neo-confirm-create-directory #'off-p
+        neo-show-hidden-files nil
+        neo-keymap-style 'concise
+        neo-show-hidden-files t
+        neo-hidden-regexp-list
+        '(;; vcs folders
+          "^\\.\\(?:git\\|hg\\|svn\\)$"
+          ;; compiled files
+          "\\.\\(?:pyc\\|o\\|elc\\|lock\\|css.map\\|class\\)$"
+          ;; generated files, caches or local pkgs
+          "^\\(?:node_modules\\|vendor\\|.\\(project\\|cask\\|yardoc\\|sass-cache\\)\\)$"
+          ;; org-mode folders
+          "^\\.\\(?:sync\\|export\\|attach\\)$"
+          ;; temp files
+          "~$"
+          "^#.*#$"))
+
+	)
+
+(use-package smartparens
+	:ensure t
+	:hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+  :config
+  ;; load default config
+  (require 'smartparens-config))
+
+(use-package yasnippet
+	:ensure t)
+;; git clone https://github.com/doomemacs/snippets.git ~/.config/emacs/snippets
+(use-package doom-snippets
+  :load-path "~/.config/emacs/snippets"
+  :after yasnippet)
+
 ;; -- org-mode --
 
 (use-package org
@@ -441,48 +487,48 @@
          ("M-b" . citar-insert-preset))
 	:config
 	(defvar citar-indicator-files-icons
-      (citar-indicator-create
-       :symbol (nerd-icons-faicon
-                "nf-fa-file_o"
-                :face 'nerd-icons-green
-                :v-adjust -0.1)
-       :function #'citar-has-files
-       :padding "  " ; need this because the default padding is too low for these icons
-       :tag "has:files"))
-    (defvar citar-indicator-links-icons
-      (citar-indicator-create
-       :symbol (nerd-icons-faicon
-                "nf-fa-link"
-                :face 'nerd-icons-orange
-                :v-adjust 0.01)
-       :function #'citar-has-links
-       :padding "  "
-       :tag "has:links"))
-    (defvar citar-indicator-notes-icons
-      (citar-indicator-create
-       :symbol (nerd-icons-codicon
-                "nf-cod-note"
-                :face 'nerd-icons-blue
-                :v-adjust -0.3)
-       :function #'citar-has-notes
-       :padding "    "
-       :tag "has:notes"))
-    (defvar citar-indicator-cited-icons
-      (citar-indicator-create
-       :symbol (nerd-icons-faicon
-                "nf-fa-circle_o"
-                :face 'nerd-icon-green)
-       :function #'citar-is-cited
-       :padding "  "
-       :tag "is:cited"))
-    (setq citar-indicators
-          (list citar-indicator-files-icons
-                citar-indicator-links-icons
-                citar-indicator-notes-icons
-                citar-indicator-cited-icons)))
-  :custom
-  (reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
-  (bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"))
+    (citar-indicator-create
+     :symbol (nerd-icons-faicon
+              "nf-fa-file_o"
+              :face 'nerd-icons-green
+              :v-adjust -0.1)
+     :function #'citar-has-files
+     :padding "  " ; need this because the default padding is too low for these icons
+     :tag "has:files"))
+  (defvar citar-indicator-links-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-faicon
+              "nf-fa-link"
+              :face 'nerd-icons-orange
+              :v-adjust 0.01)
+     :function #'citar-has-links
+     :padding "  "
+     :tag "has:links"))
+  (defvar citar-indicator-notes-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-codicon
+              "nf-cod-note"
+              :face 'nerd-icons-blue
+              :v-adjust -0.3)
+     :function #'citar-has-notes
+     :padding "    "
+     :tag "has:notes"))
+  (defvar citar-indicator-cited-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-faicon
+              "nf-fa-circle_o"
+              :face 'nerd-icon-green)
+     :function #'citar-is-cited
+     :padding "  "
+     :tag "is:cited"))
+  (setq citar-indicators
+        (list citar-indicator-files-icons
+              citar-indicator-links-icons
+              citar-indicator-notes-icons
+              citar-indicator-cited-icons))
+	:custom
+	(reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
+	(bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"))
 	(citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
 	(org-cite-global-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
   (citar-file-note-org-include '(org-id org-roam-ref))
@@ -678,8 +724,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
+ '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(doomsnippets doom-snippets smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
