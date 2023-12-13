@@ -191,9 +191,23 @@
 					 ))
 
 
-  (org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
-                        ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
-
+  ;; (org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
+  ;;                       ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
+  (org-refile-targets
+   '((nil :maxlevel . 3)
+     (org-agenda-files :maxlevel . 3))
+   ;; Without this, completers like ivy/helm are only given the first level of
+   ;; each outline candidates. i.e. all the candidates under the "Tasks" heading
+   ;; are just "Tasks/". This is unhelpful. We want the full path to each refile
+   ;; target! e.g. FILE/Tasks/heading/subheading
+   org-refile-use-outline-path 'file
+   org-outline-path-complete-in-steps nil)
+	(org-link-frame-setup
+   '((vm . vm-visit-folder-other-frame)
+     (vm-imap . vm-visit-imap-folder-other-frame)
+     (gnus . org-gnus-no-new-news)
+     (file . find-file)
+     (wl . wl-other-frame)))
   (org-id-link-to-org-use-id t)
   (org-image-actual-width 800)
   (org-log-into-drawer t)
@@ -235,6 +249,7 @@
 (use-package org-roam
       :ensure t
       :custom
+			(org-roam-node-display-template "${title:*} ${tags:50}")
       (org-roam-directory (file-truename "~/stack/roam-new/"))
       (org-roam-complete-everywhere t)
 			(org-roam-dailies-capture-templates
@@ -424,6 +439,47 @@
   :bind (("C-c b" . org-cite-insert)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
+	:config
+	(defvar citar-indicator-files-icons
+      (citar-indicator-create
+       :symbol (nerd-icons-faicon
+                "nf-fa-file_o"
+                :face 'nerd-icons-green
+                :v-adjust -0.1)
+       :function #'citar-has-files
+       :padding "  " ; need this because the default padding is too low for these icons
+       :tag "has:files"))
+    (defvar citar-indicator-links-icons
+      (citar-indicator-create
+       :symbol (nerd-icons-faicon
+                "nf-fa-link"
+                :face 'nerd-icons-orange
+                :v-adjust 0.01)
+       :function #'citar-has-links
+       :padding "  "
+       :tag "has:links"))
+    (defvar citar-indicator-notes-icons
+      (citar-indicator-create
+       :symbol (nerd-icons-codicon
+                "nf-cod-note"
+                :face 'nerd-icons-blue
+                :v-adjust -0.3)
+       :function #'citar-has-notes
+       :padding "    "
+       :tag "has:notes"))
+    (defvar citar-indicator-cited-icons
+      (citar-indicator-create
+       :symbol (nerd-icons-faicon
+                "nf-fa-circle_o"
+                :face 'nerd-icon-green)
+       :function #'citar-is-cited
+       :padding "  "
+       :tag "is:cited"))
+    (setq citar-indicators
+          (list citar-indicator-files-icons
+                citar-indicator-links-icons
+                citar-indicator-notes-icons
+                citar-indicator-cited-icons)))
   :custom
   (reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
   (bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"))
