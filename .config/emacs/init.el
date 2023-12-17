@@ -29,6 +29,7 @@
 (use-package emacs
   :config
   (set-face-attribute 'default nil :font "JetbrainsMono Nerd Font-16")
+	(global-set-key [(control x) (k)] 'kill-this-buffer)
   :custom
   (use-short-answers t)
   (inhibit-startup-screen t)
@@ -199,11 +200,9 @@
   (require 'smartparens-config))
 
 (use-package yasnippet
-	:ensure t)
-;; git clone https://github.com/doomemacs/snippets.git ~/.config/emacs/snippets
-(use-package doom-snippets
-  :load-path "~/.config/emacs/snippets"
-  :after yasnippet)
+	:ensure t
+	:config
+	(yas-global-mode))
 
 ;; -- org-mode --
 
@@ -585,11 +584,23 @@
   ;; (setq vertico-count 20)
 
   ;; Grow and shrink the Vertico minibuffer
-  (setq vertico-resize t)
+  (setq vertico-resize nil)
 
   ;; Optionally enable cycling for `vertico-next' and `vertico-previous'.
   (setq vertico-cycle t)
   )
+
+;; Configure directory extension.
+(use-package vertico-directory
+  :after vertico
+  :ensure nil
+  ;; More convenient directory navigation commands
+  :bind (:map vertico-map
+              ("RET" . vertico-directory-enter)
+              ("DEL" . vertico-directory-delete-char)
+              ("M-DEL" . vertico-directory-delete-word))
+  ;; Tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
