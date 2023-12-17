@@ -146,9 +146,6 @@
 (use-package chatgpt-shell
   :ensure t)
 
-(use-package olivetti
-  :ensure t)
-
 (use-package imenu-list
   :ensure t
   :bind (("C-c i" . imenu-list-smart-toggle))
@@ -472,7 +469,8 @@
 	(org-present-show-cursor)
 	;;(org-present-read-write)
 	(flyspell-mode)
-)
+	)
+
 (use-package org-present
 	:ensure t
 	:after visual-fill-column
