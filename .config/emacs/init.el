@@ -1,6 +1,9 @@
+;; My Emacs config, building since 2000
+;; Set the most basic parameters
 (setq user-full-name "Arjen Wiersma")
 (setq user-mail-address "arjen@wiersma.org")
 
+;; Load the package repositories, I like to use melpa and melpa-stable. 
 (require 'package)
 
 (defvar gnu '("gnu" . "https://elpa.gnu.org/packages/"))
@@ -14,61 +17,94 @@
 (add-to-list 'package-archives gnu t)
 (add-to-list 'package-archives org-stable t)
 
+;; Ensure the package system is loaded
 (package-initialize)
 
+;; On first run, update the repository contents
 (unless (and (file-exists-p "~/.config/emacs/elpa/archives/gnu")
              (file-exists-p "~/.config/emacs/elpa/archives/melpa")
              (file-exists-p "~/.config/emacs/elpa/archives/melpa-stable"))
   (package-refresh-contents))
 
+;; Make the init-directory easily accessible as a variable
+(setq init-directory (file-name-directory user-init-file))
+
 ;; -- LOOK AND FEEL --
+
+;; Do away with all the unnecessary GUI stuff
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 
+;; Set the basic look and feel and behavioral settings
 (use-package emacs
   :config
   (set-face-attribute 'default nil :font "JetbrainsMono Nerd Font-16")
+	;; kill unmodified buffers without warning
 	(global-set-key [(control x) (k)] 'kill-this-buffer)
+	;; Do not blink the cursor
+	(blink-cursor-mode -1)
+	
   :custom
+	;; y / n instead of yes / no
   (use-short-answers t)
+	;; do not show the startup screen
   (inhibit-startup-screen t)
+	;; do not indent too much
   (tab-width 2)
+	;; Use ^ instead of and
 	(global-prettify-symbols-mode 1)
 
-	(blink-cursor-mode 0)
-
+	;; Set modifier keys, especially useful on mac
 	(mac-option-modifier 'none)
 	(mac-command-modifier 'meta)
 	(ns-function-modifier 'hyper)
+
+	;; Saves of files go into the .saves directory
 	(backup-directory-alist `(("." . "~/.saves")))
+	;; Use copying to make backups instead of writing and renaming
 	(backup-by-copying t)
 	)
 
 ;; http://stackoverflow.com/questions/11679700/emacs-disable-beep-when-trying-to-move-beyond-the-end-of-the-document
 (defun my-bell-function ())
 
+;; Get rid of the visible bell as an alarm
 (setq ring-bell-function 'my-bell-function)
 (setq visible-bell nil)
 
+;; My favorite theme, load it immediately
 (use-package catppuccin-theme
   :ensure t
   :config
   (load-theme 'catppuccin t))
 
+;; The mode-line from doom is killer, load it
 (use-package doom-modeline
   :ensure t
   :init (doom-modeline-mode 1))
 
+;; For all text based modes, turn on spell checking and line wrapping
 (dolist (hook '(text-mode-hook))
   (add-hook hook (lambda ()
                    (flyspell-mode 1)
                    (visual-line-mode 1)
                    )))
 
+;; Add icons to Emacs for use in commands
 (use-package nerd-icons
   :ensure t)
 
+;; Sets additional annotators for various commands
+(use-package marginalia
+  :after vertico
+  :ensure t
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+
+;; Such as complextion commands
 (use-package nerd-icons-completion
   :ensure t
 	:after marginalia
@@ -76,26 +112,19 @@
   (nerd-icons-completion-mode)
 	(add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
-;; (use-package mini-frame
-;; 	:ensure t
-;; 	:init
-;; 	(mini-frame-mode)
-;; 	:custom
-;; 	(mini-frame-color-shift-step 27)
-;; 	(mini-frame-show-parameters
- ;;   '((top . 0.35)
-  ;;    (width . 0.7)
-   ;;   (left . 0.5))))
-
 ;; -- Utilities ---
+
+;; Help discover new key combinations while you are almost there already
 (use-package which-key
   :ensure t
   :config
   (which-key-mode))
 
+;; A real terminal in Emacs.
 (use-package vterm
   :ensure t)
 
+;; Toggle it for easy access
 (use-package vterm-toggle
   :ensure t
   :after vterm
@@ -103,14 +132,15 @@
 	 ("C-c o T" . vterm-toggle)
 	 ))
 
+;; Work on projects using projectile
 (use-package projectile
   :ensure t)
 
+;; and use ripgrep to find text inside the project
 (use-package projectile-ripgrep
   :ensure t)
 
-(setq init-directory (file-name-directory user-init-file))
-
+;; Keep an undo-tree for each file, persist history for access after closing/opening the file
 (use-package undo-tree
   :ensure t
 	:custom
@@ -120,7 +150,9 @@
 				undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
+;; Easily kill all buffers
 (defun nuke-all-buffers ()
+	"Kill all the buffers automatically"
   (interactive)
   (mapcar 'kill-buffer (buffer-list))
   (delete-other-windows))
@@ -128,6 +160,7 @@
 (global-set-key (kbd "C-x K") 'nuke-all-buffers)
 
 (defun get-openai-key ()
+	"Retrieve the OpenAI key from the .authinfo.gpg file"
   (let ((info (nth 0 (auth-source-search
                       :host "openai.com"
                       :require '(:user :secret)
@@ -140,18 +173,22 @@
       nil)))
 
 (defun set-openai-key ()
+	"Set the OpenAI API key for use in ChatGPT-shell"
 	(interactive)
 	(setq chatgpt-shell-openai-key (get-openai-key)))
 
+;; Interact with the OpenAI tooling
 (use-package chatgpt-shell
   :ensure t)
 
+;; Easily access a popup menu with all function names in the buffer
 (use-package imenu-list
   :ensure t
   :bind (("C-c i" . imenu-list-smart-toggle))
   :custom
   (imenu-list-focus-after-activation t))
 
+;; Change everything on multiple lines all at once
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
@@ -160,6 +197,8 @@
 	 ("C-c C-<" . mc/mark-all-like-this))
   )
 
+;; A tree view of projects, kind of like VSCode and other IDEs
+;; maybe delete?
 (use-package neotree
 	:ensure t
 	:init
@@ -187,10 +226,9 @@
           "^\\.\\(?:sync\\|export\\|attach\\)$"
           ;; temp files
           "~$"
-          "^#.*#$"))
+          "^#.*#$")))
 
-	)
-
+;; Automatically insert closing ) } ] etc. 
 (use-package smartparens
 	:ensure t
 	:hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
@@ -198,6 +236,7 @@
   ;; load default config
   (require 'smartparens-config))
 
+;; Snippets!
 (use-package yasnippet
 	:ensure t
 	:config
@@ -207,23 +246,30 @@
 
 (use-package org
 	:config
+	;; Enable code block execution for python
 	(org-babel-do-load-languages
 	 'org-babel-load-languages
 	 '((python . t)))
 
+	;; Export latex given these mappings
 	(with-eval-after-load 'ox-latex
-		;; Toevoeging van LaTeX book class zonder parts
 		(add-to-list 'org-latex-classes
 								 '("chapterbook"
 									 "\\documentclass{book}"
 									 ("\\chapter{%s}" . "\\chapter{%s}")
 									 ("\\section{%s}" . "\\section*{%s}")
 									 ("\\subsection{%s}" . "\\subsection*{%s}")
-									 ("\\paragraph{%s}" . "\\paragraph*{%s}"))))
+									 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+									 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+									 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+									 )))
   :custom
   (truncate-lines nil)
+	;; do not indent the text to the heading
 	(org-adapt-indentation nil)
+	;; but do show it as such, but really there are no indents
 	(org-startup-indented t)
+	;; indent text according to structure
   (org-indent-mode t)
   (org-directory "~/stack/roam-new/")
 	(org-attach-directory "~/stack/roam-new/.attach/")
@@ -234,9 +280,7 @@
            "/home/arjen/stack/Notebook/inbox.org"
 					 ))
 
-
-  ;; (org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
-  ;;                       ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
+	;; refile targets, 3 levels deep.
   (org-refile-targets
    '((nil :maxlevel . 3)
      (org-agenda-files :maxlevel . 3))
@@ -246,6 +290,7 @@
    ;; target! e.g. FILE/Tasks/heading/subheading
    org-refile-use-outline-path 'file
    org-outline-path-complete-in-steps nil)
+	;; ensure we open links in the same frame
 	(org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
      (vm-imap . vm-visit-imap-folder-other-frame)
@@ -282,17 +327,10 @@
   (org-link-set-parameters "attachment" :image-data-fun #'+org-inline-image-data-fn)
 	)
 
-;; (use-package org-plus-contrib
-;; 	:after org
-;; 	:ensure t
-;; 	:config
-;; 	;; ;; Ignore optie voor header exports
-;;   ;; (require 'ox-extra)
-;;   (ox-extras-activate '(ignore-headlines)))
-
 (use-package org-roam
       :ensure t
       :custom
+			;; show tags in org-roam finder
 			(org-roam-node-display-template "${title:*} ${tags:50}")
       (org-roam-directory (file-truename "~/stack/roam-new/"))
       (org-roam-complete-everywhere t)
@@ -538,11 +576,6 @@
   (org-cite-activate-processor 'citar)
 	(citar-indicators (list citar-indicator-files citar-indicator-notes))
   )
-
-;; (use-package citar-org
-;; 	:after citar org-cite
-;; 	:custom
-;; )
 	
 (use-package citar-org-roam
   :ensure t
@@ -567,11 +600,13 @@
   (company-bibtex-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib")))
 
 (use-package pdf-tools
-  :ensure t)
+  :ensure t
+	:config
+	(pdf-loader-install))
 
 ;; -- COMPLETION --
 
-;; Enable vertico
+;; Enable vertico for completion
 (use-package vertico
   :ensure t
   :init
@@ -608,14 +643,7 @@
   :init
   (savehist-mode))
 
-(use-package marginalia
-  :after vertico
-  :ensure t
-  :custom
-  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-  :init
-  (marginalia-mode))
-
+;; recent files list
 (use-package recentf
   :custom
   (recentf-max-saved-items 200)
@@ -676,18 +704,23 @@
   :config
   (global-company-mode))
 
+;; Enable the use of direnv for local directory instructions
 (use-package envrc
   :ensure t
   :config
   (envrc-global-mode))
 
+;; string package needed for magit
 (use-package s
   :ensure t)
 
+;; Git in Emacs, yay
 (use-package magit
   :ensure t
+	:after s
   :bind (("C-c m" . magit-status)))
 
+;; Show changes to the buffer in the frings
 (use-package git-gutter-fringe+
 	:ensure t
 	:hook
@@ -695,10 +728,12 @@
 	 (org-mode . git-gutter+-mode))
 	)
 
+;; LSP for Emacs, lightweight
 (use-package eglot
 	:bind (:map prog-mode-map
 				 ("C-c e a" . eglot-code-actions)))
 
+;; Program in golang
 (use-package go-mode
   :ensure t
   :bind (("C-c d" . flymake-show-buffer-diagnostics))
@@ -706,6 +741,7 @@
   (go-mode . eglot-ensure)
   )
 
+;; Enable formatting on save automatically
 (use-package format-all
   :ensure t
   :commands format-all-mode
@@ -737,7 +773,7 @@
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(doomsnippets doom-snippets smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
@@ -752,6 +788,7 @@
  ;; If there is more than one, they won't work right.
  )
 
+;; My personal config
 (let ((filename "~/.config/personal-emacs/personal.el"))
 	(if (file-exists-p filename)
 			(progn
