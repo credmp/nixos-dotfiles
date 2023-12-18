@@ -114,6 +114,21 @@
 
 ;; -- Utilities ---
 
+;; Use modal editing with vi based editing facilities
+(use-package evil
+	:ensure t
+	:config
+	(evil-mode 1))
+
+(use-package better-jumper
+	:ensure t
+	:after evil
+	:config
+	(better-jumper-mode +1)
+	(with-eval-after-load 'evil-maps
+		(define-key evil-motion-state-map (kbd "C-o") 'better-jumper-jump-backward)
+		(define-key evil-motion-state-map (kbd "C-M-o") 'better-jumper-jump-forward)))
+
 ;; Help discover new key combinations while you are almost there already
 (use-package which-key
   :ensure t
@@ -196,37 +211,6 @@
 	 ("C-<" . mc/mark-previous-like-this)
 	 ("C-c C-<" . mc/mark-all-like-this))
   )
-
-;; A tree view of projects, kind of like VSCode and other IDEs
-;; maybe delete?
-(use-package neotree
-	:ensure t
-	:init
-  (setq neo-create-file-auto-open nil
-        neo-auto-indent-point nil
-        neo-autorefresh nil
-        neo-mode-line-type 'none
-        neo-window-width 30
-        neo-show-updir-line nil
-        neo-theme 'icons
-        neo-banner-message nil
-        neo-confirm-create-file #'off-p
-        neo-confirm-create-directory #'off-p
-        neo-show-hidden-files nil
-        neo-keymap-style 'concise
-        neo-show-hidden-files t
-        neo-hidden-regexp-list
-        '(;; vcs folders
-          "^\\.\\(?:git\\|hg\\|svn\\)$"
-          ;; compiled files
-          "\\.\\(?:pyc\\|o\\|elc\\|lock\\|css.map\\|class\\)$"
-          ;; generated files, caches or local pkgs
-          "^\\(?:node_modules\\|vendor\\|.\\(project\\|cask\\|yardoc\\|sass-cache\\)\\)$"
-          ;; org-mode folders
-          "^\\.\\(?:sync\\|export\\|attach\\)$"
-          ;; temp files
-          "~$"
-          "^#.*#$")))
 
 ;; Automatically insert closing ) } ] etc. 
 (use-package smartparens
@@ -691,12 +675,14 @@
         completion-category-defaults nil
         completion-category-overrides '((file (styles partial-completion)))))
 
-
 ;; -- Programming --
 (dolist (hook '(prog-mode-hook))
   (add-hook hook (lambda ()
                    (display-line-numbers-mode 1)
                    )))
+
+(use-package devdocs
+	:ensure t)
 
 (use-package company
   :ensure t
@@ -773,7 +759,7 @@
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
