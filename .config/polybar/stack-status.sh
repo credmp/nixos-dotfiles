@@ -2,9 +2,9 @@
 
 stack=$(pgrep -a bwrap | grep stack | grep AppImage | wc -l)
 
-if [[ "$stack" == "2" ]]; then
-    echo "";
-    exit 0;
+if [[ $stack -ge 1 ]]; then
+	echo ""
+	exit 0
 fi
 
-echo "󰓨";
+echo "󰓨"

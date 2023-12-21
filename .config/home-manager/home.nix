@@ -36,6 +36,10 @@
     gnupg
     appimage-run # to run stack appimage
     polkit_gnome
+    spotify
+    mu
+    msmtp
+    isync
     # okular # my goto for presentations
     hunspell
     hunspellDicts.nl_NL
