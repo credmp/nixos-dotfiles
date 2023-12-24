@@ -129,6 +129,13 @@
 		(define-key evil-motion-state-map (kbd "C-o") 'better-jumper-jump-backward)
 		(define-key evil-motion-state-map (kbd "C-M-o") 'better-jumper-jump-forward)))
 
+(use-package evil-numbers
+	:ensure t
+	:after evil
+	:config
+	(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+	(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt))
+
 ;; Help discover new key combinations while you are almost there already
 (use-package which-key
   :ensure t
@@ -300,26 +307,68 @@
                             "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
                             :immediate-finish t :empty-lines 1)
                            ("e" "email" entry (file+headline "~/stack/Notebook/inbox.org" "Tasks from Email")
-                            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))	
+                            "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
   )
 
-(use-package org-attach
-	:config
-	(setq-default org-attach-id-dir (expand-file-name ".attach/" org-directory))
-	;; Add inline image previews for attachment links
-  (org-link-set-parameters "attachment" :image-data-fun #'+org-inline-image-data-fn)
-	)
+;; (let* ((variable-tuple
+;; 				(cond ((x-list-fonts "iMWritingQuatNerdFont")         '(:font "iMWritingQuatNerdFont"))
+;; 							((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+;; 							((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+;; 							((x-list-fonts "Verdana")         '(:font "Verdana"))
+;; 							((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+;; 							(nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+;; 			 ;;(base-font-color     (face-foreground 'default nil 'default))
+;; 			 ;;(headline           `(:inherit default :weight bold :foreground ,base-font-color))
+;; 			 )
+
+;;   (custom-theme-set-faces
+;;    'user
+;;    `(org-level-8 ((t ( ,@variable-tuple))))
+;;    `(org-level-7 ((t ( ,@variable-tuple))))
+;;    `(org-level-6 ((t ( ,@variable-tuple))))
+;;    `(org-level-5 ((t ( ,@variable-tuple))))
+;;    `(org-level-4 ((t ( ,@variable-tuple :height 1.1))))
+;;    `(org-level-3 ((t ( ,@variable-tuple :height 1.25))))
+;;    `(org-level-2 ((t ( ,@variable-tuple :height 1.5))))
+;;    `(org-level-1 ((t ( ,@variable-tuple :height 1.75))))
+;;    `(org-document-title ((t (,@variable-tuple :height 2.0 :underline nil))))))
+;; (custom-theme-set-faces
+;;  'user
+;;  '(variable-pitch ((t (:family "iMWritingQuatNerdFont" :height 160 :weight normal))))
+;;  '(fixed-pitch ((t ( :family "Fira Code Retina" :height 160)))))
+;;   (add-hook 'org-mode-hook 'variable-pitch-mode)
+;; (use-package org-attach
+;; 	:config
+;; 	(setq-default org-attach-id-dir (expand-file-name ".attach/" org-directory))
+;; 	;; Add inline image previews for attachment links
+;; 	(org-link-set-parameters "attachment" :image-data-fun #'+org-inline-image-data-fn)
+;; 	)
+
+;;   (custom-theme-set-faces
+;;    'user
+;;    '(org-block ((t (:inherit fixed-pitch))))
+;;    '(org-code ((t (:inherit (shadow fixed-pitch)))))
+;;    '(org-document-info ((t (:foreground "dark orange"))))
+;;    '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+;;    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+;;    '(org-link ((t (:foreground "royal blue" :underline t))))
+;;    '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;;    '(org-property-value ((t (:inherit fixed-pitch))) t)
+;;    '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+;;    '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+;;    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+;;    '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
 (use-package org-roam
-      :ensure t
-      :custom
-			;; show tags in org-roam finder
-			(org-roam-node-display-template "${title:*} ${tags:50}")
-      (org-roam-directory (file-truename "~/stack/roam-new/"))
-      (org-roam-complete-everywhere t)
-			(org-roam-dailies-capture-templates
-        '(("d" "default" entry "* TODO %?"
-           :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "# -*- ispell-dictionary: \"nl_NL\" -*-
+  :ensure t
+  :custom
+	;; show tags in org-roam finder
+	(org-roam-node-display-template "${title:*} ${tags:50}")
+  (org-roam-directory (file-truename "~/stack/roam-new/"))
+  (org-roam-complete-everywhere t)
+	(org-roam-dailies-capture-templates
+   '(("d" "default" entry "* TODO %?"
+      :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "# -*- ispell-dictionary: \"nl_NL\" -*-
 #+TITLE: %<%B %d, %Y>
 #+filetags: dailies
 
@@ -343,83 +392,83 @@
 
 * Captured items
 "))))
-      :bind (("C-c r l" . org-roam-buffer-toggle)
-             ("C-c r f" . org-roam-node-find)
-             ("C-c r g" . org-roam-graph)
-             ("C-c r i" . org-roam-node-insert)
-             ("C-c r c" . org-roam-capture)
-             ;; Dailies
-             ("C-c r j" . org-roam-dailies-capture-today))
-      :config
-      (org-roam-setup)
-      ;; If using org-roam-protocol
-      (require 'org-roam-protocol)
+  :bind (("C-c r l" . org-roam-buffer-toggle)
+         ("C-c r f" . org-roam-node-find)
+         ("C-c r g" . org-roam-graph)
+         ("C-c r i" . org-roam-node-insert)
+         ("C-c r c" . org-roam-capture)
+         ;; Dailies
+         ("C-c r j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-setup)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol)
 
-      ;; (cl-defmethod org-roam-node-type ((node org-roam-node))
-      ;;   "Return the TYPE of NODE."
-      ;;   (condition-case nil
-      ;;       (file-name-nondirectory
-      ;;        (directory-file-name
-      ;;         (file-name-directory
-      ;;          (file-relative-name (org-roam-node-file node) org-roam-directory))))
-      ;; (error "")))
-      :config
-      (setq org-roam-capture-templates
-            '(("m"
-               "main" plain
-               "%?"
-               :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-				  "#+title: ${title}\n")
-               :immediate-finish t
-               :unnarrowed t)
-              ("c"
-               "comics" plain "%?"
-               :if-new
-               (file+head "comics/%<%Y%m%d%H%M%S>-${slug}.org"
-			  "#+title: ${title}\n#+filetags: :area:comics:\n")
-               :unnarrowed t)
-              ("p"
-               "papers" plain "%?"
-               :if-new
-               (file+head "papers/%<%Y%m%d%H%M%S>-${citar-citekey}-${citar-date}.org"
-			  "#+title: ${citar-citekey} (${citar-date}). ${note-title}.\n#+created: %U\n#+last_modified: %U\n#+filetags: :paper:bib:\n\n\n")
-               :unnarrowed t)
-              ("h"
-               "home" plain "%?"
-               :if-new
-               (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org"
-			  "#+title: ${title}\n#+filetags: :home:\n")
-               :unnarrowed t)
-              ("n"
-               "novi" plain "%?"
-               :if-new
-               (file+head "novi/%<%Y%m%d%H%M%S>-${slug}.org"
-			  "#+title: ${title}\n#+filetags: :novi:\n")
-               :immediate-finish t
-               :unnarrowed t)
-              ("s"
-               "security" plain "* Background %?\n\n* Examples\n\n\n* References\n\n"
-               :if-new
-               (file+head "security/%<%Y%m%d%H%M%S>-${slug}.org"
-			  "#+title: ${title}\n#+filetags: :security:\n")
-               :immediate-finish t
-               :unnarrowed t)
-              ("t"
-               "thesis" plain "%?"
-               :if-new
-               (file+head "thesis/%<%Y%m%d%H%M%S>-${slug}.org"
-			  "#+title: ${title}\n#+filetags: :thesis:\n")
-               :immediate-finish nil
-               :unnarrowed t)
-              ("o"
-               "OU Study Notes" plain "%?"
-               :if-new
-               (file+head "study/%<%Y%m%d%H%M%S>-${slug}.org"
-			  "#+title: ${title}\n#+filetags: :study:\n")
-               :immediate-finish nil
-               :unnarrowed t)))      
-      (setq org-roam-capture-ref-templates '(("r"
-                                              "ref" plain "* Notes
+  ;; (cl-defmethod org-roam-node-type ((node org-roam-node))
+  ;;   "Return the TYPE of NODE."
+  ;;   (condition-case nil
+  ;;       (file-name-nondirectory
+  ;;        (directory-file-name
+  ;;         (file-name-directory
+  ;;          (file-relative-name (org-roam-node-file node) org-roam-directory))))
+  ;; (error "")))
+  :config
+  (setq org-roam-capture-templates
+        '(("m"
+           "main" plain
+           "%?"
+           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
+															"#+title: ${title}\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("c"
+           "comics" plain "%?"
+           :if-new
+           (file+head "comics/%<%Y%m%d%H%M%S>-${slug}.org"
+											"#+title: ${title}\n#+filetags: :area:comics:\n")
+           :unnarrowed t)
+          ("p"
+           "papers" plain "%?"
+           :if-new
+           (file+head "papers/%<%Y%m%d%H%M%S>-${citar-citekey}-${citar-date}.org"
+											"#+title: ${citar-citekey} (${citar-date}). ${note-title}.\n#+created: %U\n#+last_modified: %U\n#+filetags: :paper:bib:\n\n\n")
+           :unnarrowed t)
+          ("h"
+           "home" plain "%?"
+           :if-new
+           (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org"
+											"#+title: ${title}\n#+filetags: :home:\n")
+           :unnarrowed t)
+          ("n"
+           "novi" plain "%?"
+           :if-new
+           (file+head "novi/%<%Y%m%d%H%M%S>-${slug}.org"
+											"#+title: ${title}\n#+filetags: :novi:\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("s"
+           "security" plain "* Background %?\n\n* Examples\n\n\n* References\n\n"
+           :if-new
+           (file+head "security/%<%Y%m%d%H%M%S>-${slug}.org"
+											"#+title: ${title}\n#+filetags: :security:\n")
+           :immediate-finish t
+           :unnarrowed t)
+          ("t"
+           "thesis" plain "%?"
+           :if-new
+           (file+head "thesis/%<%Y%m%d%H%M%S>-${slug}.org"
+											"#+title: ${title}\n#+filetags: :thesis:\n")
+           :immediate-finish nil
+           :unnarrowed t)
+          ("o"
+           "OU Study Notes" plain "%?"
+           :if-new
+           (file+head "study/%<%Y%m%d%H%M%S>-${slug}.org"
+											"#+title: ${title}\n#+filetags: :study:\n")
+           :immediate-finish nil
+           :unnarrowed t)))      
+  (setq org-roam-capture-ref-templates '(("r"
+                                          "ref" plain "* Notes
 
 - ${body}%?
 
@@ -434,15 +483,15 @@
 
 * Summary
 "
-                                              :if-new
-                                              (file+head "links/${slug}.org"
-							 "#+title: ${title}\n#+filetags: :reading:notstarted:\n")
-                                              :unnarrowed t)
-                                             ("c"
-                                              "collection" entry "** ${title}\n:PROPERTIES:\n:ID: %(org-id-uuid)\n:ROAM_REFS: ${ref}\n:END:"
-                                              :target (file+olp "links/collection.org" ("Inbox"))
-                                              :unnarrowed t)))
-      )
+                                          :if-new
+                                          (file+head "links/${slug}.org"
+																										 "#+title: ${title}\n#+filetags: :reading:notstarted:\n")
+                                          :unnarrowed t)
+                                         ("c"
+                                          "collection" entry "** ${title}\n:PROPERTIES:\n:ID: %(org-id-uuid)\n:ROAM_REFS: ${ref}\n:END:"
+                                          :target (file+olp "links/collection.org" ("Inbox"))
+                                          :unnarrowed t)))
+  )
 
 (use-package org-roam-ui
   :ensure t)
@@ -548,7 +597,7 @@
   (org-cite-activate-processor 'citar)
 	(citar-indicators (list citar-indicator-files citar-indicator-notes))
   )
-	
+
 (use-package citar-org-roam
   :ensure t
   :after citar org-roam
@@ -705,9 +754,43 @@
 ;; LSP for Emacs, lightweight
 (use-package eglot
 	:bind (:map prog-mode-map
-				 ("C-c e a" . eglot-code-actions)))
+							("C-c e a" . eglot-code-actions)))
 
 ;; Program in golang
+
+(use-package treesit
+	:custom
+	(treesit-font-lock-level 4)
+	:config
+	(setq treesit-language-source-alist
+				'((bash "https://github.com/tree-sitter/tree-sitter-bash")
+					(cmake "https://github.com/uyha/tree-sitter-cmake")
+					(css "https://github.com/tree-sitter/tree-sitter-css")
+					(elisp "https://github.com/Wilfred/tree-sitter-elisp")
+					(go "https://github.com/tree-sitter/tree-sitter-go")
+					(go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
+					(html "https://github.com/tree-sitter/tree-sitter-html")
+					(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+					(json "https://github.com/tree-sitter/tree-sitter-json")
+					(make "https://github.com/alemuller/tree-sitter-make")
+					(markdown "https://github.com/ikatyang/tree-sitter-markdown")
+					(python "https://github.com/tree-sitter/tree-sitter-python")
+					(toml "https://github.com/tree-sitter/tree-sitter-toml")
+					(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+					(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+					(yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+	(setq major-mode-remap-alist
+				'((yaml-mode . yaml-ts-mode)
+					(bash-mode . bash-ts-mode)
+					(js2-mode . js-ts-mode)
+					(typescript-mode . typescript-ts-mode)
+					(json-mode . json-ts-mode)
+					(css-mode . css-ts-mode)
+					(go-mode . go-ts-mode)
+					(python-mode . python-ts-mode)))
+	)
+
 (use-package go-mode
   :ensure t
   :bind (("C-c d" . flymake-show-buffer-diagnostics))
@@ -747,14 +830,16 @@
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(org-msg devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
 		 (lsp-ltex-language . nl-NL)
 		 (ispell-dictionary . "nl")
 		 (lsp-ltex-language . "nl-NL")
-		 (ispell-dictionary . "nl_NL"))))
+		 (ispell-dictionary . "nl_NL")))
+ '(treesit-font-lock-level 4 nil nil "Customized with use-package treesit")
+ '(warning-suppress-log-types '((comp))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -766,4 +851,5 @@
 (let ((filename "~/.config/personal-emacs/personal.el"))
 	(if (file-exists-p filename)
 			(progn
-			 (load filename))))
+				(load filename))))
+
