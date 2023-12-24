@@ -272,8 +272,7 @@
    ;; each outline candidates. i.e. all the candidates under the "Tasks" heading
    ;; are just "Tasks/". This is unhelpful. We want the full path to each refile
    ;; target! e.g. FILE/Tasks/heading/subheading
-   org-refile-use-outline-path 'file
-   org-outline-path-complete-in-steps nil)
+   org-refile-use-outline-path 'file)
 	;; ensure we open links in the same frame
 	(org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
