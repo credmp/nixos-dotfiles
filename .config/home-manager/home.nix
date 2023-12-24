@@ -67,6 +67,7 @@
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
+    emacsPackages.mu4e
     inter
     # shell
     fzf
