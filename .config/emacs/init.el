@@ -40,7 +40,6 @@
 (use-package emacs
   :config
   (set-face-attribute 'default nil :font "JetbrainsMono Nerd Font-16")
-	(set-face-attribute 'variable-pitch nil :font "iMWritingQuat Nerd Font Propo")
 	;; kill unmodified buffers without warning
 	(global-set-key [(control x) (k)] 'kill-this-buffer)
 	;; Do not blink the cursor
@@ -237,8 +236,6 @@
 ;; -- org-mode --
 
 (use-package org
-	:hook
-	(org-mode . variable-pitch-mode)
 	:config
 	;; Enable code block execution for python
 	(org-babel-do-load-languages
@@ -851,9 +848,4 @@
 			(progn
 				(load filename))))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-verbatim ((t (:family "iMWritingMonoNerdFont" :weight bold :inherit org-quote)))))
+
