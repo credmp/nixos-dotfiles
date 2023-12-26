@@ -264,12 +264,13 @@
   (org-indent-mode t)
   (org-directory "~/stack/roam-new/")
 	(org-attach-directory "~/stack/roam-new/.attach/")
-  (org-agenda-files
-         '("/home/arjen/stack/roam-new/20231008105247-planning.org"
-           "/home/arjen/stack/roam-new/📥 Inbox.org"
-           "/home/arjen/stack/roam-new/20231008105710-tickler.org"
-           "/home/arjen/stack/Notebook/inbox.org"
-					 ))
+	(org-agenda-files #'(vulpea-project-files))
+  ;; (org-agenda-files
+  ;;        '("/home/arjen/stack/roam-new/20231008105247-planning.org"
+  ;;          "/home/arjen/stack/roam-new/📥 Inbox.org"
+  ;;          "/home/arjen/stack/roam-new/20231008105710-tickler.org"
+  ;;          "/home/arjen/stack/Notebook/inbox.org"
+	;; 				 ))
 
 	;; refile targets, 3 levels deep.
   (org-refile-targets
@@ -293,10 +294,10 @@
 	(org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/Notebook/notes.org" "Personal" "Series")
                             "* %?\n%T" :prepend t)
                            ("t" "todo" entry
-                            (file+headline "~/stack/Notebook/inbox.org" "Tasks")
+														(file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
                            ("T" "Tickler" entry
-                            (file+headline "~/stack/Notebook/tickler.org" "Tickler")
+														(file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                             "* %i%? \n %U")
                            ("w" "Web site" entry
                             (file "")
@@ -306,7 +307,7 @@
                                            "Links to read later")
                             "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
                             :immediate-finish t :empty-lines 1)
-                           ("e" "email" entry (file+headline "~/stack/Notebook/inbox.org" "Tasks from Email")
+                           ("e" "email" entry (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
   )
 
@@ -361,6 +362,7 @@
 
 (use-package org-roam
   :ensure t
+	:after vulpea
   :custom
 	;; show tags in org-roam finder
 	(org-roam-node-display-template "${title:*} ${tags:50}")
@@ -393,6 +395,7 @@
 * Captured items
 "))))
   :bind (("C-c r l" . org-roam-buffer-toggle)
+				 ("C-c r d" . org-roam-dailies-goto-today)
          ("C-c r f" . org-roam-node-find)
          ("C-c r g" . org-roam-graph)
          ("C-c r i" . org-roam-node-insert)
@@ -491,7 +494,108 @@
                                           "collection" entry "** ${title}\n:PROPERTIES:\n:ID: %(org-id-uuid)\n:ROAM_REFS: ${ref}\n:END:"
                                           :target (file+olp "links/collection.org" ("Inbox"))
                                           :unnarrowed t)))
-  )
+
+	;; I love using org-roam, it helps me structure thoughts and ideas.
+	;; Up to now I had my agenda files outside of org-roam, but that disconnects
+	;; projects, notes and planning. Using a write-up by Boris Buliga I was able
+	;; to use my org-agenda together with org-roam. Below are the functions
+	;; required to make this happen.
+	
+	;; Using org-roam as an efficient Org-Agenda system 
+	;; https://d12frosted.io/posts/2020-06-24-task-management-with-roam-vol2.html
+	(defun aw/has-todo-items-p ()
+		"Return non-nil if current buffer has any todo entry.
+
+TODO entries marked as done are ignored, meaning the this
+function returns nil if current buffer contains only completed
+tasks."
+		(org-element-map                          ; (2)
+				(org-element-parse-buffer 'headline) ; (1)
+				'headline
+			(lambda (h)
+				(eq (org-element-property :todo-type h)
+						'todo))
+			nil 'first-match))                     ; (3)
+
+	(add-hook 'find-file-hook #'vulpea-project-update-tag)
+	(add-hook 'before-save-hook #'vulpea-project-update-tag)
+
+	(defun vulpea-project-update-tag ()
+    "Update PROJECT tag in the current buffer."
+    (when (and (not (active-minibuffer-window))
+               (org-roam-buffer-p))
+      (save-excursion
+        (goto-char (point-min))
+        (let* ((tags (vulpea-buffer-tags-get))
+               (original-tags tags))
+          (if (aw/has-todo-items-p)
+              (setq tags (cons "planner" tags))
+            (setq tags (remove "planner" tags)))
+
+          ;; cleanup duplicates
+          (setq tags (seq-uniq tags))
+
+          ;; update tags if changed
+          (when (or (seq-difference tags original-tags)
+                    (seq-difference original-tags tags))
+            (apply #'vulpea-buffer-tags-set tags))))))
+
+	(defun vulpea-project-files ()
+		"Return a list of note files containing 'planner' tag." ;
+		(seq-uniq
+		 (seq-map
+			#'car
+			(org-roam-db-query
+			 [:select [nodes:file]
+								:from tags
+								:left-join nodes
+								:on (= tags:node-id nodes:id)
+								:where (like tag (quote "%\"planner\"%"))]))))
+
+	(defun vulpea-agenda-files-update (&rest _)
+		"Update the value of `org-agenda-files'."
+		(setq org-agenda-files (vulpea-project-files)))
+
+	(advice-add 'org-agenda :before #'vulpea-agenda-files-update)
+	(advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
+
+	(setq org-agenda-prefix-format
+				'((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")
+					(todo . " %i %-12(vulpea-agenda-category) ")
+					(tags . " %i %-12(vulpea-agenda-category) ")
+					(search . " %i %-12(vulpea-agenda-category) ")))
+
+	(defun vulpea-agenda-category ()
+		"Get category of item at point for agenda.
+
+Category is defined by one of the following items:
+
+- CATEGORY property
+- TITLE keyword
+- TITLE property
+- filename without directory and extension
+
+Usage example:
+
+  (setq org-agenda-prefix-format
+        '((agenda . \" %(vulpea-agenda-category) %?-12t %12s\")))
+
+Refer to `org-agenda-prefix-format' for more information."
+		(let* ((file-name (when buffer-file-name
+												(file-name-sans-extension
+												 (file-name-nondirectory buffer-file-name))))
+					 (title (vulpea-buffer-prop-get "title"))
+					 (category (org-get-category)))
+			(or (if (and
+							 title
+							 (string-equal category file-name))
+							title
+						category)
+					"")))
+	)
+
+(use-package vulpea
+	:ensure t)
 
 (use-package org-roam-ui
   :ensure t)
