@@ -120,6 +120,11 @@
 	:config
 	(evil-mode 1))
 
+(use-package evil-commentary
+	:ensure t
+	:config
+	(evil-commentary-mode))
+
 (use-package better-jumper
 	:ensure t
 	:after evil
@@ -935,9 +940,8 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
- '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
@@ -945,7 +949,6 @@ Refer to `org-agenda-prefix-format' for more information."
 		 (ispell-dictionary . "nl")
 		 (lsp-ltex-language . "nl-NL")
 		 (ispell-dictionary . "nl_NL")))
- '(treesit-font-lock-level 4 nil nil "Customized with use-package treesit")
  '(warning-suppress-log-types '((comp))))
 
 
@@ -956,3 +959,9 @@ Refer to `org-agenda-prefix-format' for more information."
 				(load filename))))
 
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
