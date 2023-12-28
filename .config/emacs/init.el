@@ -246,7 +246,10 @@
 	(org-babel-do-load-languages
 	 'org-babel-load-languages
 	 '((python . t)))
-
+	(setq org-src-fontify-natively t
+				org-export-latex-listings t
+				org-latex-listings 'listings
+				org-latex-prefer-user-labels t)
 	;; Export latex given these mappings
 	(with-eval-after-load 'ox-latex
 		(add-to-list 'org-latex-classes
@@ -409,6 +412,7 @@
          ("C-c r j" . org-roam-dailies-capture-today))
   :config
   (org-roam-setup)
+	(require 'org-roam-protocol)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol)
 
@@ -965,3 +969,9 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+(add-to-list 'load-path "/home/arjen/.config/emacs/rascal-emacs-mode")
+(setq auto-mode-alist
+  (cons '("\\.rsc" . rascal-mode) auto-mode-alist))
+(autoload 'rascal-mode "rascal-mode-cc"
+  "mode for editing Rascal source files" t)
