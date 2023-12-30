@@ -89,7 +89,8 @@
     # tmux-yank dependency
     xsel
     xclip
-    # Office
+    # Office and art
+    krita
     libreoffice
     xournalpp
     (makeDesktopItem {
