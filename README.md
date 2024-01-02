@@ -35,11 +35,55 @@ You can then use the `dotfiles` command as if it is `git`.
 
 ## Restore on another computer
 
+Make sure git is available in the shell.
+
 ``` shell
-git clone --bare https://github.com/USERNAME/dotfiles.git $HOME/.dotfiles
-# Make sure you have the alias setup
+nix-shell -p git
+```
+
+Create the dotfiles alias.
+
+``` shell
+alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+```
+
+Clone the configuration repository to this machine into the .dotfiles directory.
+
+``` shell
+git clone --bare https://github.com/credmp/nixos-dotfiles.git $HOME/.dotfiles
+```
+
+Then checkout the files, this will take them from the cloned repository to the required places, such as `~/.config/home-manager/home.nix`.
+
+``` shell
 dotfiles checkout
 ```
+
+Install home-manager, matching the current release version. I use the channels method as an installation mechanism.
+
+``` shell
+sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager
+```
+
+Update the channels, so that all the indexes are up to date.
+
+``` shell
+sudo nix-channel --update
+```
+
+Then install using `nix-shell`.
+
+``` shell
+sudo nix-shell '<home-manager>' -A install
+```
+
+finally, run `home-manager switch` to get the environment up and running.
+
+``` shell
+home-manager switch
+```
+
+The base configuration of my system is in the `shared.nix` file. From your `configuration.nix` import it, and then run `sudo nixos-rebuild switch`. Make sure you remove duplicate lines from your original `configuration.nix` file.
 
 ## Stackstorage
 

@@ -242,6 +242,7 @@
 
 (use-package org
 	:config
+	(setq org-use-property-inheritance t)
 	;; Enable code block execution for python
 	(org-babel-do-load-languages
 	 'org-babel-load-languages
@@ -318,6 +319,11 @@
                            ("e" "email" entry (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
   )
+
+(use-package org-download
+	:ensure t
+	:config
+	(setq org-download-method 'attach))
 
 ;; (let* ((variable-tuple
 ;; 				(cond ((x-list-fonts "iMWritingQuatNerdFont")         '(:font "iMWritingQuatNerdFont"))
@@ -944,8 +950,9 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
+ '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(vulpea evil-commentary devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
