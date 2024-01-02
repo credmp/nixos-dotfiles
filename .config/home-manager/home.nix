@@ -72,6 +72,7 @@
     # shell
     fzf
     bat
+    lsd
     termdown
     # sound and display 
     pavucontrol
@@ -141,6 +142,8 @@
     shellAliases = {
       dotfiles="/home/$USER/.nix-profile/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME";
       createdirenv="nix --extra-experimental-features \"nix-command flakes\" flake new -t github:nix-community/nix-direnv .";
+      ls="lsd";
+      cat="bat";
     };
     plugins = [
       {
