@@ -39,7 +39,6 @@
 ;; Set the basic look and feel and behavioral settings
 (use-package emacs
   :config
-  (set-face-attribute 'default nil :font "JetbrainsMono Nerd Font-16")
 	;; kill unmodified buffers without warning
 	(global-set-key [(control x) (k)] 'kill-this-buffer)
 	;; Do not blink the cursor
@@ -968,16 +967,26 @@ Refer to `org-agenda-prefix-format' for more information."
 			(progn
 				(load filename))))
 
+;; see: https://emacs.stackexchange.com/questions/39359/tool-bar-in-emacsclient/39361#39361
+(defun my-frame-tweaks (&optional frame)
+  "My personal frame tweaks."
+  (unless frame
+    (setq frame (selected-frame)))
+  (when frame
+    (with-selected-frame frame
+      (when (display-graphic-p)
+        (tool-bar-mode -1))))
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+  (set-face-font 'default "JetbrainsMono Nerd Font-16"))
+
+;; For the case that the init file runs after the frame has been created
+;; Call of emacs without --daemon option.
+(my-frame-tweaks)
+;; For the case that the init file runs before the frame is created.
+;; Call of emacs with --daemon option.
+(add-hook 'after-make-frame-functions #'my-frame-tweaks t)
 
 (add-to-list 'load-path "/home/arjen/.config/emacs/rascal-emacs-mode")
-(setq auto-mode-alist
-  (cons '("\\.rsc" . rascal-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("\\.rsc" . rascal-mode) auto-mode-alist))
 (autoload 'rascal-mode "rascal-mode-cc"
   "mode for editing Rascal source files" t)
