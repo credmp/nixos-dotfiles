@@ -317,6 +317,10 @@
                             :immediate-finish t :empty-lines 1)
                            ("e" "email" entry (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
+
+  :bind (("C-c c" . org-capture)
+				 ("C-c a" . org-agenda)
+				 ("C-c s" . org-save-all-org-buffers))
   )
 
 (use-package org-download
