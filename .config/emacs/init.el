@@ -938,6 +938,13 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package nix-mode
   :ensure t)
 
+(use-package rustic
+	:ensure t
+	:custom
+	(rustic-lsp-client 'eglot)
+  :hook
+  (rustic-mode . eglot-ensure))
+
 ;; -- BLOGGING
 
 (use-package ox-hugo
@@ -958,7 +965,7 @@ Refer to `org-agenda-prefix-format' for more information."
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(eglot-java request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(racer rustic request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
@@ -987,7 +994,8 @@ Refer to `org-agenda-prefix-format' for more information."
 	(set-frame-parameter (selected-frame) 'alpha '(95 95))
 	(add-to-list 'default-frame-alist '(alpha 95 95))
 
-  (set-face-font 'default "JetbrainsMono Nerd Font-16"))
+  (set-face-font 'default "JetbrainsMono Nerd Font-16")
+	)
 
 ;; For the case that the init file runs after the frame has been created
 ;; Call of emacs without --daemon option.
@@ -995,6 +1003,7 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; For the case that the init file runs before the frame is created.
 ;; Call of emacs with --daemon option.
 (add-hook 'after-make-frame-functions #'my-frame-tweaks t)
+(add-hook 'server-after-make-frame-hook #'catppuccin-reload)
 
 (add-to-list 'load-path "/home/arjen/.config/emacs/rascal-emacs-mode")
 (setq auto-mode-alist (cons '("\\.rsc" . rascal-mode) auto-mode-alist))
