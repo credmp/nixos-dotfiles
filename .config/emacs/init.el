@@ -76,6 +76,7 @@
 (use-package catppuccin-theme
   :ensure t
   :config
+	(setq catppuccin-flavor 'mocha)
   (load-theme 'catppuccin t))
 
 ;; The mode-line from doom is killer, load it
