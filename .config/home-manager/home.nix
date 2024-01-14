@@ -63,6 +63,7 @@
     catppuccin-gtk
     gnome.gnome-themes-extra
     gnome.nautilus
+    ranger
     evince
     # fonts
     nerdfonts
