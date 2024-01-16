@@ -846,7 +846,7 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package company
   :ensure t
-  :bind (("C-c /". company-complete))
+  :bind (("C-SPC". company-complete))
 	:custom
 	(company-idle-delay 10)
 	(company-tooltip-idle-delay 10)
@@ -946,6 +946,7 @@ Refer to `org-agenda-prefix-format' for more information."
   :hook
   (rustic-mode . eglot-ensure))
 
+(global-eldoc-mode -1)
 ;; -- BLOGGING
 
 (use-package ox-hugo
