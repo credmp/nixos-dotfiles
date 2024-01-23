@@ -880,7 +880,16 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; LSP for Emacs, lightweight
 (use-package eglot
 	:bind (:map prog-mode-map
-							("C-c e a" . eglot-code-actions)))
+							("C-c e a" . eglot-code-actions))
+	:hook
+	((eglot-managed-mode .(lambda ()
+													;; we want eglot to setup callbacks from eldoc, but we don't want eldoc
+													;; running after every command. As a workaround, we disable it after we just
+													;; enabled it. Now calling `M-x eldoc` will put the help we want in the eldoc
+													;; buffer. Alternatively we could tell eglot to stay out of eldoc, and add
+													;; the hooks manually, but that seems fragile to updates in eglot.
+													(eldoc-mode -1))))
+	)
 
 (use-package eglot-java
 	:ensure t)
