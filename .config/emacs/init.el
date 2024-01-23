@@ -29,8 +29,13 @@
 ;; Make the init-directory easily accessible as a variable
 (setq init-directory (file-name-directory user-init-file))
 
+;; Make emacs upgrade built-in packages
+(setq package-install-upgrade-built-in t)
+
+;; setup performance tricks for LSP
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
+
 ;; -- LOOK AND FEEL --
 
 ;; Do away with all the unnecessary GUI stuff
