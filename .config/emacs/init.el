@@ -29,6 +29,8 @@
 ;; Make the init-directory easily accessible as a variable
 (setq init-directory (file-name-directory user-init-file))
 
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024))
 ;; -- LOOK AND FEEL --
 
 ;; Do away with all the unnecessary GUI stuff
@@ -877,22 +879,34 @@ Refer to `org-agenda-prefix-format' for more information."
 	 (org-mode . git-gutter+-mode))
 	)
 
-;; LSP for Emacs, lightweight
-(use-package eglot
-	:bind (:map prog-mode-map
-							("C-c e a" . eglot-code-actions))
-	:hook
-	((eglot-managed-mode .(lambda ()
-													;; we want eglot to setup callbacks from eldoc, but we don't want eldoc
-													;; running after every command. As a workaround, we disable it after we just
-													;; enabled it. Now calling `M-x eldoc` will put the help we want in the eldoc
-													;; buffer. Alternatively we could tell eglot to stay out of eldoc, and add
-													;; the hooks manually, but that seems fragile to updates in eglot.
-													(eldoc-mode -1))))
-	)
 
-(use-package eglot-java
-	:ensure t)
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l"
+				lsp-inlay-hint-enable t)
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (rustic-mode . lsp)
+         (go-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
+
+;; optionally
+(use-package lsp-ui
+	:ensure t
+	:commands lsp-ui-mode)
+;; if you are helm user
+;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; if you are ivy user
+;; (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+;; (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+(use-package dap-mode
+	:ensure t
+	)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
 ;; Program in golang
 
@@ -932,8 +946,6 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package go-mode
   :ensure t
   :bind (("C-c d" . flymake-show-buffer-diagnostics))
-  :hook
-  (go-mode . eglot-ensure)
   )
 
 ;; Enable formatting on save automatically
@@ -949,11 +961,7 @@ Refer to `org-agenda-prefix-format' for more information."
   :ensure t)
 
 (use-package rustic
-	:ensure t
-	:custom
-	(rustic-lsp-client 'eglot)
-  :hook
-  (rustic-mode . eglot-ensure))
+	:ensure t)
 
 (global-eldoc-mode -1)
 ;; -- BLOGGING
@@ -976,7 +984,7 @@ Refer to `org-agenda-prefix-format' for more information."
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(racer rustic request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(lsp-ui dap-mode lsp-mode racer rustic request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
