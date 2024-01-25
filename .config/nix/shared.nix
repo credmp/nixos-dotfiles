@@ -7,7 +7,6 @@
 
 
   hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
 
   programs.dconf.enable = true;
   programs.zsh.enable = true;
@@ -24,14 +23,14 @@
   };
 
   virtualisation = {
-    podman = {
+    docker = {
  	    enable = true;
 
       # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
+      #dockerCompat = true;
 
       # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
+      #defaultNetwork.settings.dns_enabled = true;
     };
   };
   virtualisation.vmware.host.enable = true;
@@ -113,20 +112,13 @@
     #media-session.enable = true;
   };
 
-  programs.steam = {
-    enable = true;
-    #  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    #  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-  };
-
-  
   # I am me on all my systems
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.arjen = {
     isNormalUser = true;
     description = "Arjen Wiersma";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.zsh;
     packages = with pkgs; [
       alacritty
