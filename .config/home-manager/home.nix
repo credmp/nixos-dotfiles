@@ -65,6 +65,7 @@
     gnome.nautilus
     ranger
     evince
+    darkman
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
@@ -93,7 +94,7 @@
     # Office and art
     krita
     libreoffice
-    xournalpp
+    zathura
     (makeDesktopItem {
       name = "org-protocol";
       exec = "emacsclient -- %u";
@@ -187,6 +188,12 @@
   services.emacs = {
     enable = true;
     package = pkgs.emacs29; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+  };
+
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
   };
 
   fonts.fontconfig.enable = true;
