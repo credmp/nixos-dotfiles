@@ -394,7 +394,7 @@
   (org-roam-directory (file-truename "~/stack/roam-new/"))
   (org-roam-complete-everywhere t)
 	(org-roam-dailies-capture-templates
-   '(("d" "default" entry "* TODO %?"
+   '(("d" "default" entry "** TODO %?"
       :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "# -*- ispell-dictionary: \"nl_NL\" -*-
 #+TITLE: %<%B %d, %Y>
 #+filetags: dailies
