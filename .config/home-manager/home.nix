@@ -25,7 +25,7 @@
     # desktop apps
     firefox
     chromium
-    emacs29
+    emacs29-pgtk
     neovim
     ripgrep
     coreutils
@@ -66,6 +66,8 @@
     ranger
     evince
     darkman
+    xfce.xfconf
+    nextcloud-client
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
@@ -183,23 +185,49 @@
     OPENAI_API_KEY="$(cat ~/.config/openai/key)";
   };
 
-  services.picom = {
-    enable = true;
-    backend = "glx";
-    vSync = true;
-    shadow = false;
-  };
+  #services.picom = {
+  #  enable = true;
+  #  backend = "glx";
+  #  vSync = true;
+  #  shadow = false;
+  #};
 
   services.emacs = {
     enable = true;
     package = pkgs.emacs29; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-    };
-  };
+ #systemd.user = {
+ #  services = {
+ #    xfsettingsd = {
+ #      Unit = {
+ #        Description = "xfsettingsd";
+ #        After = [ "graphical-session-pre.target" ];
+ #        PartOf = [ "graphical-session.target" ];
+ #      };
+ #
+ #     Install.WantedBy = [ "graphical-session.target" ];
+ #
+  #     Service = {
+  #       Environment = "PATH=${config.home.profileDirectory}/bin";
+  #       ExecStart = "${pkgs.xfce.xfce4-settings}/bin/xfsettingsd";
+  #       Restart = "on-abort";
+  #     };
+  #   };
+  # };
+ #};
 
-  fonts.fontconfig.enable = true;
+ dconf.settings = {
+   "org/gnome/desktop/interface" = {
+     color-scheme = "prefer-dark";
+   };
+ };
+ #xsession.enable = true;
+
+ fonts.fontconfig.enable = true;
+
+ programs.zoxide = {
+   enable = true;
+   enableZshIntegration = true;
+ };
 }
