@@ -244,7 +244,8 @@ bindsym $mod+n exec thunar
 exec_always --no-startup-id nitrogen --restore;
 
 exec --no-startup-id flameshot
-exec --no-startup-id appimage-run /home/arjen/.local/bin/stack-linux-latest-x86_64.AppImage
+# exec --no-startup-id appimage-run /home/arjen/.local/bin/stack-linux-latest-x86_64.AppImage
+exec --no-startup-id nextcloud --background
 
 exec --no-startup-id /nix/store/$(ls -la /nix/store | grep 'polkit-gnome' | grep '4096' | awk '{print $9}' | sed -n '$p')/libexec/polkit-gnome-authentication-agent-1
 

@@ -185,44 +185,43 @@
     OPENAI_API_KEY="$(cat ~/.config/openai/key)";
   };
 
-  #services.picom = {
-  #  enable = true;
-  #  backend = "glx";
-  #  vSync = true;
-  #  shadow = false;
-  #};
+  services.picom = {
+   enable = true;
+   backend = "glx";
+   vSync = true;
+   shadow = false;
+  };
 
   services.emacs = {
     enable = true;
     package = pkgs.emacs29; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 
- #systemd.user = {
- #  services = {
- #    xfsettingsd = {
- #      Unit = {
- #        Description = "xfsettingsd";
- #        After = [ "graphical-session-pre.target" ];
- #        PartOf = [ "graphical-session.target" ];
- #      };
- #
- #     Install.WantedBy = [ "graphical-session.target" ];
- #
-  #     Service = {
-  #       Environment = "PATH=${config.home.profileDirectory}/bin";
-  #       ExecStart = "${pkgs.xfce.xfce4-settings}/bin/xfsettingsd";
-  #       Restart = "on-abort";
-  #     };
-  #   };
-  # };
- #};
+ systemd.user = {
+  services = {
+    xfsettingsd = {
+      Unit = {
+        Description = "xfsettingsd";
+        After = [ "graphical-session-pre.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+ 
+     Install.WantedBy = [ "graphical-session.target" ];
+ 
+      Service = {
+        Environment = "PATH=${config.home.profileDirectory}/bin";
+        ExecStart = "${pkgs.xfce.xfce4-settings}/bin/xfsettingsd";
+        Restart = "on-abort";
+      };
+    };
+  };
+ };
 
  dconf.settings = {
    "org/gnome/desktop/interface" = {
      color-scheme = "prefer-dark";
    };
  };
- #xsession.enable = true;
 
  fonts.fontconfig.enable = true;
 

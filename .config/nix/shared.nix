@@ -4,10 +4,6 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
   hardware.bluetooth.enable = true;
 
   programs.dconf.enable = true;
@@ -58,35 +54,35 @@
   };
 
   # Enable the X11 windowing system.
-  #services.xserver.enable = true;
+  # services.xserver.enable = true;
 
   # Enable the XFCE Desktop Environment.
-#  services.xserver.displayManager.lightdm.enable = true;
-#   services.xserver.desktopManager.xfce.enable = true;
+  #  services.xserver.displayManager.lightdm.enable = true;
+  #   services.xserver.desktopManager.xfce.enable = true;
   #   Enable the X11 windowing system.
 
-  #  services.xserver = {
-  #    enable = true;
+   services.xserver = {
+     enable = true;
 
-  #    wacom.enable = true;
-  #    desktopManager = {
-  #      xterm.enable = false;
-  #    };
+     wacom.enable = true;
+     desktopManager = {
+       xterm.enable = false;
+     };
    
-  #    displayManager = {
-  #      defaultSession = "none+i3";
-  #    };
+     displayManager = {
+       defaultSession = "none+i3";
+     };
 
-  #    windowManager.i3 = {
-  #      enable = true;
-  #      extraPackages = with pkgs; [
-  #        dmenu #application launcher most people use
-  #        i3status # gives you the default i3 status bar
-  #        i3lock #default i3 screen locker
-  #        i3blocks #if you are planning on using i3blocks over i3status
-  #      ];
-  #    };
-  # };
+     windowManager.i3 = {
+       enable = true;
+       extraPackages = with pkgs; [
+         dmenu #application launcher most people use
+         i3status # gives you the default i3 status bar
+         i3lock #default i3 screen locker
+         i3blocks #if you are planning on using i3blocks over i3status
+       ];
+     };
+  };
 
   # Configure keymap in X11
   services.xserver = {
