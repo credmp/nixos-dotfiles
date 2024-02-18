@@ -25,7 +25,7 @@
     # desktop apps
     firefox
     chromium
-    emacs29-pgtk
+    emacs29
     neovim
     ripgrep
     coreutils
@@ -68,6 +68,8 @@
     darkman
     xfce.xfconf
     nextcloud-client
+    notify-osd
+    dunst
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
