@@ -181,7 +181,7 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
+bindsym $mod+o mode "resize"
 
 # set primary catppuccin colorscheme colors
 set $bg #24273a
@@ -224,7 +224,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl s 10%-
 bindsym $mod+b exec firefox
 
 #nemo
-bindsym $mod+n exec thunar
+bindsym $mod+n exec nautilus
 
 #nitrogen
 exec_always --no-startup-id nitrogen --restore;

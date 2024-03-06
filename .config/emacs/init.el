@@ -121,33 +121,6 @@
 
 ;; -- Utilities ---
 
-;; Use modal editing with vi based editing facilities
-;; (use-package evil
-;; 	:ensure t
-;; 	:config
-;; 	(evil-mode 1))
-
-;; (use-package evil-commentary
-;; 	:ensure t
-;; 	:config
-;; 	(evil-commentary-mode))
-
-;; (use-package better-jumper
-;; 	:ensure t
-;; 	:after evil
-;; 	:config
-;; 	(better-jumper-mode +1)
-;; 	(with-eval-after-load 'evil-maps
-;; 		(define-key evil-motion-state-map (kbd "C-o") 'better-jumper-jump-backward)
-;; 		(define-key evil-motion-state-map (kbd "C-M-o") 'better-jumper-jump-forward)))
-
-;; (use-package evil-numbers
-;; 	:ensure t
-;; 	:after evil
-;; 	:config
-;; 	(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-;; 	(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt))
-
 ;; Help discover new key combinations while you are almost there already
 (use-package which-key
   :ensure t
@@ -645,7 +618,7 @@ Refer to `org-agenda-prefix-format' for more information."
 (defun my/present-start ()
 	(org-present-big)
 	(org-display-inline-images)
-	(evil-mode -1)
+	;; (evil-mode -1)
 	(org-present-hide-cursor)
 	(flyspell-mode-off)
 	(git-gutter+-mode -1)
@@ -654,7 +627,7 @@ Refer to `org-agenda-prefix-format' for more information."
 (defun my/present-end ()
 	(org-present-small)
 	(org-remove-inline-images)
-	(evil-mode t)
+	;; (evil-mode t)
 	(org-present-show-cursor)
 	(flyspell-mode)
 	(git-gutter+-mode 1)
@@ -845,6 +818,15 @@ Refer to `org-agenda-prefix-format' for more information."
         completion-category-overrides '((file (styles partial-completion)))))
 
 ;; -- Programming --
+(setq major-mode-remap-alist
+ '((yaml-mode . yaml-ts-mode)
+   (bash-mode . bash-ts-mode)
+   (json-mode . json-ts-mode)
+   (css-mode . css-ts-mode)
+   (python-mode . python-ts-mode)
+   (java-mode . java-ts-mode)
+	 ))
+
 (dolist (hook '(prog-mode-hook))
   (add-hook hook (lambda ()
                    (display-line-numbers-mode 1)
@@ -886,6 +868,13 @@ Refer to `org-agenda-prefix-format' for more information."
 	 (org-mode . git-gutter+-mode))
 	)
 
+(defun aw/cleanup-lsp ()
+  "Remove all the workspace folders from LSP"
+  (interactive)
+  (let ((folders (lsp-session-folders (lsp-session))))
+    (while folders
+      (lsp-workspace-folders-remove (car folders))
+      (setq folders (cdr folders)))))
 
 (use-package lsp-mode
   :init
@@ -895,6 +884,8 @@ Refer to `org-agenda-prefix-format' for more information."
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (rustic-mode . lsp)
          (go-mode . lsp)
+				 (java-ts-mode . lsp)
+				 (java-mode . lsp)				 
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
