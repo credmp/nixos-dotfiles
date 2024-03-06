@@ -46,18 +46,18 @@
 ;; Set the basic look and feel and behavioral settings
 (use-package emacs
   :config
-	;; kill unmodified buffers without warning
-	(global-set-key [(control x) (k)] 'kill-this-buffer)
-	;; Do not blink the cursor
-	(blink-cursor-mode -1)
+  ;; kill unmodified buffers without warning
+  (global-set-key [(control x) (k)] 'kill-this-buffer)
+  ;; Do not blink the cursor
+  (blink-cursor-mode -1)
 	
   :custom
-	;; y / n instead of yes / no
+  ;; y / n instead of yes / no
   (use-short-answers t)
-	;; do not show the startup screen
+  ;; do not show the startup screen
   (inhibit-startup-screen t)
-	;; do not indent too much
-  (tab-width 2)
+  ;; do not indent too much
+  (tab-width 4)
 	;; Use ^ instead of and
 	(global-prettify-symbols-mode 1)
 
@@ -122,31 +122,31 @@
 ;; -- Utilities ---
 
 ;; Use modal editing with vi based editing facilities
-(use-package evil
-	:ensure t
-	:config
-	(evil-mode 1))
+;; (use-package evil
+;; 	:ensure t
+;; 	:config
+;; 	(evil-mode 1))
 
-(use-package evil-commentary
-	:ensure t
-	:config
-	(evil-commentary-mode))
+;; (use-package evil-commentary
+;; 	:ensure t
+;; 	:config
+;; 	(evil-commentary-mode))
 
-(use-package better-jumper
-	:ensure t
-	:after evil
-	:config
-	(better-jumper-mode +1)
-	(with-eval-after-load 'evil-maps
-		(define-key evil-motion-state-map (kbd "C-o") 'better-jumper-jump-backward)
-		(define-key evil-motion-state-map (kbd "C-M-o") 'better-jumper-jump-forward)))
+;; (use-package better-jumper
+;; 	:ensure t
+;; 	:after evil
+;; 	:config
+;; 	(better-jumper-mode +1)
+;; 	(with-eval-after-load 'evil-maps
+;; 		(define-key evil-motion-state-map (kbd "C-o") 'better-jumper-jump-backward)
+;; 		(define-key evil-motion-state-map (kbd "C-M-o") 'better-jumper-jump-forward)))
 
-(use-package evil-numbers
-	:ensure t
-	:after evil
-	:config
-	(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
-	(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt))
+;; (use-package evil-numbers
+;; 	:ensure t
+;; 	:after evil
+;; 	:config
+;; 	(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+;; 	(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt))
 
 ;; Help discover new key combinations while you are almost there already
 (use-package which-key
@@ -855,7 +855,7 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package company
   :ensure t
-  :bind (("C-SPC". company-complete))
+  :bind (("C-c /". company-complete))
 	:custom
 	(company-idle-delay 10)
 	(company-tooltip-idle-delay 10)
@@ -891,13 +891,21 @@ Refer to `org-agenda-prefix-format' for more information."
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l"
-				lsp-inlay-hint-enable t)
+		lsp-inlay-hint-enable t)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (rustic-mode . lsp)
          (go-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
+
+(defun aw/cleanup-lsp ()
+  "Remove all the workspace folders from LSP"
+  (interactive)
+  (let ((folders (lsp-session-folders (lsp-session))))
+    (while folders
+      (lsp-workspace-folders-remove (car folders))
+      (setq folders (cdr folders)))))
 
 (use-package lsp-java
 	:ensure t
@@ -924,38 +932,42 @@ Refer to `org-agenda-prefix-format' for more information."
 
 ;; Program in golang
 
-;; (use-package treesit
-;; 	:custom
-;; 	(treesit-font-lock-level 4)
-;; 	:config
-;; 	(setq treesit-language-source-alist
-;; 				'((bash "https://github.com/tree-sitter/tree-sitter-bash")
-;; 					(cmake "https://github.com/uyha/tree-sitter-cmake")
-;; 					(css "https://github.com/tree-sitter/tree-sitter-css")
-;; 					(elisp "https://github.com/Wilfred/tree-sitter-elisp")
-;; 					(go "https://github.com/tree-sitter/tree-sitter-go")
-;; 					(go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
-;; 					(html "https://github.com/tree-sitter/tree-sitter-html")
-;; 					(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-;; 					(json "https://github.com/tree-sitter/tree-sitter-json")
-;; 					(make "https://github.com/alemuller/tree-sitter-make")
-;; 					(markdown "https://github.com/ikatyang/tree-sitter-markdown")
-;; 					(python "https://github.com/tree-sitter/tree-sitter-python")
-;; 					(toml "https://github.com/tree-sitter/tree-sitter-toml")
-;; 					(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-;; 					(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-;; 					(yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+(use-package treesit
+	:custom
+	(treesit-font-lock-level 4)
+	:config
+	(setq treesit-language-source-alist
+				'((bash "https://github.com/tree-sitter/tree-sitter-bash")
+					(cmake "https://github.com/uyha/tree-sitter-cmake")
+					(css "https://github.com/tree-sitter/tree-sitter-css")
+					(elisp "https://github.com/Wilfred/tree-sitter-elisp")
+					(go "https://github.com/tree-sitter/tree-sitter-go")
+					(go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
+					(html "https://github.com/tree-sitter/tree-sitter-html")
+					(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+					(json "https://github.com/tree-sitter/tree-sitter-json")
+					(make "https://github.com/alemuller/tree-sitter-make")
+					(markdown "https://github.com/ikatyang/tree-sitter-markdown")
+					(python "https://github.com/tree-sitter/tree-sitter-python")
+					(toml "https://github.com/tree-sitter/tree-sitter-toml")
+					(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+					(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+					(yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-;; 	(setq major-mode-remap-alist
-;; 				'((yaml-mode . yaml-ts-mode)
-;; 					(bash-mode . bash-ts-mode)
-;; 					(js2-mode . js-ts-mode)
-;; 					(typescript-mode . typescript-ts-mode)
-;; 					(json-mode . json-ts-mode)
-;; 					(css-mode . css-ts-mode)
-;; 					(go-mode . go-ts-mode)
-;; 					(python-mode . python-ts-mode)))
-;; 	)
+	(setq major-mode-remap-alist
+				'((yaml-mode . yaml-ts-mode)
+					(bash-mode . bash-ts-mode)
+					(js2-mode . js-ts-mode)
+					(typescript-mode . typescript-ts-mode)
+					(json-mode . json-ts-mode)
+					(css-mode . css-ts-mode)
+					(go-mode . go-ts-mode)
+					(java-mode . java-ts-mode)
+					(python-mode . python-ts-mode)))
+	)
+
+(use-package yaml-mode
+	:ensure t)
 
 (use-package go-mode
   :ensure t
@@ -968,7 +980,9 @@ Refer to `org-agenda-prefix-format' for more information."
   :commands format-all-mode
   :hook (prog-mode . format-all-mode)
   :config
-  (setq-default format-all-formatters '(("Go"     (goimports))))
+  (setq-default format-all-formatters '(("Go"     (goimports))
+																				("Java"   (astyle))
+																				("html"   (prettierd))))
   )
 
 (use-package nix-mode
@@ -981,6 +995,12 @@ Refer to `org-agenda-prefix-format' for more information."
 	:ensure t)
 
 (use-package dockerfile-mode
+	:ensure t)
+
+(use-package web-mode
+	:ensure t)
+
+(use-package emmet-mode
 	:ensure t)
 
 ;; -- BLOGGING
@@ -1003,7 +1023,7 @@ Refer to `org-agenda-prefix-format' for more information."
 	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(elfeed lsp-java dockerfile-mode terraform-mode lsp-ui dap-mode lsp-mode racer rustic request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+	 '(emmet-mode web-mode elfeed lsp-java dockerfile-mode terraform-mode lsp-ui dap-mode lsp-mode racer rustic request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
 	 '((flyspell-mode . 0)
 		 (lsp-ltex-language . "nl")
