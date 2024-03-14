@@ -47,6 +47,7 @@
     flameshot
     discord
     zotero
+    jetbrains.idea-ultimate
     #emote
     # direnv
     direnv

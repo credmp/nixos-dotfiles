@@ -50,7 +50,7 @@
   (global-set-key [(control x) (k)] 'kill-this-buffer)
   ;; Do not blink the cursor
   (blink-cursor-mode -1)
-	
+    
   :custom
   ;; y / n instead of yes / no
   (use-short-answers t)
@@ -58,19 +58,19 @@
   (inhibit-startup-screen t)
   ;; do not indent too much
   (tab-width 4)
-	;; Use ^ instead of and
-	(global-prettify-symbols-mode 1)
+    ;; Use ^ instead of and
+    (global-prettify-symbols-mode 1)
 
-	;; Set modifier keys, especially useful on mac
-	(mac-option-modifier 'none)
-	(mac-command-modifier 'meta)
-	(ns-function-modifier 'hyper)
+    ;; Set modifier keys, especially useful on mac
+    (mac-option-modifier 'none)
+    (mac-command-modifier 'meta)
+    (ns-function-modifier 'hyper)
 
-	;; Saves of files go into the .saves directory
-	(backup-directory-alist `(("." . "~/.saves")))
-	;; Use copying to make backups instead of writing and renaming
-	(backup-by-copying t)
-	)
+    ;; Saves of files go into the .saves directory
+    (backup-directory-alist `(("." . "~/.saves")))
+    ;; Use copying to make backups instead of writing and renaming
+    (backup-by-copying t)
+    )
 
 ;; http://stackoverflow.com/questions/11679700/emacs-disable-beep-when-trying-to-move-beyond-the-end-of-the-document
 (defun my-bell-function ())
@@ -83,7 +83,7 @@
 (use-package catppuccin-theme
   :ensure t
   :config
-	(setq catppuccin-flavor 'mocha)
+    (setq catppuccin-flavor 'mocha)
   (load-theme 'catppuccin t))
 
 ;; The mode-line from doom is killer, load it
@@ -114,12 +114,46 @@
 ;; Such as complextion commands
 (use-package nerd-icons-completion
   :ensure t
-	:after marginalia
+    :after marginalia
   :config
   (nerd-icons-completion-mode)
-	(add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
+    (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup))
 
 ;; -- Utilities ---
+
+;; Use modal editing with vi based editing facilities
+(use-package evil
+	:ensure t
+	:config
+	(evil-mode 1))
+
+(eval-after-load "evil"
+  '(progn
+     (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
+     (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
+     (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
+     (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)))
+
+(use-package evil-commentary
+	:ensure t
+	:config
+	(evil-commentary-mode))
+
+(use-package better-jumper
+	:ensure t
+	:after evil
+	:config
+	(better-jumper-mode +1)
+	(with-eval-after-load 'evil-maps
+		(define-key evil-motion-state-map (kbd "C-o") 'better-jumper-jump-backward)
+		(define-key evil-motion-state-map (kbd "C-M-o") 'better-jumper-jump-forward)))
+
+(use-package evil-numbers
+	:ensure t
+	:after evil
+	:config
+	(define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
+	(define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt))
 
 ;; Help discover new key combinations while you are almost there already
 (use-package which-key
@@ -136,8 +170,8 @@
   :ensure t
   :after vterm
   :bind (("C-c o t" . vterm-toggle-cd)
-	 ("C-c o T" . vterm-toggle)
-	 ))
+     ("C-c o T" . vterm-toggle)
+     ))
 
 ;; Work on projects using projectile
 (use-package projectile
@@ -150,16 +184,16 @@
 ;; Keep an undo-tree for each file, persist history for access after closing/opening the file
 (use-package undo-tree
   :ensure t
-	:custom
-	(undo-tree-history-directory-alist `(("." . ,(concat init-directory "undo-tree-hist/"))))
+    :custom
+    (undo-tree-history-directory-alist `(("." . ,(concat init-directory "undo-tree-hist/"))))
   :config
-	(setq undo-tree-visualizer-diff t
-				undo-tree-enable-undo-in-region t)
+    (setq undo-tree-visualizer-diff t
+                undo-tree-enable-undo-in-region t)
   (global-undo-tree-mode))
 
 ;; Easily kill all buffers
 (defun nuke-all-buffers ()
-	"Kill all the buffers automatically"
+    "Kill all the buffers automatically"
   (interactive)
   (mapcar 'kill-buffer (buffer-list))
   (delete-other-windows))
@@ -167,7 +201,7 @@
 (global-set-key (kbd "C-x K") 'nuke-all-buffers)
 
 (defun get-openai-key ()
-	"Retrieve the OpenAI key from the .authinfo.gpg file"
+    "Retrieve the OpenAI key from the .authinfo.gpg file"
   (let ((info (nth 0 (auth-source-search
                       :host "openai.com"
                       :require '(:user :secret)
@@ -180,9 +214,9 @@
       nil)))
 
 (defun set-openai-key ()
-	"Set the OpenAI API key for use in ChatGPT-shell"
-	(interactive)
-	(setq chatgpt-shell-openai-key (get-openai-key)))
+    "Set the OpenAI API key for use in ChatGPT-shell"
+    (interactive)
+    (setq chatgpt-shell-openai-key (get-openai-key)))
 
 ;; Interact with the OpenAI tooling
 (use-package chatgpt-shell
@@ -199,69 +233,69 @@
 (use-package multiple-cursors
   :ensure t
   :bind (("C-S-c C-S-c" . mc/edit-lines)
-	 ("C->" . mc/mark-next-like-this)
-	 ("C-<" . mc/mark-previous-like-this)
-	 ("C-c C-<" . mc/mark-all-like-this))
+     ("C->" . mc/mark-next-like-this)
+     ("C-<" . mc/mark-previous-like-this)
+     ("C-c C-<" . mc/mark-all-like-this))
   )
 
 ;; Automatically insert closing ) } ] etc. 
 (use-package smartparens
-	:ensure t
-	:hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
+    :ensure t
+    :hook (prog-mode text-mode markdown-mode) ;; add `smartparens-mode` to these hooks
   :config
   ;; load default config
   (require 'smartparens-config))
 
 ;; Snippets!
 (use-package yasnippet
-	:ensure t
-	:config
-	(yas-global-mode))
+    :ensure t
+    :config
+    (yas-global-mode))
 
 ;; -- org-mode --
 
 (use-package org
-	:config
-	(setq org-use-property-inheritance t)
-	;; Enable code block execution for python
-	(org-babel-do-load-languages
-	 'org-babel-load-languages
-	 '((python . t)))
-	(setq org-src-fontify-natively t
-				org-export-latex-listings t
-				org-latex-listings 'listings
-				org-latex-prefer-user-labels t)
-	;; Export latex given these mappings
-	(with-eval-after-load 'ox-latex
-		(add-to-list 'org-latex-classes
-								 '("chapterbook"
-									 "\\documentclass{book}"
-									 ("\\chapter{%s}" . "\\chapter{%s}")
-									 ("\\section{%s}" . "\\section*{%s}")
-									 ("\\subsection{%s}" . "\\subsection*{%s}")
-									 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-									 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-									 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
-									 )))
+    :config
+    (setq org-use-property-inheritance t)
+    ;; Enable code block execution for python
+    (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((python . t)))
+    (setq org-src-fontify-natively t
+                org-export-latex-listings t
+                org-latex-listings 'listings
+                org-latex-prefer-user-labels t)
+    ;; Export latex given these mappings
+    (with-eval-after-load 'ox-latex
+        (add-to-list 'org-latex-classes
+                                 '("chapterbook"
+                                     "\\documentclass{book}"
+                                     ("\\chapter{%s}" . "\\chapter{%s}")
+                                     ("\\section{%s}" . "\\section*{%s}")
+                                     ("\\subsection{%s}" . "\\subsection*{%s}")
+                                     ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+                                     ("\\paragraph{%s}" . "\\paragraph*{%s}")
+                                     ("\\subparagraph{%s}" . "\\subparagraph*{%s}")
+                                     )))
   :custom
   (truncate-lines nil)
-	;; do not indent the text to the heading
-	(org-adapt-indentation nil)
-	;; but do show it as such, but really there are no indents
-	(org-startup-indented t)
-	;; indent text according to structure
+    ;; do not indent the text to the heading
+    (org-adapt-indentation nil)
+    ;; but do show it as such, but really there are no indents
+    (org-startup-indented t)
+    ;; indent text according to structure
   (org-indent-mode t)
   (org-directory "~/stack/roam-new/")
-	(org-attach-directory "~/stack/roam-new/.attach/")
-	(org-agenda-files #'(vulpea-project-files))
+    (org-attach-directory "~/stack/roam-new/.attach/")
+    (org-agenda-files #'(vulpea-project-files))
   ;; (org-agenda-files
   ;;        '("/home/arjen/stack/roam-new/20231008105247-planning.org"
   ;;          "/home/arjen/stack/roam-new/📥 Inbox.org"
   ;;          "/home/arjen/stack/roam-new/20231008105710-tickler.org"
   ;;          "/home/arjen/stack/Notebook/inbox.org"
-	;; 				 ))
+    ;;               ))
 
-	;; refile targets, 3 levels deep.
+    ;; refile targets, 3 levels deep.
   (org-refile-targets
    '((nil :maxlevel . 3)
      (org-agenda-files :maxlevel . 3))
@@ -270,8 +304,8 @@
    ;; are just "Tasks/". This is unhelpful. We want the full path to each refile
    ;; target! e.g. FILE/Tasks/heading/subheading
    org-refile-use-outline-path 'file)
-	;; ensure we open links in the same frame
-	(org-link-frame-setup
+    ;; ensure we open links in the same frame
+    (org-link-frame-setup
    '((vm . vm-visit-folder-other-frame)
      (vm-imap . vm-visit-imap-folder-other-frame)
      (gnus . org-gnus-no-new-news)
@@ -280,13 +314,13 @@
   (org-id-link-to-org-use-id t)
   (org-image-actual-width 800)
   (org-log-into-drawer t)
-	(org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/Notebook/notes.org" "Personal" "Series")
+    (org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/Notebook/notes.org" "Personal" "Series")
                             "* %?\n%T" :prepend t)
                            ("t" "todo" entry
-														(file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
+                                                        (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
                            ("T" "Tickler" entry
-														(file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
+                                                        (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                             "* %i%? \n %U")
                            ("w" "Web site" entry
                             (file "")
@@ -300,25 +334,39 @@
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
 
   :bind (("C-c c" . org-capture)
-				 ("C-c a" . org-agenda)
-				 ("C-c s" . org-save-all-org-buffers))
+                 ("C-c a" . org-agenda)
+                 ("C-c s" . org-save-all-org-buffers))
   )
 
+;;; ORG-MODE:  * My Task
+;;;              SCHEDULED: <%%(diary-last-day-of-month date)>
+;;; DIARY:  %%(diary-last-day-of-month date) Last Day of the Month
+;;; See also:  (setq org-agenda-include-diary t)
+;;; (diary-last-day-of-month '(2 28 2017))
+(defun diary-last-day-of-month (date)
+"Return `t` if DATE is the last day of the month."
+  (let* ((day (calendar-extract-day date))
+         (month (calendar-extract-month date))
+         (year (calendar-extract-year date))
+         (last-day-of-month
+            (calendar-last-day-of-month month year)))
+    (= day last-day-of-month)))
+
 (use-package org-download
-	:ensure t
-	:config
-	(setq org-download-method 'attach))
+    :ensure t
+    :config
+    (setq org-download-method 'attach))
 
 ;; (let* ((variable-tuple
-;; 				(cond ((x-list-fonts "iMWritingQuatNerdFont")         '(:font "iMWritingQuatNerdFont"))
-;; 							((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-;; 							((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-;; 							((x-list-fonts "Verdana")         '(:font "Verdana"))
-;; 							((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-;; 							(nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-;; 			 ;;(base-font-color     (face-foreground 'default nil 'default))
-;; 			 ;;(headline           `(:inherit default :weight bold :foreground ,base-font-color))
-;; 			 )
+;;              (cond ((x-list-fonts "iMWritingQuatNerdFont")         '(:font "iMWritingQuatNerdFont"))
+;;                          ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+;;                          ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+;;                          ((x-list-fonts "Verdana")         '(:font "Verdana"))
+;;                          ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+;;                          (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+;;           ;;(base-font-color     (face-foreground 'default nil 'default))
+;;           ;;(headline           `(:inherit default :weight bold :foreground ,base-font-color))
+;;           )
 
 ;;   (custom-theme-set-faces
 ;;    'user
@@ -337,11 +385,11 @@
 ;;  '(fixed-pitch ((t ( :family "Fira Code Retina" :height 160)))))
 ;;   (add-hook 'org-mode-hook 'variable-pitch-mode)
 ;; (use-package org-attach
-;; 	:config
-;; 	(setq-default org-attach-id-dir (expand-file-name ".attach/" org-directory))
-;; 	;; Add inline image previews for attachment links
-;; 	(org-link-set-parameters "attachment" :image-data-fun #'+org-inline-image-data-fn)
-;; 	)
+;;  :config
+;;  (setq-default org-attach-id-dir (expand-file-name ".attach/" org-directory))
+;;  ;; Add inline image previews for attachment links
+;;  (org-link-set-parameters "attachment" :image-data-fun #'+org-inline-image-data-fn)
+;;  )
 
 ;;   (custom-theme-set-faces
 ;;    'user
@@ -360,13 +408,13 @@
 
 (use-package org-roam
   :ensure t
-	:after vulpea
+    :after vulpea
   :custom
-	;; show tags in org-roam finder
-	(org-roam-node-display-template "${title:*} ${tags:50}")
+    ;; show tags in org-roam finder
+    (org-roam-node-display-template "${title:*} ${tags:50}")
   (org-roam-directory (file-truename "~/stack/roam-new/"))
   (org-roam-complete-everywhere t)
-	(org-roam-dailies-capture-templates
+    (org-roam-dailies-capture-templates
    '(("d" "default" entry "** TODO %?"
       :target (file+head "%<%Y>/%<%Y-%m-%d>.org" "# -*- ispell-dictionary: \"nl_NL\" -*-
 #+TITLE: %<%B %d, %Y>
@@ -393,7 +441,7 @@
 * Captured items
 "))))
   :bind (("C-c r l" . org-roam-buffer-toggle)
-				 ("C-c r d" . org-roam-dailies-goto-today)
+                 ("C-c r d" . org-roam-dailies-goto-today)
          ("C-c r f" . org-roam-node-find)
          ("C-c r g" . org-roam-graph)
          ("C-c r i" . org-roam-node-insert)
@@ -402,7 +450,7 @@
          ("C-c r j" . org-roam-dailies-capture-today))
   :config
   (org-roam-setup)
-	(require 'org-roam-protocol)
+    (require 'org-roam-protocol)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol)
 
@@ -420,53 +468,53 @@
            "main" plain
            "%?"
            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
-															"#+title: ${title}\n")
+                                                            "#+title: ${title}\n")
            :immediate-finish t
            :unnarrowed t)
           ("c"
            "comics" plain "%?"
            :if-new
            (file+head "comics/%<%Y%m%d%H%M%S>-${slug}.org"
-											"#+title: ${title}\n#+filetags: :area:comics:\n")
+                                            "#+title: ${title}\n#+filetags: :area:comics:\n")
            :unnarrowed t)
           ("p"
            "papers" plain "%?"
            :if-new
            (file+head "papers/%<%Y%m%d%H%M%S>-${citar-citekey}-${citar-date}.org"
-											"#+title: ${citar-citekey} (${citar-date}). ${note-title}.\n#+created: %U\n#+last_modified: %U\n#+filetags: :paper:bib:\n\n\n")
+                                            "#+title: ${citar-citekey} (${citar-date}). ${note-title}.\n#+created: %U\n#+last_modified: %U\n#+filetags: :paper:bib:\n\n\n")
            :unnarrowed t)
           ("h"
            "home" plain "%?"
            :if-new
            (file+head "home/%<%Y%m%d%H%M%S>-${slug}.org"
-											"#+title: ${title}\n#+filetags: :home:\n")
+                                            "#+title: ${title}\n#+filetags: :home:\n")
            :unnarrowed t)
           ("n"
            "novi" plain "%?"
            :if-new
            (file+head "novi/%<%Y%m%d%H%M%S>-${slug}.org"
-											"#+title: ${title}\n#+filetags: :novi:\n")
+                                            "#+title: ${title}\n#+filetags: :novi:\n")
            :immediate-finish t
            :unnarrowed t)
           ("s"
            "security" plain "* Background %?\n\n* Examples\n\n\n* References\n\n"
            :if-new
            (file+head "security/%<%Y%m%d%H%M%S>-${slug}.org"
-											"#+title: ${title}\n#+filetags: :security:\n")
+                                            "#+title: ${title}\n#+filetags: :security:\n")
            :immediate-finish t
            :unnarrowed t)
           ("t"
            "thesis" plain "%?"
            :if-new
            (file+head "thesis/%<%Y%m%d%H%M%S>-${slug}.org"
-											"#+title: ${title}\n#+filetags: :thesis:\n")
+                                            "#+title: ${title}\n#+filetags: :thesis:\n")
            :immediate-finish nil
            :unnarrowed t)
           ("o"
            "OU Study Notes" plain "%?"
            :if-new
            (file+head "study/%<%Y%m%d%H%M%S>-${slug}.org"
-											"#+title: ${title}\n#+filetags: :study:\n")
+                                            "#+title: ${title}\n#+filetags: :study:\n")
            :immediate-finish nil
            :unnarrowed t)))      
   (setq org-roam-capture-ref-templates '(("r"
@@ -487,39 +535,39 @@
 "
                                           :if-new
                                           (file+head "links/${slug}.org"
-																										 "#+title: ${title}\n#+filetags: :reading:notstarted:\n")
+                                                                                                         "#+title: ${title}\n#+filetags: :reading:notstarted:\n")
                                           :unnarrowed t)
                                          ("c"
                                           "collection" entry "** ${title}\n:PROPERTIES:\n:ID: %(org-id-uuid)\n:ROAM_REFS: ${ref}\n:END:"
                                           :target (file+olp "links/collection.org" ("Inbox"))
                                           :unnarrowed t)))
 
-	;; I love using org-roam, it helps me structure thoughts and ideas.
-	;; Up to now I had my agenda files outside of org-roam, but that disconnects
-	;; projects, notes and planning. Using a write-up by Boris Buliga I was able
-	;; to use my org-agenda together with org-roam. Below are the functions
-	;; required to make this happen.
-	
-	;; Using org-roam as an efficient Org-Agenda system 
-	;; https://d12frosted.io/posts/2020-06-24-task-management-with-roam-vol2.html
-	(defun aw/has-todo-items-p ()
-		"Return non-nil if current buffer has any todo entry.
+    ;; I love using org-roam, it helps me structure thoughts and ideas.
+    ;; Up to now I had my agenda files outside of org-roam, but that disconnects
+    ;; projects, notes and planning. Using a write-up by Boris Buliga I was able
+    ;; to use my org-agenda together with org-roam. Below are the functions
+    ;; required to make this happen.
+    
+    ;; Using org-roam as an efficient Org-Agenda system 
+    ;; https://d12frosted.io/posts/2020-06-24-task-management-with-roam-vol2.html
+    (defun aw/has-todo-items-p ()
+        "Return non-nil if current buffer has any todo entry.
 
 TODO entries marked as done are ignored, meaning the this
 function returns nil if current buffer contains only completed
 tasks."
-		(org-element-map                          ; (2)
-				(org-element-parse-buffer 'headline) ; (1)
-				'headline
-			(lambda (h)
-				(eq (org-element-property :todo-type h)
-						'todo))
-			nil 'first-match))                     ; (3)
+        (org-element-map                          ; (2)
+                (org-element-parse-buffer 'headline) ; (1)
+                'headline
+            (lambda (h)
+                (eq (org-element-property :todo-type h)
+                        'todo))
+            nil 'first-match))                     ; (3)
 
-	(add-hook 'find-file-hook #'vulpea-project-update-tag)
-	(add-hook 'before-save-hook #'vulpea-project-update-tag)
+    (add-hook 'find-file-hook #'vulpea-project-update-tag)
+    (add-hook 'before-save-hook #'vulpea-project-update-tag)
 
-	(defun vulpea-project-update-tag ()
+    (defun vulpea-project-update-tag ()
     "Update PROJECT tag in the current buffer."
     (when (and (not (active-minibuffer-window))
                (org-roam-buffer-p))
@@ -539,33 +587,33 @@ tasks."
                     (seq-difference original-tags tags))
             (apply #'vulpea-buffer-tags-set tags))))))
 
-	(defun vulpea-project-files ()
-		"Return a list of note files containing 'planner' tag." ;
-		(seq-uniq
-		 (seq-map
-			#'car
-			(org-roam-db-query
-			 [:select [nodes:file]
-								:from tags
-								:left-join nodes
-								:on (= tags:node-id nodes:id)
-								:where (like tag (quote "%\"planner\"%"))]))))
+    (defun vulpea-project-files ()
+        "Return a list of note files containing 'planner' tag." ;
+        (seq-uniq
+         (seq-map
+            #'car
+            (org-roam-db-query
+             [:select [nodes:file]
+                                :from tags
+                                :left-join nodes
+                                :on (= tags:node-id nodes:id)
+                                :where (like tag (quote "%\"planner\"%"))]))))
 
-	(defun vulpea-agenda-files-update (&rest _)
-		"Update the value of `org-agenda-files'."
-		(setq org-agenda-files (vulpea-project-files)))
+    (defun vulpea-agenda-files-update (&rest _)
+        "Update the value of `org-agenda-files'."
+        (setq org-agenda-files (vulpea-project-files)))
 
-	(advice-add 'org-agenda :before #'vulpea-agenda-files-update)
-	(advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
+    (advice-add 'org-agenda :before #'vulpea-agenda-files-update)
+    (advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
 
-	(setq org-agenda-prefix-format
-				'((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")
-					(todo . " %i %-12(vulpea-agenda-category) ")
-					(tags . " %i %-12(vulpea-agenda-category) ")
-					(search . " %i %-12(vulpea-agenda-category) ")))
+    (setq org-agenda-prefix-format
+                '((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")
+                    (todo . " %i %-12(vulpea-agenda-category) ")
+                    (tags . " %i %-12(vulpea-agenda-category) ")
+                    (search . " %i %-12(vulpea-agenda-category) ")))
 
-	(defun vulpea-agenda-category ()
-		"Get category of item at point for agenda.
+    (defun vulpea-agenda-category ()
+        "Get category of item at point for agenda.
 
 Category is defined by one of the following items:
 
@@ -580,21 +628,21 @@ Usage example:
         '((agenda . \" %(vulpea-agenda-category) %?-12t %12s\")))
 
 Refer to `org-agenda-prefix-format' for more information."
-		(let* ((file-name (when buffer-file-name
-												(file-name-sans-extension
-												 (file-name-nondirectory buffer-file-name))))
-					 (title (vulpea-buffer-prop-get "title"))
-					 (category (org-get-category)))
-			(or (if (and
-							 title
-							 (string-equal category file-name))
-							title
-						category)
-					"")))
-	)
+        (let* ((file-name (when buffer-file-name
+                                                (file-name-sans-extension
+                                                 (file-name-nondirectory buffer-file-name))))
+                     (title (vulpea-buffer-prop-get "title"))
+                     (category (org-get-category)))
+            (or (if (and
+                             title
+                             (string-equal category file-name))
+                            title
+                        category)
+                    "")))
+    )
 
 (use-package vulpea
-	:ensure t)
+    :ensure t)
 
 (use-package org-roam-ui
   :ensure t)
@@ -607,47 +655,47 @@ Refer to `org-agenda-prefix-format' for more information."
   (org-mode . (lambda () (org-bullets-mode 1))))
 
 (use-package visual-fill-column
-	:ensure t
-	:custom
-	(visual-fill-column-width 110)
-	(visual-fill-column-center-text t)
-	:hook
-	(org-mode . visual-fill-column-mode)
-	)
+    :ensure t
+    :custom
+    (visual-fill-column-width 110)
+    (visual-fill-column-center-text t)
+    :hook
+    (org-mode . visual-fill-column-mode)
+    )
 
 (defun my/present-start ()
-	(org-present-big)
-	(org-display-inline-images)
-	;; (evil-mode -1)
-	(org-present-hide-cursor)
-	(flyspell-mode-off)
-	(git-gutter+-mode -1)
-	)	
+    (org-present-big)
+    (org-display-inline-images)
+    ;; (evil-mode -1)
+    (org-present-hide-cursor)
+    (flyspell-mode-off)
+    (git-gutter+-mode -1)
+    )   
 
 (defun my/present-end ()
-	(org-present-small)
-	(org-remove-inline-images)
-	;; (evil-mode t)
-	(org-present-show-cursor)
-	(flyspell-mode)
-	(git-gutter+-mode 1)
-	)
+    (org-present-small)
+    (org-remove-inline-images)
+    ;; (evil-mode t)
+    (org-present-show-cursor)
+    (flyspell-mode)
+    (git-gutter+-mode 1)
+    )
 
 (use-package org-present
-	:ensure t
-	:after visual-fill-column
-	:hook
-	(org-present-mode . my/present-start)
+    :ensure t
+    :after visual-fill-column
+    :hook
+    (org-present-mode . my/present-start)
   (org-present-mode-quit . my/present-end)
-	)
+    )
 
 (use-package citar
   :ensure t
   :bind (("C-c b" . org-cite-insert)
          :map minibuffer-local-map
          ("M-b" . citar-insert-preset))
-	:config
-	(defvar citar-indicator-files-icons
+    :config
+    (defvar citar-indicator-files-icons
     (citar-indicator-create
      :symbol (nerd-icons-faicon
               "nf-fa-file_o"
@@ -687,18 +735,18 @@ Refer to `org-agenda-prefix-format' for more information."
               citar-indicator-links-icons
               citar-indicator-notes-icons
               citar-indicator-cited-icons))
-	:custom
-	(reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
-	(bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"))
-	(citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
-	(org-cite-global-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
+    :custom
+    (reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
+    (bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"))
+    (citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
+    (org-cite-global-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib"))
   (citar-file-note-org-include '(org-id org-roam-ref))
   (citar-notes-paths '("~/stack/roam/papers"))
   (citar-library-paths '("~/stack/Zotero/pdf"))
   (org-cite-insert-processor 'citar)
   (org-cite-follow-processor 'citar)
   (org-cite-activate-processor 'citar)
-	(citar-indicators (list citar-indicator-files citar-indicator-notes))
+    (citar-indicators (list citar-indicator-files citar-indicator-notes))
   )
 
 (use-package citar-org-roam
@@ -708,12 +756,12 @@ Refer to `org-agenda-prefix-format' for more information."
   :config (citar-org-roam-mode))
 
 (use-package org-ref
-	:ensure t
-	:bind (("C-c l" . org-ref-insert-link-hydra/body))
-	)
+    :ensure t
+    :bind (("C-c l" . org-ref-insert-link-hydra/body))
+    )
 
 (use-package org-roam-bibtex
-	:ensure t
+    :ensure t
   :after org-roam
   :config
   (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
@@ -727,8 +775,8 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package pdf-tools
   :ensure t
-	:config
-	(pdf-loader-install))
+    :config
+    (pdf-loader-install))
 
 ;; -- COMPLETION --
 
@@ -804,7 +852,7 @@ Refer to `org-agenda-prefix-format' for more information."
 
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
-	(setq ispell-program-name "hunspell"))
+    (setq ispell-program-name "hunspell"))
 
 ;; Optionally use the `orderless' completion style.
 (use-package orderless
@@ -825,7 +873,7 @@ Refer to `org-agenda-prefix-format' for more information."
    (css-mode . css-ts-mode)
    (python-mode . python-ts-mode)
    (java-mode . java-ts-mode)
-	 ))
+     ))
 
 (dolist (hook '(prog-mode-hook))
   (add-hook hook (lambda ()
@@ -833,14 +881,14 @@ Refer to `org-agenda-prefix-format' for more information."
                    )))
 
 (use-package devdocs
-	:ensure t)
+    :ensure t)
 
 (use-package company
   :ensure t
-  :bind (("C-c /". company-complete))
-	:custom
-	(company-idle-delay 10)
-	(company-tooltip-idle-delay 10)
+  :bind (("C-SPC". company-complete))
+    :custom
+    (company-idle-delay 10)
+    (company-tooltip-idle-delay 10)
   :config
   (global-company-mode))
 
@@ -857,16 +905,16 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; Git in Emacs, yay
 (use-package magit
   :ensure t
-	:after s
+    :after s
   :bind (("C-c m" . magit-status)))
 
 ;; Show changes to the buffer in the frings
 (use-package git-gutter-fringe+
-	:ensure t
-	:hook
-	((prog-mode . git-gutter+-mode)
-	 (org-mode . git-gutter+-mode))
-	)
+    :ensure t
+    :hook
+    ((prog-mode . git-gutter+-mode)
+     (org-mode . git-gutter+-mode))
+    )
 
 (defun aw/cleanup-lsp ()
   "Remove all the workspace folders from LSP"
@@ -880,12 +928,12 @@ Refer to `org-agenda-prefix-format' for more information."
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l"
-		lsp-inlay-hint-enable t)
+        lsp-inlay-hint-enable t)
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (rustic-mode . lsp)
          (go-mode . lsp)
-				 (java-ts-mode . lsp)
-				 (java-mode . lsp)				 
+                 (java-ts-mode . lsp)
+                 (java-mode . lsp)               
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands lsp)
@@ -899,16 +947,16 @@ Refer to `org-agenda-prefix-format' for more information."
       (setq folders (cdr folders)))))
 
 (use-package lsp-java
-	:ensure t
-	:after lsp-mode
-	:hook (
-				 (java-mode . #'lsp)
-				 ))
+    :ensure t
+    :after lsp-mode
+    :hook (
+                 (java-mode . #'lsp)
+                 ))
 
 ;; optionally
 (use-package lsp-ui
-	:ensure t
-	:commands lsp-ui-mode)
+    :ensure t
+    :commands lsp-ui-mode)
 ;; if you are helm user
 ;; (use-package helm-lsp :commands helm-lsp-workspace-symbol)
 ;; if you are ivy user
@@ -917,48 +965,48 @@ Refer to `org-agenda-prefix-format' for more information."
 
 ;; optionally if you want to use debugger
 (use-package dap-mode
-	:ensure t
-	)
+    :ensure t
+    )
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
 
 ;; Program in golang
 
 (use-package treesit
-	:custom
-	(treesit-font-lock-level 4)
-	:config
-	(setq treesit-language-source-alist
-				'((bash "https://github.com/tree-sitter/tree-sitter-bash")
-					(cmake "https://github.com/uyha/tree-sitter-cmake")
-					(css "https://github.com/tree-sitter/tree-sitter-css")
-					(elisp "https://github.com/Wilfred/tree-sitter-elisp")
-					(go "https://github.com/tree-sitter/tree-sitter-go")
-					(go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
-					(html "https://github.com/tree-sitter/tree-sitter-html")
-					(javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
-					(json "https://github.com/tree-sitter/tree-sitter-json")
-					(make "https://github.com/alemuller/tree-sitter-make")
-					(markdown "https://github.com/ikatyang/tree-sitter-markdown")
-					(python "https://github.com/tree-sitter/tree-sitter-python")
-					(toml "https://github.com/tree-sitter/tree-sitter-toml")
-					(tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
-					(typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
-					(yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+    :custom
+    (treesit-font-lock-level 4)
+    :config
+    (setq treesit-language-source-alist
+                '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+                    (cmake "https://github.com/uyha/tree-sitter-cmake")
+                    (css "https://github.com/tree-sitter/tree-sitter-css")
+                    (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+                    (go "https://github.com/tree-sitter/tree-sitter-go")
+                    (go-mod "https://github.com/camdencheek/tree-sitter-go-mod")
+                    (html "https://github.com/tree-sitter/tree-sitter-html")
+                    (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+                    (json "https://github.com/tree-sitter/tree-sitter-json")
+                    (make "https://github.com/alemuller/tree-sitter-make")
+                    (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+                    (python "https://github.com/tree-sitter/tree-sitter-python")
+                    (toml "https://github.com/tree-sitter/tree-sitter-toml")
+                    (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+                    (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+                    (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
 
-	(setq major-mode-remap-alist
-				'((yaml-mode . yaml-ts-mode)
-					(bash-mode . bash-ts-mode)
-					(js2-mode . js-ts-mode)
-					(typescript-mode . typescript-ts-mode)
-					(json-mode . json-ts-mode)
-					(css-mode . css-ts-mode)
-					(go-mode . go-ts-mode)
-					(java-mode . java-ts-mode)
-					(python-mode . python-ts-mode)))
-	)
+    (setq major-mode-remap-alist
+                '((yaml-mode . yaml-ts-mode)
+                    (bash-mode . bash-ts-mode)
+                    (js2-mode . js-ts-mode)
+                    (typescript-mode . typescript-ts-mode)
+                    (json-mode . json-ts-mode)
+                    (css-mode . css-ts-mode)
+                    (go-mode . go-ts-mode)
+                    (java-mode . java-ts-mode)
+                    (python-mode . python-ts-mode)))
+    )
 
 (use-package yaml-mode
-	:ensure t)
+    :ensure t)
 
 (use-package go-mode
   :ensure t
@@ -972,8 +1020,8 @@ Refer to `org-agenda-prefix-format' for more information."
   :hook (prog-mode . format-all-mode)
   :config
   (setq-default format-all-formatters '(("Go"     (goimports))
-																				("Java"   (astyle))
-																				("html"   (prettierd))))
+                                        ("Java"   (astyle))
+                                        ("html"   (prettierd))))
   )
 
 (use-package nix-mode
@@ -1011,17 +1059,17 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-	 '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
+   '("0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-	 '(emmet-mode web-mode elfeed lsp-java dockerfile-mode terraform-mode lsp-ui dap-mode lsp-mode racer rustic request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
+   '(emmet-mode web-mode elfeed lsp-java dockerfile-mode terraform-mode lsp-ui dap-mode lsp-mode racer rustic request org-download org-msg evil-commentary vulpea evil-numbers devdocs golden-ratio evil-mode smartparens-mode smartparens smart-parens neotree git-gutter-fringe+ mini-frame evil better-jumper org-roam-bibtex org-ref org-plus-contrib visual-fill-column org-present multiple-cursors imenu-list olivetti chatgpt-shell org-bullets nix-mode org-roam-ui pdf-tools undo-tree format-all doom-modeline ox-hugo marginalia projectile-ripgrep projectile nerd-icons-completion nerd-icons company-bibtex org-roam vterm-toggle vterm which-key vertico s orderless magit go-mode envrc company catppuccin-theme))
  '(safe-local-variable-values
-	 '((flyspell-mode . 0)
-		 (lsp-ltex-language . "nl")
-		 (lsp-ltex-language . nl-NL)
-		 (ispell-dictionary . "nl")
-		 (lsp-ltex-language . "nl-NL")
-		 (ispell-dictionary . "nl_NL"))))
+   '((flyspell-mode . 0)
+	 (lsp-ltex-language . "nl")
+	 (lsp-ltex-language . nl-NL)
+	 (ispell-dictionary . "nl")
+	 (lsp-ltex-language . "nl-NL")
+	 (ispell-dictionary . "nl_NL"))))
 
 
 ;; My personal config
@@ -1067,3 +1115,4 @@ Refer to `org-agenda-prefix-format' for more information."
  )
 
 
+(put 'narrow-to-region 'disabled nil)
