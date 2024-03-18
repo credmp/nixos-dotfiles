@@ -109,23 +109,28 @@
 
 ;; (package! langtool)
 
-(package! lsp-ltex)
+;; (package! lsp-ltex)
 
 
 ;; Great package for Tiago Forte's [[id:eb517970-7045-49db-8c5b-6bef6ef1e611][Progressive Summarization]]
 ;; (package! org-remark)
 
-(package! copilot
-  :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+;; (package! copilot
+;;   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
 
-(package! whisper
-  :recipe (:host github :repo "natrys/whisper.el" :files ("*.el")))
+;; (package! whisper
+;;   :recipe (:host github :repo "natrys/whisper.el" :files ("*.el")))
 
 (package! org-web-tools)
 ;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
-(package! delve
-  :recipe (:host github :repo "publicimageltd/delve" :files ("*.el")))
+;; (package! delve
+;;   :recipe (:host github :repo "publicimageltd/delve" :files ("*.el")))
 
 ;; (package! eglot-java
 ;;   :recipe (:host github :repo "yveszoundi/eglot-java"))
+(package! all-the-icons
+  :recipe (:host github :repo "domtronn/all-the-icons.el"))
+
+(package! vulpea
+  :recipe (:host github :repo "d12frosted/vulpea"))

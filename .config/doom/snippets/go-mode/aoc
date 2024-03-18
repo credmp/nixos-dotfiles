@@ -1,0 +1,24 @@
+# -*- mode: snippet -*-
+# name: aoc
+# uuid:
+# key: aoc
+# condition: t
+# --
+func main() {
+	content, _ := os.ReadFile("$1")
+
+	startTime := time.Now()
+
+    // do stuff
+
+	endTime := time.Now()
+	elapsed := endTime.Sub(startTime)
+	fmt.Printf("Part 1: %d (%v)\n", 0, elapsed)
+
+	startTime = time.Now()
+
+    // do stuff
+	endTime = time.Now()
+	elapsed = endTime.Sub(startTime)
+	fmt.Printf("Part 2: %d (%v)\n", 0, elapsed)
+}

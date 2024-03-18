@@ -3,6 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+(doom/set-frame-opacity 95)
 (setq fancy-splash-image (expand-file-name "assets/blackhole-lines.svg" doom-user-dir))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -49,8 +50,8 @@
  doom-font-increment 1
  doom-font (font-spec :family default-font
                       :size default-font-size)
- doom-unicode-font (font-spec :family default-font
-                              :size default-font-size)
+ doom-symbol-font (font-spec :family default-font
+                             :size default-font-size)
  doom-variable-pitch-font (font-spec :family "iMWritingDuoNerdFont"
                                      :size default-font-size))
 ;; doom-unicode-font (font-spec :family "IBM Plex Mono"
@@ -186,6 +187,106 @@
                         (mu4e-compose-signature . "---\nYours truly\nThe Baz"))
                       t))
 
+(use-package! vulpea)
+
+(after! vulpea
+  ;; I love using org-roam, it helps me structure thoughts and ideas.
+  ;; Up to now I had my agenda files outside of org-roam, but that disconnects
+  ;; projects, notes and planning. Using a write-up by Boris Buliga I was able
+  ;; to use my org-agenda together with org-roam. Below are the functions
+  ;; required to make this happen.
+
+  ;; Using org-roam as an efficient Org-Agenda system
+  ;; https://d12frosted.io/posts/2020-06-24-task-management-with-roam-vol2.html
+  (defun aw/has-todo-items-p ()
+    "Return non-nil if current buffer has any todo entry.
+
+TODO entries marked as done are ignored, meaning the this
+function returns nil if current buffer contains only completed
+tasks."
+    (org-element-map                          ; (2)
+        (org-element-parse-buffer 'headline) ; (1)
+        'headline
+      (lambda (h)
+        (eq (org-element-property :todo-type h)
+            'todo))
+      nil 'first-match))                     ; (3)
+
+  (add-hook 'find-file-hook #'vulpea-project-update-tag)
+  (add-hook 'before-save-hook #'vulpea-project-update-tag)
+
+  (defun vulpea-project-update-tag ()
+    "Update PROJECT tag in the current buffer."
+    (when (and (not (active-minibuffer-window))
+               (org-roam-buffer-p))
+      (save-excursion
+        (goto-char (point-min))
+        (let* ((tags (vulpea-buffer-tags-get))
+               (original-tags tags))
+          (if (aw/has-todo-items-p)
+              (setq tags (cons "planner" tags))
+            (setq tags (remove "planner" tags)))
+
+          ;; cleanup duplicates
+          (setq tags (seq-uniq tags))
+
+          ;; update tags if changed
+          (when (or (seq-difference tags original-tags)
+                    (seq-difference original-tags tags))
+            (apply #'vulpea-buffer-tags-set tags))))))
+
+  (defun vulpea-project-files ()
+    "Return a list of note files containing 'planner' tag." ;
+    (seq-uniq
+     (seq-map
+      #'car
+      (org-roam-db-query
+       [:select [nodes:file]
+        :from tags
+        :left-join nodes
+        :on (= tags:node-id nodes:id)
+        :where (like tag (quote "%\"planner\"%"))]))))
+
+  (defun vulpea-agenda-files-update (&rest _)
+    "Update the value of `org-agenda-files'."
+    (setq org-agenda-files (vulpea-project-files)))
+
+  (advice-add 'org-agenda :before #'vulpea-agenda-files-update)
+  (advice-add 'org-todo-list :before #'vulpea-agenda-files-update)
+
+  (setq org-agenda-prefix-format
+        '((agenda . " %i %-12(vulpea-agenda-category)%?-12t% s")
+          (todo . " %i %-12(vulpea-agenda-category) ")
+          (tags . " %i %-12(vulpea-agenda-category) ")
+          (search . " %i %-12(vulpea-agenda-category) ")))
+
+  (defun vulpea-agenda-category ()
+    "Get category of item at point for agenda.
+
+Category is defined by one of the following items:
+
+- CATEGORY property
+- TITLE keyword
+- TITLE property
+- filename without directory and extension
+
+Usage example:
+
+  (setq org-agenda-prefix-format
+        '((agenda . \" %(vulpea-agenda-category) %?-12t %12s\")))
+
+Refer to `org-agenda-prefix-format' for more information."
+    (let* ((file-name (when buffer-file-name
+                        (file-name-sans-extension
+                         (file-name-nondirectory buffer-file-name))))
+           (title (vulpea-buffer-prop-get "title"))
+           (category (org-get-category)))
+      (or (if (and
+               title
+               (string-equal category file-name))
+              title
+            category)
+          ""))))
 
 (use-package! org-roam
   :config
@@ -311,6 +412,7 @@
 
 
 
+
 ;; (use-package! org-roam-review
 ;;   :commands (org-roam-review
 ;;              org-roam-review-list-by-maturity
@@ -334,8 +436,8 @@
 ;; wget https://languagetool.org/download/LanguageTool-5.8.zip
 ;; (use-package! langtool)
 
-(after! langtool
-  (setq langtool-language-tool-server-jar (concat doom-user-dir "/LanguageTool-5.8/languagetool-server.jar")))
+;; (after! langtool
+;;   (setq langtool-language-tool-server-jar (concat doom-user-dir "/LanguageTool-5.8/languagetool-server.jar")))
 ;; :bind (("\C-x4w" . langtool-check)
 ;;        ("\C-x4W" . langtool-check-done)
 ;;        ("\C-x4l" . langtool-switch-default-language)
@@ -355,18 +457,21 @@
   ;;       "L x" #'langtool-correct-buffer)
 
 
-  (setq! org-agenda-files ;; (append
-         ;;   (find-lisp-find-files "/home/arjen/stack/Notebook/" ".org$"))
-         ;;(find-lisp-find-files "/home/arjen/stack/roam-new/" ".org$")
+  (setq!
+   org-agenda-files #'(vulpea-project-files)
+   ;; org-agenda-files ;; (append
+   ;;       ;;   (find-lisp-find-files "/home/arjen/stack/Notebook/" ".org$"))
+   ;;       ;;(find-lisp-find-files "/home/arjen/stack/roam-new/" ".org$")
+
+   ;;       '("/home/arjen/stack/roam-new/20231008105247-planning.org"
+   ;;         "/home/arjen/stack/roam-new/📥 Inbox.org"
+   ;;         "/home/arjen/stack/roam-new/20231008105710-tickler.org")
 
 
-         '("/home/arjen/stack/roam-new/20231008105247-planning.org"
-           "/home/arjen/stack/roam-new/📥 Inbox.org"
-           "/home/arjen/stack/roam-new/20231008105710-tickler.org")
+   org-attach-directory "~/stack/roam-new/.attach/"
 
-
-         org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
-                              ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
+   org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
+                        ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
 
 
   (setq org-id-link-to-org-use-id t)
@@ -392,9 +497,8 @@
                                   "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
                                   :immediate-finish t :empty-lines 1)
                                  ("e" "email" entry (file+headline "~/stack/Notebook/inbox.org" "Tasks from Email")
-                                  "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")))
-  ;; export code listings for latex
-  (setq org-latex-listings t))
+                                  "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
+
 
 (after! citar
   (setq! reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"
@@ -492,14 +596,14 @@
                (not (string-equal old-location new-location)))
       (delete-file old-location))))
 
-(use-package! org-transclusion
-  :after org
-  :init
-  (map!
-   :map global-map "<f12>" #'org-transclusion-add
-   :leader
-   :prefix "n"
-   :desc "Org Transclusion Mode" "t" #'org-transclusion-mode))
+;; (use-package! org-transclusion
+;;   :after org
+;;   :init
+;;   (map!
+;;    :map global-map "<f12>" #'org-transclusion-add
+;;    :leader
+;;    :prefix "n"
+;;    :desc "Org Transclusion Mode" "t" #'org-transclusion-mode))
 
 
 ;; (use-package! denote
@@ -650,19 +754,21 @@
 
 (add-to-list 'auto-mode-alist '("\\.rsc$" . rascal-mode))
 
-(require 'all-the-icons)
-(customize-set-value
- 'org-agenda-category-icon-alist
- `(
-   ("inbox" ,(list (all-the-icons-faicon "inbox")) nil nil :ascent center)
-   ("gcal-novi" ,(list (all-the-icons-faicon "building-o")) nil nil :ascent center)
-   ("gcal-gezin" ,(list (all-the-icons-faicon "users")) nil nil :ascent center)
-   ("gcal-ou" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
-   ("daily" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
-   ("work" ,(list (all-the-icons-faicon "cogs")) nil nil :ascent center)
-   ("habit" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
-   ("study" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
-   ("notes" ,(list (all-the-icons-faicon "clipboard")) nil nil :ascent center)))
+;;(require 'all-the-icons)
+(use-package! all-the-icons
+  :config
+  (customize-set-value
+   'org-agenda-category-icon-alist
+   `(
+     ("inbox" ,(list (all-the-icons-faicon "inbox")) nil nil :ascent center)
+     ("gcal-novi" ,(list (all-the-icons-faicon "building-o")) nil nil :ascent center)
+     ("gcal-gezin" ,(list (all-the-icons-faicon "users")) nil nil :ascent center)
+     ("gcal-ou" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
+     ("daily" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
+     ("work" ,(list (all-the-icons-faicon "cogs")) nil nil :ascent center)
+     ("habit" ,(list (all-the-icons-faicon "circle-o-notch")) nil nil :ascent center)
+     ("study" ,(list (all-the-icons-faicon "university")) nil nil :ascent center)
+     ("notes" ,(list (all-the-icons-faicon "clipboard")) nil nil :ascent center))))
 
 ;; (setq org-gcal-client-id "1038002603885-7ni0fk8f5tv57iaqja2ki02eond95nf7.apps.googleusercontent.com"
 ;;       org-gcal-client-secret "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"
@@ -786,7 +892,23 @@
 
 (use-package! ox-hugo)
 
-(setq openai-key (getenv "OPENAI_API_KEY"))
+(defun get-openai-key ()
+  "Retrieve the OpenAI key from the .authinfo.gpg file"
+  (let ((info (nth 0 (auth-source-search
+                      :host "openai.com"
+                      :require '(:user :secret)
+                      :create t))))
+    (if info
+        (let ((secret (plist-get info :secret)))
+          (if (functionp secret)
+              (funcall secret)
+            secret))
+      nil)))
+
+(defun set-openai-key ()
+  "Set the OpenAI API key for use in ChatGPT-shell"
+  (interactive)
+  (setq chatgpt-shell-openai-key (get-openai-key)))
 
 (use-package! company-org-block
   :custom
@@ -795,24 +917,22 @@
                        (setq-local company-backends '(company-org-block))
                        (company-mode +1)))))
 
-(setq chatgpt-shell-openai-key (getenv "OPENAI_API_KEY"))
+;; (use-package! lsp-ltex
+;;   :after lsp
+;;   ;; :hook (text-mode . (lambda ()
+;;   ;;                      (require 'lsp-ltex)
+;;   ;;                      (lsp)))  ; or lsp-deferred
+;;   :init
+;;   (setq lsp-ltex-version "15.2.0")
+;;   (setq lsp-ltex-check-frequency "save")
 
-(use-package! lsp-ltex
-  :after lsp
-  ;; :hook (text-mode . (lambda ()
-  ;;                      (require 'lsp-ltex)
-  ;;                      (lsp)))  ; or lsp-deferred
-  :init
-  (setq lsp-ltex-version "15.2.0")
-  (setq lsp-ltex-check-frequency "save")
+;;   :config
 
-  :config
-
-  (setq lsp-ltex-check-frequency "save")
-  (add-to-list 'lsp-language-id-configuration
-               '(mu4e-compose-mode . "org"))
-  (add-to-list 'lsp-language-id-configuration
-               '(org-msg-edit-mode . "org")))
+;;   (setq lsp-ltex-check-frequency "save")
+;;   (add-to-list 'lsp-language-id-configuration
+;;                '(mu4e-compose-mode . "org"))
+;;   (add-to-list 'lsp-language-id-configuration
+;;                '(org-msg-edit-mode . "org")))
 
 
 (use-package! org-ref)
@@ -866,28 +986,28 @@
 (custom-set-variables '(emojify-display-style 'unicode))
 
 
-(after! chatgpt-shell
-  (defun chatgpt-shell-academic-region (prefix)
-    "Proofread and update the text to academic standards.
+;; (after! chatgpt-shell
+;;   (defun chatgpt-shell-academic-region (prefix)
+;;     "Proofread and update the text to academic standards.
 
-With PREFIX, invert `chatgpt-shell-insert-queries-inline' choice."
-    (interactive "P")
-    (chatgpt-shell-send-region-with-header
-     (concat
-      "As an English spelling corrector and improver, your task is to improve the structure of a provided paragraph while also correcting any spelling errors. You should should make the text fit for academics, without changing the meaning.
+;; With PREFIX, invert `chatgpt-shell-insert-queries-inline' choice."
+;;     (interactive "P")
+;;     (chatgpt-shell-send-region-with-header
+;;      (concat
+;;       "As an English spelling corrector and improver, your task is to improve the structure of a provided paragraph while also correcting any spelling errors. You should should make the text fit for academics, without changing the meaning.
 
-Your response should only include corrections and improvements to the original text. Please do not provide explanations or additional commentary. Your goal is to create a more literary version of the paragraph that maintains its original meaning but presents it in a more sophisticated manner.
+;; Your response should only include corrections and improvements to the original text. Please do not provide explanations or additional commentary. Your goal is to create a more literary version of the paragraph that maintains its original meaning but presents it in a more sophisticated manner.
 
-Here is the text:" prefix)))
+;; Here is the text:" prefix)))
 
-  (map! :map text-mode-map
-        :localleader
-        "j a" #'chatgpt-shell-academic-region)
+;;   (map! :map text-mode-map
+;;         :localleader
+;;         "j a" #'chatgpt-shell-academic-region)
 
 
-  (map! :map TeX-mode-map
-        :localleader
-        "j a" #'chatgpt-shell-academic-region))
+;;   (map! :map TeX-mode-map
+;;         :localleader
+;;         "j a" #'chatgpt-shell-academic-region))
 
 
 
@@ -947,11 +1067,11 @@ Here is the text:" prefix)))
 (setq ispell-program-name "hunspell")
 ;; (use-package! lsp-tailwindcss)
 
-(use-package! delve
-  :after org-roam
+;; (use-package! delve
+;;   :after org-roam
 
-  :config
-  (setq delve-storage-paths "~/stack/org/"))
+;;   :config
+;;   (setq delve-storage-paths "~/stack/org/"))
 
 ;; NixOS / nix use of Java together with Emacs
 ;;https://dschrempf.github.io/emacs/2023-03-02-emacs-java-and-nix/
@@ -962,8 +1082,6 @@ Here is the text:" prefix)))
 ;;           "-configuration" "../config-linux"
 ;;           "-data" "../java-workspace")))
 
-(after! java-mode
-  (add-to-list 'exec-path "/home/arjen/.local/jdt/bin"))
 
 ;; (after! cc-mode
 ;;   (defun my-set-lsp-path ()
