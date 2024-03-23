@@ -3,7 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-(doom/set-frame-opacity 95)
+(doom/set-frame-opacity 100)
 (setq fancy-splash-image (expand-file-name "assets/blackhole-lines.svg" doom-user-dir))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -104,7 +104,7 @@
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -955,9 +955,9 @@ Refer to `org-agenda-prefix-format' for more information."
                  ("\\chapter{%s}" . "\\chapter{%s}")
                  ("\\section{%s}" . "\\section*{%s}")
                  ("\\subsection{%s}" . "\\subsection*{%s}")
-                 ("\\paragraph{%s}" . "\\paragraph*{%s}"))))
+                 ("\\paragraph{%s}" . "\\paragraph*{%s}")))
 
-
+  (setq org-latex-src-block-backend 'listings))
 
 
 
