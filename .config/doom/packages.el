@@ -122,15 +122,19 @@
 ;;   :recipe (:host github :repo "natrys/whisper.el" :files ("*.el")))
 
 (package! org-web-tools)
-;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
 ;; (package! delve
 ;;   :recipe (:host github :repo "publicimageltd/delve" :files ("*.el")))
 
-;; (package! eglot-java
-;;   :recipe (:host github :repo "yveszoundi/eglot-java"))
+(package! eglot-java
+  :recipe (:host github :repo "yveszoundi/eglot-java"))
+
 (package! all-the-icons
   :recipe (:host github :repo "domtronn/all-the-icons.el"))
 
 (package! vulpea
   :recipe (:host github :repo "d12frosted/vulpea"))
+
+;; (package! treesit-auto)
+;; (package! templ-ts-mode)

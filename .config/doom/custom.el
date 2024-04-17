@@ -4,9 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(emojify-display-style 'unicode)
-
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
-
  '(safe-local-variable-values
    '((cider-shadow-cljs-default-options . "app")
      (lsp-ltex-language . "nl")
