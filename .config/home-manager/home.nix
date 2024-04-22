@@ -48,7 +48,7 @@
     discord
     zotero
     jetbrains.idea-ultimate
-    #emote
+    emote
     # direnv
     direnv
     nix-direnv

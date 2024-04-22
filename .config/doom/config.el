@@ -474,7 +474,7 @@ Refer to `org-agenda-prefix-format' for more information."
 
 ;; Add word count to mode-line, only useful for modes like org and markdown
 ;; for writing papers and articles
-(setq doom-modeline-enable-word-count t)
+;; (setq doom-modeline-enable-word-count t)
 (setq company-idle-delay nil)
 
 (defun aw/cleanup-lsp ()
@@ -639,6 +639,10 @@ Refer to `org-agenda-prefix-format' for more information."
                                     (org-agenda-prefix-format "   %-2i %?b")
                                     (org-agenda-todo-keyword-format ""))))))))
 
+(use-package! org-remark
+  :config
+  (org-remark-global-tracking-mode t))
+
 (use-package! org-roam-dblocks)
 
 (after! org
@@ -703,11 +707,13 @@ Refer to `org-agenda-prefix-format' for more information."
   (setq org-latex-src-block-backend 'listings))
 
 (setq ispell-program-name "hunspell")
-;; (use-package! lsp-tailwindcss)
+
+;; PROGRAMMING
 
 (after! projectile
   (setq projectile-create-missing-test-files t))
 
+(use-package! lsp-tailwindcss)
 ;; Instead of lsp-mode, eglot is also available. It is somewhat harder to configure for non-supported
 ;; modes, and it does not allow multi-mode files (web + tailwind)
 ;; (use-package! eglot-java
@@ -747,4 +753,3 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; (add-to-list 'eglot-server-programs
 ;;              '((web-mode :language-id "html") . ("npx" "tailwindcss-language-server" "--stdio")))
 
-(use-package! lsp-tailwindcss)
