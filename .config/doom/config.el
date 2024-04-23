@@ -428,7 +428,6 @@ Refer to `org-agenda-prefix-format' for more information."
    org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
                         ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
 
-
   (setq org-id-link-to-org-use-id t)
   (setq org-image-actual-width 800)
   (setq org-log-into-drawer t)
@@ -691,9 +690,9 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (after! org
   ;;  (setq org-modern-block-fringe 2)
-  (setq org-modern-table nil)
-  (setq org-modern-timestamp nil)
-  (global-org-modern-mode)
+  ;; (setq org-modern-table nil)
+  ;; (setq org-modern-timestamp nil)
+  ;; (global-org-modern-mode)
   ;; Ignore optie voor header exports
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
