@@ -245,9 +245,9 @@ exec --no-startup-id emote
 
 ##### i3-gaps ##############
 for_window [class=".*"] border pixel 2 
-gaps inner 10
-#gaps outer 10
-gaps horizontal 20
+gaps inner 5
+gaps outer 5
+#gaps horizontal 10
 
 ################# i3-radius #######################
 smart_borders on

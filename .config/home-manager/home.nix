@@ -40,7 +40,7 @@ in
     polkit_gnome
     spotify
     unstable.mu
-    unstable.android-studio
+    unstable.obsidian
     msmtp
     isync
     # okular # my goto for presentations
