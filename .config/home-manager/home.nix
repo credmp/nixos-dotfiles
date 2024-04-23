@@ -24,7 +24,6 @@
   home.packages = with pkgs; [
     # desktop apps
     firefox
-    chromium
     emacs29
     neovim
     ripgrep

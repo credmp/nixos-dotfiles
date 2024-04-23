@@ -160,7 +160,8 @@
 
 
 ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
-(add-to-list 'load-path "/home/arjen/.nix-profile/share/emacs/site-lisp/mu4e")
+;; (add-to-list 'load-path "/home/arjen/.nix-profile/share/emacs/site-lisp/mu4e")
+(add-to-list 'load-path "/home/arjen/.config/doom/mu-1.12.2/mu4e")
 (after! mu4e
   ;; Mail configuration
   ;; add to $DOOMDIR/config.el
@@ -432,13 +433,13 @@ Refer to `org-agenda-prefix-format' for more information."
 
   ;; (add-load-path! (concat doom-user-dir "org-protocol-capture-html"))
   ;; (require 'org-protocol-capture-html)
-  (setq! org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/Notebook/notes.org" "Personal" "Series")
+  (setq! org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/roam-new/20231008105247-planning.org" "Inbox" "Series")
                                   "* %?\n%T" :prepend t)
                                  ("t" "todo" entry
-                                  (file+headline "/home/arjen/stack/roam-new/20231008105247-planning.org" "Inbox")
+                                  (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                                   "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
                                  ("T" "Tickler" entry
-                                  (file+headline "~/stack/Notebook/tickler.org" "Tickler")
+                                  (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                                   "* %i%? \n %U")
                                  ("w" "Web site" entry
                                   (file "")
@@ -448,7 +449,7 @@ Refer to `org-agenda-prefix-format' for more information."
                                                  "Links to read later")
                                   "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
                                   :immediate-finish t :empty-lines 1)
-                                 ("e" "email" entry (file+headline "~/stack/Notebook/inbox.org" "Tasks from Email")
+                                 ("e" "email" entry (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
                                   "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
 
 

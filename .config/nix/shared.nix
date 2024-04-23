@@ -123,6 +123,7 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       alacritty
+      chromium
     ];
   };
 

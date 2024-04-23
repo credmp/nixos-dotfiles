@@ -29,7 +29,18 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    setLdLibraryPath = true;
+    extraPackages = with pkgs; [
+    	vaapiVdpau
+	libvdpau-va-gl
+	nvidia-vaapi-driver
+	vulkan-validation-layers
+	vulkan-utility-libraries
+	vulkan-tools
+	vulkan-headers
+    ];
   };
+  environment.sessionVariables = { LIBVA_DRIVER_NAME="nvidia"; };
 
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = ["nvidia"];

@@ -7,6 +7,7 @@
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(safe-local-variable-values
    '((cider-shadow-cljs-default-options . "app")
+     (cider-default-cljs-repl . shadow)
      (lsp-ltex-language . "nl")
      (lsp-ltex-language . nl-NL)
      (lsp-ltex-language . "nl-NL")
