@@ -175,6 +175,10 @@ mode "resize" {
         bindsym Up resize shrink height 10 px or 10 ppt
         bindsym Right resize grow width 10 px or 10 ppt
 
+        # center and reset window in large displays
+        bindsym c gaps horizontal current plus 800
+        bindsym r gaps horizontal current set 1
+
         # back to normal: Enter or Escape or $mod+r
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -242,8 +246,8 @@ exec --no-startup-id emote
 ##### i3-gaps ##############
 for_window [class=".*"] border pixel 2 
 gaps inner 10
-gaps outer 1
-#gaps horizontal 2
+#gaps outer 10
+gaps horizontal 20
 
 ################# i3-radius #######################
 smart_borders on

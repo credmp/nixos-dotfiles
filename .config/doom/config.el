@@ -161,7 +161,8 @@
 
 ;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
 ;; (add-to-list 'load-path "/home/arjen/.nix-profile/share/emacs/site-lisp/mu4e")
-(add-to-list 'load-path "/home/arjen/.config/doom/mu-1.12.2/mu4e")
+(add-to-list 'load-path "/nix/store/z8h6alrng4zfjdk3nh7q3l5j5wz4dy90-emacs-mu4e-1.12.2/share/emacs/site-lisp/elpa/mu4e-1.12.2")
+;; (add-to-list 'load-path "/home/arjen/.config/doom/mu/mu4e")
 (after! mu4e
   ;; Mail configuration
   ;; add to $DOOMDIR/config.el
@@ -296,6 +297,7 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package! org-roam
   :config
+  (require 'org-roam-protocol)
   (setq org-roam-capture-ref-templates '(("r"
                                           "ref" plain "* Notes
 

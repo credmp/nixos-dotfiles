@@ -1,5 +1,7 @@
 { config, lib, pkgs, ... }:
-
+let
+  unstable = import <nixos-unstable> {};
+in
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -24,6 +26,7 @@
   home.packages = with pkgs; [
     # desktop apps
     firefox
+    chromium
     emacs29
     neovim
     ripgrep
@@ -36,7 +39,8 @@
     appimage-run # to run stack appimage
     polkit_gnome
     spotify
-    mu
+    unstable.mu
+    unstable.android-studio
     msmtp
     isync
     # okular # my goto for presentations
@@ -73,7 +77,7 @@
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
-    emacsPackages.mu4e
+    unstable.emacsPackages.mu4e
     inter
     # shell
     fzf
@@ -92,6 +96,7 @@
     betterlockscreen
     # docker
     podman-compose
+    audacity
     # tmux-yank dependency
     xsel
     xclip
@@ -101,7 +106,7 @@
     zathura
     (makeDesktopItem {
       name = "org-protocol";
-      exec = "emacsclient -- %u";
+      exec = "emacsclient -c  %u";
       comment = "Org protocol";
       desktopName = "org-protocol";
       type = "Application";
