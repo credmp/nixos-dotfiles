@@ -141,3 +141,5 @@
 
 ;; (package! treesit-auto)
 ;; (package! templ-ts-mode)
+
+(package! olivetti)

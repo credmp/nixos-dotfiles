@@ -28,6 +28,7 @@ in
     firefox
     chromium
     emacs29
+    hunspell
     neovim
     ripgrep
     coreutils
