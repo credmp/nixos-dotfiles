@@ -565,29 +565,29 @@ Refer to `org-agenda-prefix-format' for more information."
   :after org-agenda
   :init
   (defun org-agenda-open-hook ()
-	(olivetti-mode))
+    (olivetti-mode))
 
   (add-hook 'org-agenda-mode-hook 'org-agenda-open-hook)
 
   (setq org-agenda-span 1
-		org-agenda-start-day "+0d"
-		org-agenda-skip-timestamp-if-done t
-		org-agenda-skip-deadline-if-done t
-		org-agenda-skip-scheduled-if-done t
-		org-agenda-skip-scheduled-if-deadline-is-shown t
-		org-agenda-skip-timestamp-if-deadline-is-shown t
-		org-agenda-time-grid '((daily) () "" "")
-		org-agenda-hide-tags-regexp ".*"
-		org-agenda-prefix-format '((agenda . " %?-2i %t ")
-								   (todo . " %-12:c")
-								   (tags . " %-12:c")
-								   (search . " %i %-12:c"))
-		;; https://fontawesome.com/v4/icons/
-		org-agenda-category-icon-alist `(("Planning", (list (all-the-icons-faicon "clipboard" :heigh 0.8)) nil nil :ascent center)
-										 ("work", (list (all-the-icons-faicon "graduation-cap" :heigh 0.8)) nil nil :ascent center)
-										 ("afstuderen", (list (all-the-icons-faicon "user" :heigh 0.8)) nil nil :ascent center)
-										 ("tickler", (list (all-the-icons-faicon "clock-o" :heigh 0.8)) nil nil :ascent center))
-		)  
+        org-agenda-start-day "+0d"
+        org-agenda-skip-timestamp-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-scheduled-if-deadline-is-shown t
+        org-agenda-skip-timestamp-if-deadline-is-shown t
+        org-agenda-time-grid '((daily) () "" "")
+        org-agenda-hide-tags-regexp ".*"
+        org-agenda-prefix-format '((agenda . " %?-2i %t ")
+                                   (todo . " %-12:c")
+                                   (tags . " %-12:c")
+                                   (search . " %i %-12:c"))
+        ;; https://fontawesome.com/v4/icons/
+        org-agenda-category-icon-alist `(("Planning", (list (all-the-icons-faicon "clipboard" :heigh 0.8)) nil nil :ascent center)
+                                         ("work", (list (all-the-icons-faicon "graduation-cap" :heigh 0.8)) nil nil :ascent center)
+                                         ("afstuderen", (list (all-the-icons-faicon "user" :heigh 0.8)) nil nil :ascent center)
+                                         ("tickler", (list (all-the-icons-faicon "clock-o" :heigh 0.8)) nil nil :ascent center))
+        )
   ;; (setq org-super-agenda-groups '((:name "Today"
   ;;                                  :time-grid t
   ;;                                  :scheduled today)
@@ -603,53 +603,53 @@ Refer to `org-agenda-prefix-format' for more information."
   ;;                                  :deadline future)
   ;;                                 (:priority<= "B"
   ;;                                  :order 1)))
-;;  (org-super-agenda-mode t)
+  ;;  (org-super-agenda-mode t)
   (setq org-super-agenda-groups
-       '(;; Each group has an implicit boolean OR operator between its selectors.
-         (:name " Overdue "  ; Optionally specify section name
-                :scheduled past
-                :order 2
-                :face 'error)
+        '(;; Each group has an implicit boolean OR operator between its selectors.
+          (:name " Overdue "  ; Optionally specify section name
+           :scheduled past
+           :order 2
+           :face 'error)
 
-		 (:name "Dev "
-                :and(:category "development" :not (:tag "event"))
-                :order 3)
-		 
-		 (:name "NOVI "
-                :and(:category "Work" :not (:tag "event"))
-                :order 3)
-		 
-         (:name "Recurring "
-                :and(:category "tickler" :not (:tag "event"))
-                :order 3)
-		 
-         (:name "Planning "
-                :and(:category "Planning" :not (:tag "event"))
-                :order 3)
-		 
-         (:name "Meetup "
-                :and(:category "Meetup" :not (:tag "event"))
-                :order 3)
+	  (:name "Dev "
+           :and(:category "development" :not (:tag "event"))
+           :order 3)
 
-         (:name "Sort these out (inbox) "
-                :and(:category "Inbox" :not (:tag "event"))
-                :order 3)
+	  (:name "NOVI "
+           :and(:category "Work" :not (:tag "event"))
+           :order 3)
 
-         (:name "Personal "
-                :and(:category "Personal" :not (:tag "event"))
-                :order 3)
+          (:name "Recurring "
+           :and(:category "tickler" :not (:tag "event"))
+           :order 3)
 
-         (:name "Afstudeer studenten "
-                :and(:category "afstuderen" :not (:tag "event"))
-                :order 3)
+          (:name "Planning "
+           :and(:category "Planning" :not (:tag "event"))
+           :order 3)
 
-         (:name " Today "  ; Optionally specify section name
-                :time-grid t
-                :date today
-                :scheduled today
-                :order 1
-                :face 'warning))
-	   )
+          (:name "Meetup "
+           :and(:category "Meetup" :not (:tag "event"))
+           :order 3)
+
+          (:name "Sort these out (inbox) "
+           :and(:category "Inbox" :not (:tag "event"))
+           :order 3)
+
+          (:name "Personal "
+           :and(:category "Personal" :not (:tag "event"))
+           :order 3)
+
+          (:name "Afstudeer studenten "
+           :and(:category "afstuderen" :not (:tag "event"))
+           :order 3)
+
+          (:name " Today "  ; Optionally specify section name
+           :time-grid t
+           :date today
+           :scheduled today
+           :order 1
+           :face 'warning))
+	)
   
   ;; (setq  org-deadline-warning-days 7
   ;;        org-agenda-breadcrumbs-separator " ❱ ")

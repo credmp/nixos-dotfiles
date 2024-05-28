@@ -28,7 +28,6 @@ in
     firefox
     chromium
     emacs29
-    hunspell
     neovim
     ripgrep
     coreutils
@@ -48,6 +47,7 @@ in
     hunspell
     hunspellDicts.nl_NL
     hunspellDicts.en_US
+    wordnet
     flameshot
     discord
     zotero
@@ -75,6 +75,8 @@ in
     nextcloud-client
     notify-osd
     dunst
+    # games
+    unstable.factorio
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
@@ -232,5 +234,4 @@ in
  };
 
  fonts.fontconfig.enable = true;
-
 }
