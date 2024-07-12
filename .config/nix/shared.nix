@@ -14,17 +14,18 @@
 
   security.polkit.enable = true;
   services.pcscd.enable = true;
-
+  
+  services.dbus.packages = [ pkgs.gcr ];
   services.geoclue2.enable = true;
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "gtk2";
+    pinentryPackage = pkgs.pinentry-gnome3;
     enableSSHSupport = true;
   };
 
   virtualisation = {
     docker = {
- 	    enable = true;
+     enable = true;
 
       # Create a `docker` alias for podman, to use it as a drop-in replacement
       #dockerCompat = true;
@@ -69,9 +70,8 @@
        xterm.enable = false;
      };
    
-     displayManager = {
-       defaultSession = "none+i3";
-     };
+     #displayManager.gdm.enable = true;
+     #desktopManager.gnome.enable = true;
 
      windowManager.i3 = {
        enable = true;
@@ -79,20 +79,43 @@
          dmenu #application launcher most people use
          i3status # gives you the default i3 status bar
          i3lock #default i3 screen locker
-         i3blocks #if you are planning on using i3blocks over i3status
+        i3blocks #if you are planning on using i3blocks over i3status
        ];
      };
-  };
+   };
+   services.displayManager = {
+       defaultSession = "none+i3";
+   };
 
+   xdg.portal.enable = true;
+   xdg.portal.config.common.default = "*";
+
+   xdg.portal.xdgOpenUsePortal = true;
+   xdg.portal.extraPortals = [
+           #pkgs.xdg-desktop-portal-gtk
+	   pkgs.xdg-desktop-portal-gnome
+	   pkgs.xdg-desktop-portal-wlr
+   ];
+
+  networking.firewall.trustedInterfaces = [ "p2p-wl+" ];
+
+  networking.firewall.allowedTCPPorts = [ 7236 7250 ];
+  networking.firewall.allowedUDPPorts = [ 7236 5353 ];
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
+    xkb = {
+	    layout = "us";
+	    variant = "";
+    };
   };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
+services.avahi = {
+  enable = true;
+  nssmdns = true;
+  openFirewall = true;
+};
   services.fwupd.enable = true;
 
 
@@ -123,7 +146,7 @@
     shell = pkgs.zsh;
     packages = with pkgs; [
       alacritty
-      chromium
+      gnome-network-displays
     ];
   };
 
@@ -146,4 +169,6 @@
     "/libexec"
     "/share/nix-direnv"
   ];
+
+  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
