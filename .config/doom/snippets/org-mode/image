@@ -3,4 +3,8 @@
 # key: image
 # --
 
+#+CAPTION: $1
+#+NAME: fig:$2
 #+ATTR_HTML: :width 75% :align center
+#+ATTR_ORG: :width 600
+[[~/pad/naar/$2.png]]

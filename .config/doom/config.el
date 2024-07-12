@@ -3,7 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-(doom/set-frame-opacity 100)
+(doom/set-frame-opacity 97)
 (setq fancy-splash-image (expand-file-name "assets/blackhole-lines.svg" doom-user-dir))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -41,7 +41,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'catppuccin)
+(setq doom-theme 'modus-vivendi)
 
 (setq
  default-font "JetBrainsMono Nerd Font"
@@ -370,6 +370,13 @@ Refer to `org-agenda-prefix-format' for more information."
                       "#+title: ${title}\n#+filetags: :thesis:\n")
            :immediate-finish nil
            :unnarrowed t)
+          ("u"
+           "substack" plain "* Topic\n\n %?"
+           :if-new
+           (file+head "substack/%<%Y%m%d%H%M%S>-${slug}.org"
+                      "#+title: ${title}\n#+filetags: :substack:\n")
+           :immediate-finish t
+           :unnarrowed t)
           ("o"
            "OU Study Notes" plain "%?"
            :if-new
@@ -517,33 +524,33 @@ Refer to `org-agenda-prefix-format' for more information."
   ;;(setq citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: ${tags}")
   (citar-org-roam-mode))
 
-;;(setq rascal-language-server-command
-;;      "java -cp /home/arjen/Downloads/bla/rascal-language-servers/rascal-lsp/target/rascal-lsp-2.11.3-SNAPSHOT.jar:/home/arjen/.m2/repository/org/rascalmpl/rascal/0.27.3/rascal-0.27.3.jar org.rascalmpl.vscode.lsp.rascal.RascalLanguageServer")
+(setq rascal-language-server-command
+      "java -cp /home/arjen/Downloads/bla/rascal-language-servers/rascal-lsp/target/rascal-lsp-2.11.3-SNAPSHOT.jar:/home/arjen/.m2/repository/org/rascalmpl/rascal/0.27.3/rascal-0.27.3.jar org.rascalmpl.vscode.lsp.rascal.RascalLanguageServer")
 
-;; (after! lsp-mode
-;;   (add-to-list 'lsp-language-id-configuration
-;;                '(".*\\.rsc$" . "rascal"))
+(after! lsp-mode
+  (add-to-list 'lsp-language-id-configuration
+               '(".*\\.rsc$" . "rascal"))
 
-;;   (setq lsp-semantic-tokens-enable t)
-;;   (defun lsp-rascal-tcp-connect-to-port ()
-;;     (list
-;;      :connect (lambda (filter sentinel name _environment-fn)
-;;                 (let* ((host "localhost")
-;;                        (port 8888)
-;;                        (tcp-proc (lsp--open-network-stream host port (concat name "::tcp"))))
+  (setq lsp-semantic-tokens-enable t)
+  (defun lsp-rascal-tcp-connect-to-port ()
+    (list
+     :connect (lambda (filter sentinel name _environment-fn)
+                (let* ((host "localhost")
+                       (port 8888)
+                       (tcp-proc (lsp--open-network-stream host port (concat name "::tcp"))))
 
-;;                   (set-process-query-on-exit-flag tcp-proc nil)
-;;                   (set-process-filter tcp-proc filter)
-;;                   (set-process-sentinel tcp-proc sentinel)
-;;                   (cons tcp-proc tcp-proc)))
-;;      :test? (lambda () t)))
+                  (set-process-query-on-exit-flag tcp-proc nil)
+                  (set-process-filter tcp-proc filter)
+                  (set-process-sentinel tcp-proc sentinel)
+                  (cons tcp-proc tcp-proc)))
+     :test? (lambda () t)))
 
-;;   (lsp-register-client
-;;    (make-lsp-client :new-connection (lsp-rascal-tcp-connect-to-port)
-;;                     :major-modes '(rascal-mode)
-;;                     :server-id 'rascal-lsp)))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-rascal-tcp-connect-to-port)
+                    :major-modes '(rascal-mode)
+                    :server-id 'rascal-lsp)))
 
-;; (add-to-list 'auto-mode-alist '("\\.rsc$" . rascal-mode))
+(add-to-list 'auto-mode-alist '("\\.rsc$" . rascal-mode))
 
 ;;(require 'all-the-icons)
 (use-package! all-the-icons
@@ -825,3 +832,14 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; (add-to-list 'eglot-server-programs
 ;;              '((web-mode :language-id "html") . ("npx" "tailwindcss-language-server" "--stdio")))
 
+
+;; fix until resolved: https://github.com/doomemacs/doomemacs/issues/7733
+(defun my/org-tab-conditional ()
+  (interactive)
+  (if (yas-active-snippets)
+      (yas-next-field-or-maybe-expand)
+    (org-cycle)))
+
+(map! :after evil-org
+      :map evil-org-mode-map
+      :i "<tab>" #'my/org-tab-conditional)

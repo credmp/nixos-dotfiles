@@ -28,6 +28,7 @@ in
     firefox
     chromium
     emacs29
+    okular
     neovim
     ripgrep
     coreutils
@@ -40,7 +41,6 @@ in
     polkit_gnome
     spotify
     unstable.mu
-    unstable.obsidian
     msmtp
     isync
     # okular # my goto for presentations
@@ -51,7 +51,7 @@ in
     flameshot
     discord
     zotero
-    jetbrains.idea-ultimate
+    #jetbrains.idea-ultimate
     emote
     # direnv
     direnv
@@ -76,7 +76,7 @@ in
     notify-osd
     dunst
     # games
-    unstable.factorio
+    #unstable.factorio
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
@@ -193,6 +193,8 @@ in
 
   home.sessionVariables = rec {
     OPENAI_API_KEY="$(cat ~/.config/openai/key)";
+
+    NIXOS_OZONE_WL = "1";
   };
 
   services.picom = {
@@ -204,7 +206,7 @@ in
 
   services.emacs = {
     enable = true;
-    package = pkgs.emacs29-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs29; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 
  systemd.user = {
@@ -234,4 +236,5 @@ in
  };
 
  fonts.fontconfig.enable = true;
+
 }
