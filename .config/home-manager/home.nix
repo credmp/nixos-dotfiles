@@ -50,7 +50,7 @@ in
     wordnet
     flameshot
     discord
-    zotero
+    zotero_7
     #jetbrains.idea-ultimate
     emote
     # direnv

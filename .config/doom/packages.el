@@ -52,15 +52,19 @@
 ;; Tailwind CSS
 ;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
-(package! benchmark-init)
+;; (package! benchmark-init)
 
-(package! org-transclusion)
+;; (package! org-transclusion)
 
-;; (package! denote)
-;; (package! consult-notes)
+(package! modus-themes)
 
-;; (package! denote-citar
-;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))
+;; Denote experiments
+(package! denote)
+(package! consult-notes)
+
+(package! denote-citar
+  :recipe (:type git :host github :repo "pprevos/denote-citar"))
+
 (package! citar-org-roam)
 
 (package! rascal-mode
