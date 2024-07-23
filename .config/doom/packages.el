@@ -57,23 +57,27 @@
 ;; (package! org-transclusion)
 
 (package! modus-themes)
+(package! ef-themes)
+
+(package! spacious-padding)
 
 ;; Denote experiments
-(package! denote)
-(package! consult-notes)
+;; (package! denote)
+;; (package! consult-notes)
 
-(package! denote-citar
-  :recipe (:type git :host github :repo "pprevos/denote-citar"))
+;; (package! denote-citar
+;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))
 
 (package! citar-org-roam)
 
-(package! rascal-mode
-  :recipe (:type git :host github :repo "bldl/rascal-emacs-mode"))
+;; (package! rascal-mode
+;;   :recipe (:type git :host github :repo "bldl/rascal-emacs-mode"))
 ;; (package! rascal-mode
 ;;   :recipe (:local-repo "nursery/rascal-mode"))
 
 ;; Fix for org-roam link issue
-(package! org :pin "ca873f7")
+;; (package! org :pin "ca873f7")
+(package! org)
 
 (package! org-roam-dblocks
   :recipe (:host github :repo "chrisbarrett/nursery"
