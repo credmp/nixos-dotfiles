@@ -343,6 +343,12 @@ Refer to `org-agenda-prefix-format' for more information."
            (file+head "comics/%<%Y%m%d%H%M%S>-${slug}.org"
                       "#+title: ${title}\n#+filetags: :area:comics:\n")
            :unnarrowed t)
+          ("l"
+           "learntostudy" plain "%?"
+           :if-new
+           (file+head "learntostudy/%<%Y%m%d%H%M%S>-${slug}.org"
+                      "#+title: ${title}\n#+filetags: :learntostudy:\n")
+           :unnarrowed t)
           ("p"
            "papers" plain "%?"
            :if-new
