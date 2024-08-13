@@ -472,10 +472,10 @@ Refer to `org-agenda-prefix-format' for more information."
 
 
 (after! citar
-  (setq! reftex-default-bibliography "/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib"
-         bibtex-completion-bibliography '("/home/arjen/stack/Studie/Open-Universiteit/My-Library.bib")
+  (setq! reftex-default-bibliography "/home/arjen/stack/My-Library.bib"
+         bibtex-completion-bibliography '("/home/arjen/stack/My-Library.bib")
          citar-file-note-org-include '(org-id org-roam-ref)
-         citar-bibliography '("~/stack/Studie/Open-Universiteit/My-Library.bib")
+         citar-bibliography '("~/stack/My-Library.bib")
          citar-notes-paths '("~/stack/roam/papers")
          citar-library-paths '("~/stack/Zotero/pdf"))
 
@@ -781,7 +781,7 @@ Refer to `org-agenda-prefix-format' for more information."
   (setq org-modern-block-fringe 2)
   ;; (setq org-modern-table nil)
   ;; (setq org-modern-timestamp nil)
-  (global-org-modern-mode)
+  ;;(global-org-modern-mode)
   ;; Ignore optie voor header exports
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
@@ -858,48 +858,88 @@ Refer to `org-agenda-prefix-format' for more information."
 
 
 ;; -- denote experiment
-;; (use-package! denote
-;;   :custom
-;;   (denote-directory (expand-file-name "~/stack/denote"))
-;;   :config
-;;   (add-hook 'dired-mode-hook #'denote-dired-mode)
-;;   (let ((map global-map))
-;;     (define-key map (kbd "C-c n n") #'denote)
-;;     (define-key map (kbd "C-c n c") #'denote-region) ; "contents" mnemonic
-;;     (define-key map (kbd "C-c n N") #'denote-type)
-;;     (define-key map (kbd "C-c n d") #'denote-date)
-;;     (define-key map (kbd "C-c n z") #'denote-signature) ; "zettelkasten" mnemonic
-;;     (define-key map (kbd "C-c n s") #'denote-subdirectory)
-;;     (define-key map (kbd "C-c n t") #'denote-template)
-;;     ;; If you intend to use Denote with a variety of file types, it is
-;;     ;; easier to bind the link-related commands to the `global-map', as
-;;     ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
-;;     ;; `markdown-mode-map', and/or `text-mode-map'.
-;;     (define-key map (kbd "C-c n i") #'denote-link) ; "insert" mnemonic
-;;     (define-key map (kbd "C-c n I") #'denote-add-links)
-;;     (define-key map (kbd "C-c n b") #'denote-backlinks)
-;;     (define-key map (kbd "C-c n f f") #'denote-find-link)
-;;     (define-key map (kbd "C-c n f b") #'denote-find-backlink)
-;;     ;; Note that `denote-rename-file' can work from any context, not just
-;;     ;; Dired bufffers.  That is why we bind it here to the `global-map'.
-;;     (define-key map (kbd "C-c n r") #'denote-rename-file)
-;;     (define-key map (kbd "C-c n R") #'denote-rename-file-using-front-matter))
+(use-package! denote
+  :custom
+  (denote-directory (expand-file-name "~/stack/denote"))
+  (require 'denote-journal-extras)
+  :config
+  (add-hook 'dired-mode-hook #'denote-dired-mode)
+  (let ((map global-map))
+    (define-key map (kbd "C-c n n") #'denote)
+    (define-key map (kbd "C-c n c") #'denote-region) ; "contents" mnemonic
+    (define-key map (kbd "C-c n N") #'denote-type)
+    (define-key map (kbd "C-c n d") #'denote-date)
+    (define-key map (kbd "C-c n z") #'denote-signature) ; "zettelkasten" mnemonic
+    (define-key map (kbd "C-c n s") #'denote-subdirectory)
+    (define-key map (kbd "C-c n t") #'denote-template)
+    ;; If you intend to use Denote with a variety of file types, it is
+    ;; easier to bind the link-related commands to the `global-map', as
+    ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
+    ;; `markdown-mode-map', and/or `text-mode-map'.
+    (define-key map (kbd "C-c n i") #'denote-link) ; "insert" mnemonic
+    (define-key map (kbd "C-c n I") #'denote-add-links)
+    (define-key map (kbd "C-c n b") #'denote-backlinks)
+    (define-key map (kbd "C-c n f f") #'denote-find-link)
+    (define-key map (kbd "C-c n f b") #'denote-find-backlink)
+    ;; Note that `denote-rename-file' can work from any context, not just
+    ;; Dired bufffers.  That is why we bind it here to the `global-map'.
+    (define-key map (kbd "C-c n r") #'denote-rename-file)
+    (define-key map (kbd "C-c n R") #'denote-rename-file-using-front-matter))
 
-;;   ;; Key bindings specifically for Dired.
-;;   (let ((map dired-mode-map))
-;;     (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
-;;     (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
-;;     (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
-;;     (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
+  ;; Key bindings specifically for Dired.
+  (let ((map dired-mode-map))
+    (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
+    (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
+    (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
+    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
 
-;;   (with-eval-after-load 'org-capture
-;;     (setq denote-org-capture-specifiers "%l\n%i\n%?")
-;;     (add-to-list 'org-capture-templates
-;;                  '("n" "New note (with denote.el)" plain
-;;                    (file denote-last-path)
-;;                    #'denote-org-capture
-;;                    :no-save t
-;;                    :immediate-finish nil
-;;                    :kill-buffer t
-;;                    :jump-to-captured t)))
-;;   )
+  (with-eval-after-load 'org-capture
+    (setq denote-org-capture-specifiers "%l\n%i\n%?")
+    (add-to-list 'org-capture-templates
+                 '("n" "New note (with denote.el)" plain
+                   (file denote-last-path)
+                   #'denote-org-capture
+                   :no-save t
+                   :immediate-finish nil
+                   :kill-buffer t
+                   :jump-to-captured t)))
+  )
+
+
+(use-package! denote-explore
+  :after denote
+  :custom
+  ;; Where to store network data and in which format
+  (denote-explore-network-directory "<folder>")
+  (denote-explore-network-filename "<filename?")
+  (denote-explore-network-format 'graphviz)
+  :bind
+  (;; Statistics
+   ("C-c w e c" . denote-explore-count-notes)
+   ("C-c w e C" . denote-explore-count-keywords)
+   ("C-c w e b" . denote-explore-keywords-barchart)
+   ("C-c w e x" . denote-explore-extensions-barchart)
+   ;; Random walks
+   ("C-c w e r" . denote-explore-random-note)
+   ("C-c w e l" . denote-explore-random-link)
+   ("C-c w e k" . denote-explore-random-keyword)
+   ;; Denote Janitor
+   ("C-c w e d" . denote-explore-identify-duplicate-notes)
+   ("C-c w e z" . denote-explore-zero-keywords)
+   ("C-c w e s" . denote-explore-single-keywords)
+   ("C-c w e o" . denote-explore-sort-keywords)
+   ("C-c w e r" . denote-explore-rename-keywords)
+   ;; Visualise denote
+   ("C-c w e n" . denote-explore-network)
+   ("C-c w e v" . denote-explore-network-regenerate)
+   ("C-c w e D" . denote-explore-degree-barchart)))
+
+(use-package consult
+  :ensure t)
+(use-package consult-notes
+  :ensure t
+  :after consult)
+
+;; (use-package denote-citar
+;;   :ensure t
+;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))

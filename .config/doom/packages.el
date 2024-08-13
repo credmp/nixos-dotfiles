@@ -62,11 +62,12 @@
 (package! spacious-padding)
 
 ;; Denote experiments
-;; (package! denote)
-;; (package! consult-notes)
+(package! denote)
+(package! denote-explore)
+(package! consult-notes)
 
-;; (package! denote-citar
-;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))
+(package! denote-citar
+  :recipe (:type git :host github :repo "pprevos/denote-citar"))
 
 (package! citar-org-roam)
 

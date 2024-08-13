@@ -28,6 +28,7 @@ in
     firefox
     chromium
     emacs29
+    unstable.obsidian
     okular
     neovim
     ripgrep
@@ -50,7 +51,7 @@ in
     wordnet
     flameshot
     discord
-    zotero_7
+    zotero
     #jetbrains.idea-ultimate
     emote
     # direnv
