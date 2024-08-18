@@ -118,7 +118,8 @@
 
 ;; Center emacs on large screen
 (use-package olivetti
-  :ensure t)
+  :ensure t
+  :hook org-mode)
 
 ;; Add icons to Emacs for use in commands
 (use-package nerd-icons
@@ -237,6 +238,24 @@
 
 (use-package org
   :config
+  (defun aw/gather-agenda-files ()
+    (denote-directory-files "_planning"))
+
+  (defun aw/denote-project-update-tag ()
+    "Update PROJECT tag in the current buffer."
+    (when (and
+           (not (active-minibuffer-window))
+           (aw/org-buffer-p))
+      (if (aw/has-todo-items-p) ;; it has todo items
+          (if (not (seq-contains (vulpea-buffer-tags-get) "planning")) ;; but not yet the planning tag
+            (vulpea-buffer-tags-add "planning"))  ;; add it
+          (if (seq-contains (vulpea-buffer-tags-get) "planning") ;; else (no planning items)
+            (vulpea-buffer-tags-remove "planning")))
+      (denote-rename-file-using-front-matter (buffer-file-name))))
+
+  ;; (add-hook 'find-file-hook #'aw/denote-project-update-tag)
+  (add-hook 'before-save-hook #'aw/denote-project-update-tag)
+  
   (setq org-use-property-inheritance t)
   ;; Enable code block execution for python
   (org-babel-do-load-languages
@@ -442,9 +461,9 @@
   :after denote
   :custom
   ;; Where to store network data and in which format
-  (denote-explore-network-directory "<folder>")
-  (denote-explore-network-filename "<filename?")
-  (denote-explore-network-format 'graphviz)
+  (denote-explore-network-directory "/home/arjen/stack/denote/")
+  (denote-explore-network-filename "network")
+  (denote-explore-network-format 'gexf)
   :bind
   (;; Statistics
    ("C-c w e c" . denote-explore-count-notes)
@@ -468,6 +487,14 @@
 
 (use-package citar-denote
   :ensure t)
+
+(defun aw/org-buffer-p (&optional buffer)
+  "Return t if BUFFER is for an Org file.
+If BUFFER is not specified, use the current buffer."
+  (let ((buffer (or buffer (current-buffer))))
+    (with-current-buffer buffer
+      (derived-mode-p 'org-mode))))
+      
 
 (use-package org-roam
   :ensure t
@@ -653,7 +680,7 @@ tasks."
             'todo))
       nil 'first-match))                     
 
-  (add-hook 'find-file-hook #'vulpea-project-update-tag)
+  ;;(add-hook 'find-file-hook #'vulpea-project-update-tag)
   (add-hook 'before-save-hook #'vulpea-project-update-tag)
 
   (defun vulpea-project-update-tag ()
@@ -675,18 +702,20 @@ tasks."
           (when (or (seq-difference tags original-tags)
                     (seq-difference original-tags tags))
             (apply #'vulpea-buffer-tags-set tags))))))
-
+  
   (defun vulpea-project-files ()
     "Return a list of note files containing 'planner' tag." ;
-    (seq-uniq
-     (seq-map
-      #'car
-      (org-roam-db-query
-       [:select [nodes:file]
-        :from tags
-        :left-join nodes
-        :on (= tags:node-id nodes:id)
-        :where (like tag (quote "%\"planner\"%"))]))))
+    (append
+      (seq-uniq
+       (seq-map
+        #'car
+        (org-roam-db-query
+         [:select [nodes:file]
+          :from tags
+          :left-join nodes
+          :on (= tags:node-id nodes:id)
+          :where (like tag (quote "%\"planner\"%"))])))
+      (aw/gather-agenda-files))) ;; depends on the function from org definition above
 
   (defun vulpea-agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
@@ -745,12 +774,15 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;   :hook
 ;;   (org-mode . (lambda () (org-bullets-mode 1))))
 
-(use-package org-margin
-  :after org
-  :load-path "org-margin"
-  :hook org-mode)
+;; (use-package org-margin
+;;   :after org
+;;   :load-path "org-margin"
+;;   :hook org-mode)
  
-
+(use-package org-modern
+  :ensure t
+  :after org
+  :hook org-mode)
 
 (use-package org-noter
   :ensure t)
@@ -828,13 +860,13 @@ Refer to `org-agenda-prefix-format' for more information."
   
   
 
-(use-package visual-fill-column
-  :ensure t
-  :custom
-  (visual-fill-column-width 110)
-  (visual-fill-column-center-text t)
-  :hook
-  (org-mode . visual-fill-column-mode))
+;; (use-package visual-fill-column
+;;   :ensure t
+;;   :custom
+;;   (visual-fill-column-width 110)
+;;   (visual-fill-column-center-text t)
+;;   :hook
+;;   (org-mode . visual-fill-column-mode))
   
 
 (defun my/present-start ()
@@ -1049,8 +1081,8 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package parinfer-rust-mode
   :ensure t
-  :after clojure-mode
-  :hook (emacs-lisp-mode clojure-mode))
+  :after clojure-mode) ;; beware, it is soooo slow
+;;  :hook (emacs-lisp-mode clojure-mode))
 
 (use-package cider
   :ensure t)
@@ -1247,7 +1279,7 @@ Refer to `org-agenda-prefix-format' for more information."
    '("d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" "0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-   '(org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
+   '(org-modern org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
  '(safe-local-variable-values
    '((lsp-ltex-language . "nl")
      (lsp-ltex-language . nl-NL)
