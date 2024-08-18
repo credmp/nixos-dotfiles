@@ -14,7 +14,11 @@
 
   security.polkit.enable = true;
   services.pcscd.enable = true;
-  
+
+  services.devmon.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+
   services.dbus.packages = [ pkgs.gcr ];
   services.geoclue2.enable = true;
   programs.gnupg.agent = {
@@ -142,7 +146,7 @@ services.avahi = {
   users.users.arjen = {
     isNormalUser = true;
     description = "Arjen Wiersma";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "storage"];
     shell = pkgs.zsh;
     packages = with pkgs; [
       alacritty

@@ -17,7 +17,7 @@
 
   networking.hostName = "kratos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
+  nixpkgs.config.allowUnfree = true;
   hardware.bluetooth.settings = {
     General = {
       ControllerMode = "bredr";
