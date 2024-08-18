@@ -31,6 +31,7 @@ in
     unstable.obsidian
     okular
     neovim
+    unstable.obsidian
     ripgrep
     coreutils
     fd

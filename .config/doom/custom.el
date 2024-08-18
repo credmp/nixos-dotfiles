@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("aa688776604bbddbaba9e0c0d77e8eb5f88d94308f223d1962b6e6b902add6a0" "8d146df8bd640320d5ca94d2913392bc6f763d5bc2bb47bed8e14975017eea91" default))
+   '("99d1e29934b9e712651d29735dd8dcd431a651dfbe039df158aa973461af003e" "aa688776604bbddbaba9e0c0d77e8eb5f88d94308f223d1962b6e6b902add6a0" "8d146df8bd640320d5ca94d2913392bc6f763d5bc2bb47bed8e14975017eea91" default))
  '(emojify-display-style 'unicode)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(safe-local-variable-values

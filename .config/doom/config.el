@@ -906,6 +906,7 @@ Refer to `org-agenda-prefix-format' for more information."
   )
 
 
+
 (use-package! denote-explore
   :after denote
   :custom
@@ -943,3 +944,5 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; (use-package denote-citar
 ;;   :ensure t
 ;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))
+=======
+>>>>>>> 9ba8750 (feat: cleanup home-manager)
