@@ -1264,11 +1264,63 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package ox-hugo
   :ensure t)
 
+;; -- Latex
+
+(use-package reftex
+  :ensure t
+  :hook (LaTeX-mode . reftex-mode)
+  :custom
+  ;; Get RefTeX working with BibLaTeX, see
+  ;; http://tex.stackexchange.com/questions/31966/setting-up-reftex-with-biblatex-citation-commands/31992#31992.
+  (setq reftex-cite-format
+        '((?a . "\\autocite[]{%l}")
+          (?b . "\\blockcquote[]{%l}{}")
+          (?c . "\\cite[]{%l}")
+          (?f . "\\footcite[]{%l}")
+          (?n . "\\nocite{%l}")
+          (?p . "\\parencite[]{%l}")
+          (?s . "\\smartcite[]{%l}")
+          (?t . "\\textcite[]{%l}"))
+        (region-end)ftex-plug-into-AUCTeX t
+        reftex-toc-split-windows-fraction 0.3
+        ;; This is needed when `reftex-cite-format' is set. See
+        ;; https://superuser.com/a/1386206
+        LaTeX-reftex-cite-format-auto-activate nil)
+  )
+
 (use-package tex
   :ensure auctex)
 
 (use-package auctex
-  :ensure t)
+  :ensure t
+  :config
+  (add-to-list 'auto-mode-alist '("\\.tex\\'" . LaTeX-mode))
+
+  (setq TeX-parse-self t ; parse on load
+        TeX-auto-save t  ; parse on save
+        ;; Use hidden directories for AUCTeX files.
+        TeX-auto-local ".auctex-auto"
+        TeX-style-local ".auctex-style"
+        TeX-source-correlate-mode t
+        TeX-source-correlate-method 'synctex
+        ;; Don't start the Emacs server when correlating sources.
+        TeX-source-correlate-start-server nil
+        ;; Automatically insert braces after sub/superscript in `LaTeX-math-mode'.
+        TeX-electric-sub-and-superscript t
+        ;; Just save, don't ask before each compilation.
+        TeX-save-query nil
+        LaTeX-section-hook '(LaTeX-section-heading
+                             LaTeX-section-title
+                             LaTeX-section-toc
+                             LaTeX-section-section
+                             LaTeX-section-label)
+        LaTeX-fill-break-at-separators nil
+        LaTeX-item-indent 0))
+
+(use-package company-auctex
+  :ensure t
+  :config
+  (company-auctex-init))
 
 ;; -- Nursery projects
 ;; git clone git@github.com:chrisbarrett/nursery.git nursery
@@ -1286,7 +1338,7 @@ Refer to `org-agenda-prefix-format' for more information."
    '("d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" "0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-   '(auctex org-modern org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
+   '(company-auctex auctex org-modern org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
  '(safe-local-variable-values
    '((lsp-ltex-language . "nl")
      (lsp-ltex-language . nl-NL)

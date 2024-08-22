@@ -24,7 +24,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    emacs29
+    emacs29-pgtk
     # desktop apps
     firefox
     chromium
@@ -206,7 +206,7 @@ in
 
   services.emacs = {
     enable = true;
-    package = pkgs.emacs29; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+    package = pkgs.emacs29-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   };
 
  # systemd.user = {
