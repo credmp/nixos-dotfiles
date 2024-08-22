@@ -1264,6 +1264,12 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package ox-hugo
   :ensure t)
 
+(use-package tex
+  :ensure auctex)
+
+(use-package auctex
+  :ensure t)
+
 ;; -- Nursery projects
 ;; git clone git@github.com:chrisbarrett/nursery.git nursery
 (add-to-list 'load-path "~/.config/emacs/nursery/lisp")
@@ -1275,11 +1281,12 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(auth-source-save-behavior nil)
  '(custom-safe-themes
    '("d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" "0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-   '(org-modern org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
+   '(auctex org-modern org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
  '(safe-local-variable-values
    '((lsp-ltex-language . "nl")
      (lsp-ltex-language . nl-NL)
@@ -1294,30 +1301,30 @@ Refer to `org-agenda-prefix-format' for more information."
       (progn
        (load filename))))
 
-;; see: https://emacs.stackexchange.com/questions/39359/tool-bar-in-emacsclient/39361#39361
-(defun my-frame-tweaks (&optional frame)
-  "My personal frame tweaks."
-  (unless frame
-    (setq frame (selected-frame)))
-  (when frame
-    (with-selected-frame frame
-      (when (display-graphic-p)
-        (tool-bar-mode -1))))
+;; ;; see: https://emacs.stackexchange.com/questions/39359/tool-bar-in-emacsclient/39361#39361
+;; (defun my-frame-tweaks (&optional frame)
+;;   "My personal frame tweaks."
+;;   (unless frame
+;;     (setq frame (selected-frame)))
+;;   (when frame
+;;     (with-selected-frame frame
+;;       (when (display-graphic-p)
+;;         (tool-bar-mode -1))))
 
-  (set-frame-parameter (selected-frame) 'alpha '(95 95))
-  (add-to-list 'default-frame-alist '(alpha 95 95))
+;;   (set-frame-parameter (selected-frame) 'alpha '(95 95))
+;;   (add-to-list 'default-frame-alist '(alpha 95 95))
 
-  (set-face-font 'default "JetbrainsMono Nerd Font-16")
-  (catppuccin-reload))
+;;   (set-face-font 'default "JetbrainsMono Nerd Font-16")
+;;   (catppuccin-reload))
   
-
-;; For the case that the init file runs after the frame has been created
-;; Call of emacs without --daemon option.
-(my-frame-tweaks)
-;; For the case that the init file runs before the frame is created.
-;; Call of emacs with --daemon option.
-(add-hook 'after-make-frame-functions #'my-frame-tweaks t)
-(add-hook 'server-after-make-frame-hook #'catppuccin-reload)
+(set-face-font 'default "JetbrainsMono Nerd Font-12")
+;; ;; For the case that the init file runs after the frame has been created
+;; ;; Call of emacs without --daemon option.
+;; (my-frame-tweaks)
+;; ;; For the case that the init file runs before the frame is created.
+;; ;; Call of emacs with --daemon option.
+;; (add-hook 'after-make-frame-functions #'my-frame-tweaks t)
+;; (add-hook 'server-after-make-frame-hook #'catppuccin-reload)
 
 
 

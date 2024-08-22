@@ -74,23 +74,25 @@
        xterm.enable = false;
      };
    
-     #displayManager.gdm.enable = true;
-     #desktopManager.gnome.enable = true;
+     # displayManager.sddm.enable = true;
+     # desktopManager.plasma6.enable = true;
 
-     windowManager.i3 = {
-       enable = true;
-       extraPackages = with pkgs; [
-         dmenu #application launcher most people use
-         i3status # gives you the default i3 status bar
-         i3lock #default i3 screen locker
-        i3blocks #if you are planning on using i3blocks over i3status
-       ];
-     };
+     #windowManager.i3 = {
+     #  enable = true;
+     #  extraPackages = with pkgs; [
+     #    dmenu #application launcher most people use
+     #    i3status # gives you the default i3 status bar
+     #    i3lock #default i3 screen locker
+     #    i3blocks #if you are planning on using i3blocks over i3status
+     #  ];
+     #};
    };
-   services.displayManager = {
-       defaultSession = "none+i3";
-   };
-
+   services.displayManager.sddm.enable = true;
+   services.desktopManager.plasma6.enable = true;
+   #services.displayManager = {
+   #    defaultSession = "none+i3";
+   #};
+   #programs.xwayland.enable = true;
    xdg.portal.enable = true;
    xdg.portal.config.common.default = "*";
 
@@ -117,7 +119,7 @@
   services.printing.enable = true;
 services.avahi = {
   enable = true;
-  nssmdns = true;
+  nssmdns4 = true;
   openFirewall = true;
 };
   services.fwupd.enable = true;
@@ -174,5 +176,5 @@ services.avahi = {
     "/share/nix-direnv"
   ];
 
-  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
