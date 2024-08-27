@@ -119,7 +119,9 @@
 ;; Center emacs on large screen
 (use-package olivetti
   :ensure t
-  :hook org-mode)
+  :hook org-mode
+  :config
+  (setq olivetti-body-width 96))
 
 ;; Add icons to Emacs for use in commands
 (use-package nerd-icons
@@ -1081,8 +1083,8 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package parinfer-rust-mode
   :ensure t
-  :after clojure-mode) ;; beware, it is soooo slow
-;;  :hook (emacs-lisp-mode clojure-mode))
+  :after clojure-mode ;; beware, it is soooo slow
+  :hook (clojure-mode))
 
 (use-package cider
   :ensure t)
@@ -1091,10 +1093,25 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package flycheck-clj-kondo
   :ensure t)
 
+
+
+(use-package clj-refactor
+  :ensure t
+  :config
+  (defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1) ; for adding require/use/import statements
+    ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+    (cljr-add-keybindings-with-prefix "C-c C-m"))
+  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
+  
+
 ;;then install the checker as soon as `clojure-mode' is loaded
 (use-package clojure-mode
   :ensure t
+  :after (flycheck-clj-kondo clj-refactor)
   :config
+  (require 'flycheck-clj-kondo)
   (flycheck-mode 1))
 
 (use-package clj-refactor
@@ -1227,8 +1244,8 @@ Refer to `org-agenda-prefix-format' for more information."
                         ( keyword string type)
                         ( assignment builtin constant decorator
                           escape-sequence number property string-interpolation)
-                        ( bracket delimiter function operator variable))))
-
+                        ( bracket delimiter function operator variable)))
+  :hook (go-mode . eglot-ensure))
 
 ;; Enable formatting on save automatically
 (use-package format-all
@@ -1285,8 +1302,8 @@ Refer to `org-agenda-prefix-format' for more information."
         reftex-toc-split-windows-fraction 0.3
         ;; This is needed when `reftex-cite-format' is set. See
         ;; https://superuser.com/a/1386206
-        LaTeX-reftex-cite-format-auto-activate nil)
-  )
+        LaTeX-reftex-cite-format-auto-activate nil))
+  
 
 (use-package tex
   :ensure auctex)
@@ -1322,6 +1339,70 @@ Refer to `org-agenda-prefix-format' for more information."
   :config
   (company-auctex-init))
 
+;; Casual Suite
+
+(use-package casual-calc
+  :ensure t
+  :bind (:map calc-mode-map ("C-o" . casual-calc-tmenu)))
+
+(use-package casual-info
+  :ensure t
+  :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
+
+(use-package casual-dired
+  :ensure t
+  :bind (:map dired-mode-map ("C-o" . casual-dired-tmenu)))
+
+;; (use-package casual-avy
+;;   :ensure nil
+;;   :bind ("M-g" . casual-avy-tmenu))
+
+(use-package casual-isearch
+  :ensure t
+  :bind (:map isearch-mode-map ("<f2>" . casual-isearch-tmenu)))
+
+(use-package ibuffer
+  :hook (ibuffer-mode . ibuffer-auto-mode)
+  :defer t)
+
+(use-package casual-ibuffer
+  :ensure t
+  :bind (:map
+         ibuffer-mode-map
+         ("C-o" . casual-ibuffer-tmenu)
+         ("F" . casual-ibuffer-filter-tmenu)
+         ("s" . casual-ibuffer-sortby-tmenu)
+         ("<double-mouse-1>" . ibuffer-visit-buffer) ; optional
+         ("M-<double-mouse-1>" . ibuffer-visit-buffer-other-window) ; optional
+         ("{" . ibuffer-backwards-next-marked) ; optional
+         ("}" . ibuffer-forward-next-marked)   ; optional
+         ("[" . ibuffer-backward-filter-group) ; optional
+         ("]" . ibuffer-forward-filter-group)  ; optional
+         ("$" . ibuffer-toggle-filter-group))  ; optional
+  :after (ibuffer))
+
+;; (use-package re-builder
+;;   :defer t)
+;; (use-package casual-re-builder
+;;   :ensure nil
+;;   :bind (:map
+;;          reb-mode-map ("C-o" . casual-re-builder-tmenu)
+;;          :map
+;;          reb-lisp-mode-map ("C-o" . casual-re-builder-tmenu))
+;;   :after (re-builder))
+
+(use-package bookmark
+  :ensure t
+  :defer t)
+
+(use-package casual-bookmarks
+  :ensure t
+  :bind (:map bookmark-bmenu-mode-map
+              ("C-o" . casual-bookmarks-tmenu)
+              ("S" . casual-bookmarks-sortby-tmenu)
+              ("J" . bookmark-jump))
+  :after (bookmark))
+
 ;; -- Nursery projects
 ;; git clone git@github.com:chrisbarrett/nursery.git nursery
 (add-to-list 'load-path "~/.config/emacs/nursery/lisp")
@@ -1338,7 +1419,7 @@ Refer to `org-agenda-prefix-format' for more information."
    '("d77d6ba33442dd3121b44e20af28f1fae8eeda413b2c3d3b9f1315fbda021992" "0527c20293f587f79fc1544a2472c8171abcc0fa767074a0d3ebac74793ab117" default))
  '(org-attach-id-dir "~/stack/roam-new/.attach/" nil nil "Customized with use-package org")
  '(package-selected-packages
-   '(company-auctex auctex org-modern org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
+   '(casual-bookmarks casual-ibuffer casual-isearch casual-dired casual-info casual-calc company-auctex auctex org-modern org-margin tree-sitter-langs tree-sitter consult-denote citar-denote consult denote-explore denote eglot-java spacious-padding parinfer-rust-mode org-super-agenda all-the-icons olivetti olivetti-mode yaml-mode which-key web-mode vulpea vterm-toggle visual-fill-column vertico undo-tree terraform-mode smartparens rustic projectile-ripgrep pdf-tools ox-hugo org-roam-ui org-roam-bibtex org-ref org-present org-noter org-download org-bullets orderless nix-mode nerd-icons-completion neil marginalia magit lsp-ui lsp-java lispyville imenu-list go-mode git-gutter-fringe+ format-all flycheck-clj-kondo evil-numbers evil-commentary envrc emmet-mode doom-modeline dockerfile-mode devdocs company-bibtex clj-refactor citar-org-roam chatgpt-shell catppuccin-theme better-jumper))
  '(safe-local-variable-values
    '((lsp-ltex-language . "nl")
      (lsp-ltex-language . nl-NL)
@@ -1403,3 +1484,5 @@ Refer to `org-agenda-prefix-format' for more information."
  '(window-divider ((t (:background "#24273a" :foreground "#24273a"))))
  '(window-divider-first-pixel ((t (:background "#24273a" :foreground "#24273a"))))
  '(window-divider-last-pixel ((t (:background "#24273a" :foreground "#24273a")))))
+
+;; Alex was here
