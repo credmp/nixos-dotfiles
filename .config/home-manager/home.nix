@@ -240,4 +240,5 @@ in
 
  fonts.fontconfig.enable = true;
 
+ nixpkgs.config.chromium.commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland --use-angle=vulkan";
 }
