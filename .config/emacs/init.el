@@ -1163,8 +1163,7 @@ Refer to `org-agenda-prefix-format' for more information."
   :custom
   (company-idle-delay 10)
   (company-tooltip-idle-delay 10)
-  :config
-  (global-company-mode))
+  :hook prog-mode)
 
 ;; Enable the use of direnv for local directory instructions
 (use-package envrc
@@ -1325,7 +1324,8 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package rustic
   :ensure
   :bind (:map rustic-mode-map
-              ("C-c C-c l" . flycheck-list-errors))
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c d" . consult-flymake))
   :config
   ;; comment to disable rustfmt on save
   (setq rustic-format-on-save t)
@@ -1503,10 +1503,10 @@ Refer to `org-agenda-prefix-format' for more information."
 
 
 ;; My personal config
-(let ((filename "~/.config/personal-emacs/personal.el"))
-  (if (file-exists-p filename)
-      (progn
-       (load filename))))
+;; (let ((filename "~/.config/personal-emacs/personal.el"))
+;;   (if (file-exists-p filename)
+;;       (progn
+;;        (load filename))))
 
 ;; ;; see: https://emacs.stackexchange.com/questions/39359/tool-bar-in-emacsclient/39361#39361
 ;; (defun my-frame-tweaks (&optional frame)
