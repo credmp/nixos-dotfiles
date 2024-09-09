@@ -456,7 +456,10 @@
                    :jump-to-captured t))))
   
 (use-package consult-denote
-  :ensure t)
+  :ensure t
+  :bind
+  (("C-c C-d" . consult-denote-find)))
+
 
 (use-package denote-explore
   :ensure t
@@ -1128,9 +1131,35 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; (use-package devdocs
 ;;     :ensure t)
 
+(defun check-expansion ()
+  (save-excursion
+    (if (looking-at "\\_>") t
+      (backward-char 1)
+      (if (looking-at "\\.") t
+        (backward-char 1)
+        (if (looking-at "::") t nil)))))
+
+(defun do-yas-expand ()
+  (let ((yas/fallback-behavior 'return-nil))
+    (yas/expand)))
+
+(defun tab-indent-or-complete ()
+  (interactive)
+  (if (minibufferp)
+      (minibuffer-complete)
+    (if (or (not yas/minor-mode)
+            (null (do-yas-expand)))
+        (if (check-expansion)
+            (company-complete-common)
+          (indent-for-tab-command)))))
+
 (use-package company
   :ensure t
-  :bind (("C-/". company-complete))
+  :bind
+  (:map company-mode-map
+	("<tab>". tab-indent-or-complete)
+	("TAB". tab-indent-or-complete))
+;;  (("C-/". company-complete))
   :custom
   (company-idle-delay 10)
   (company-tooltip-idle-delay 10)
@@ -1255,8 +1284,53 @@ Refer to `org-agenda-prefix-format' for more information."
   :config
   (setq-default format-all-formatters '(("Go"     (goimports))
                                         ("Java"   (astyle))
-                                        ("html"   (prettierd)))))
+                                        ("html"   (prettierd))
+                                        ("rust"   (rustfmt)))))
   
+(defun setup-rust ()
+  "Setup for ‘rust-mode’."
+  ;; Configuration taken from rust-analyzer’s manual:
+  ;; https://rust-analyzer.github.io/manual.html#configuration
+  (setq-local eglot-workspace-configuration
+              ;; Setting the workspace configuration for every
+              ;; rust-mode buffer, you can also set it with dir-local
+              ;; variables, should you want different configuration
+              ;; per project/directory.
+              '(:rust-analyzer
+                ( :procMacro ( :attributes (:enable t)
+                               :enable t)
+                  :cargo (:buildScripts (:enable t))
+                  :diagnostics (:disabled ["unresolved-proc-macro"
+                                           "unresolved-macro-call"])))))
+
+;; Run our setup function in ‘rust-mode-hook’.
+(add-hook 'rust-mode-hook #'setup-rust)
+
+;; Define a custom eglot LSP server for rust-analyzer because it
+;; expects initializationOptions done a bit differently (see below).
+(defclass eglot-rust-analyzer (eglot-lsp-server) ()
+  :documentation "A custom class for rust-analyzer.")
+
+;; Rust-analyzer requires the workspaceConfiguration sent as
+;; initializationOptions at startup time. See
+;; https://github.com/joaotavora/eglot/discussions/845 and
+;; rust-analyzer’s manual page.
+(cl-defmethod eglot-initialization-options ((server eglot-rust-analyzer))
+  eglot-workspace-configuration)
+
+;; Use our custom ‘eglot-rust-analyzer’ for ‘rust-mode’.
+(add-to-list 'eglot-server-programs
+             '(rust-mode . (eglot-rust-analyzer "rust-analyzer")))
+
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("C-c C-c l" . flycheck-list-errors))
+  :config
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (setq rustic-lsp-client 'eglot))
+
 
 (use-package nix-mode
   :ensure t)

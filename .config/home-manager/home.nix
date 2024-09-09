@@ -197,12 +197,12 @@ in
     NIXOS_OZONE_WL = "1";
   };
 
-  services.picom = {
-   enable = true;
-   backend = "glx";
-   vSync = true;
-   shadow = false;
-  };
+  # services.picom = {
+  #  enable = true;
+  #  backend = "glx";
+  #  vSync = true;
+  #  shadow = false;
+  # };
 
   services.emacs = {
     enable = true;
