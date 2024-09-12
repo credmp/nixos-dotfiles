@@ -3,7 +3,7 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-(doom/set-frame-opacity 97)
+;;(doom/set-frame-opacity 97)
 (setq fancy-splash-image (expand-file-name "assets/blackhole-lines.svg" doom-user-dir))
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -41,7 +41,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'modus-operandi-tinted)
+(setq doom-theme 'modus-vivendi-tinted)
 
 (setq modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
 
@@ -109,7 +109,7 @@
       (setq catppuccin-flavor 'latte) ;; or 'latte, 'macchiato, or 'mocha
       (catppuccin-reload))))
 
-(global-set-key [f5] 'arjen/toggle-theme)
+(global-set-key [f5] 'modus-themes-toggle)
 
 
 
@@ -163,42 +163,6 @@
 ;;   (setq lsp-ui-sideline-enable nil)
 ;;   (setq lsp-ui-sideline-show-code-actions nil)
 ;;   (setq lsp-ui-sideline-enable nil))
-
-
-;;(add-to-list 'load-path "/usr/share/emacs/site-lisp/mu4e")
-;; (add-to-list 'load-path "/home/arjen/.nix-profile/share/emacs/site-lisp/mu4e")
-(add-to-list 'load-path "/nix/store/z8h6alrng4zfjdk3nh7q3l5j5wz4dy90-emacs-mu4e-1.12.2/share/emacs/site-lisp/elpa/mu4e-1.12.2")
-;; (add-to-list 'load-path "/home/arjen/.config/doom/mu/mu4e")
-(after! mu4e
-  ;; Mail configuration
-  ;; add to $DOOMDIR/config.el
-
-  (setq sendmail-program (executable-find "msmtp")
-        send-mail-function #'smtpmail-send-it
-        message-sendmail-f-is-evil t
-        mu4e-context-policy 'ask
-        message-sendmail-extra-arguments '("--read-envelope-from")
-        message-send-mail-function #'message-send-mail-with-sendmail)
-
-  (set-email-account! "Fastmail"
-                      '((mu4e-sent-folder       . "/fm/Sent Items")
-                        (mu4e-drafts-folder     . "/fm/Drafts")
-                        (mu4e-trash-folder      . "/fm/Trash")
-                        (mu4e-refile-folder     . "/fm/Archive")
-                        (smtpmail-smtp-user     . "arjen@wiersma.org")
-                        (user-mail-address      . "arjen@wiersma.org")    ;; only needed for mu < 1.4
-                        (mu4e-compose-signature . "---\nYours truly\nThe Baz"))
-                      t)
-
-  (set-email-account! "GMail"
-                      '((mu4e-sent-folder       . "/fm/Sent Items")
-                        (mu4e-drafts-folder     . "/fm/Drafts")
-                        (mu4e-trash-folder      . "/fm/Trash")
-                        (mu4e-refile-folder     . "/fm/Archive")
-                        (smtpmail-smtp-user     . "arjenw@gmail.com")
-                        (user-mail-address      . "arjenw@gmail.com")    ;; only needed for mu < 1.4
-                        (mu4e-compose-signature . "---\nYours truly\nThe Baz"))
-                      t))
 
 (use-package! vulpea)
 
@@ -536,34 +500,6 @@ Refer to `org-agenda-prefix-format' for more information."
   ;;(setq citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: ${tags}")
   (citar-org-roam-mode))
 
-(setq rascal-language-server-command
-      "java -cp /home/arjen/Downloads/bla/rascal-language-servers/rascal-lsp/target/rascal-lsp-2.11.3-SNAPSHOT.jar:/home/arjen/.m2/repository/org/rascalmpl/rascal/0.27.3/rascal-0.27.3.jar org.rascalmpl.vscode.lsp.rascal.RascalLanguageServer")
-
-(after! lsp-mode
-  (add-to-list 'lsp-language-id-configuration
-               '(".*\\.rsc$" . "rascal"))
-
-  (setq lsp-semantic-tokens-enable t)
-  (defun lsp-rascal-tcp-connect-to-port ()
-    (list
-     :connect (lambda (filter sentinel name _environment-fn)
-                (let* ((host "localhost")
-                       (port 8888)
-                       (tcp-proc (lsp--open-network-stream host port (concat name "::tcp"))))
-
-                  (set-process-query-on-exit-flag tcp-proc nil)
-                  (set-process-filter tcp-proc filter)
-                  (set-process-sentinel tcp-proc sentinel)
-                  (cons tcp-proc tcp-proc)))
-     :test? (lambda () t)))
-
-  (lsp-register-client
-   (make-lsp-client :new-connection (lsp-rascal-tcp-connect-to-port)
-                    :major-modes '(rascal-mode)
-                    :server-id 'rascal-lsp)))
-
-(add-to-list 'auto-mode-alist '("\\.rsc$" . rascal-mode))
-
 ;;(require 'all-the-icons)
 (use-package! all-the-icons
   :config
@@ -775,8 +711,6 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package! org-ref)
 
-;; (use-package! base16-theme)
-
 (after! org
   (setq org-modern-block-fringe 2)
   ;; (setq org-modern-table nil)
@@ -804,7 +738,6 @@ Refer to `org-agenda-prefix-format' for more information."
 (after! projectile
   (setq projectile-create-missing-test-files t))
 
-(use-package! lsp-tailwindcss)
 ;; Instead of lsp-mode, eglot is also available. It is somewhat harder to configure for non-supported
 ;; modes, and it does not allow multi-mode files (web + tailwind)
 ;; (use-package! eglot-java
@@ -864,34 +797,17 @@ Refer to `org-agenda-prefix-format' for more information."
   (require 'denote-journal-extras)
   :config
   (add-hook 'dired-mode-hook #'denote-dired-mode)
-  (let ((map global-map))
-    (define-key map (kbd "C-c n n") #'denote)
-    (define-key map (kbd "C-c n c") #'denote-region) ; "contents" mnemonic
-    (define-key map (kbd "C-c n N") #'denote-type)
-    (define-key map (kbd "C-c n d") #'denote-date)
-    (define-key map (kbd "C-c n z") #'denote-signature) ; "zettelkasten" mnemonic
-    (define-key map (kbd "C-c n s") #'denote-subdirectory)
-    (define-key map (kbd "C-c n t") #'denote-template)
-    ;; If you intend to use Denote with a variety of file types, it is
-    ;; easier to bind the link-related commands to the `global-map', as
-    ;; shown here.  Otherwise follow the same pattern for `org-mode-map',
-    ;; `markdown-mode-map', and/or `text-mode-map'.
-    (define-key map (kbd "C-c n i") #'denote-link) ; "insert" mnemonic
-    (define-key map (kbd "C-c n I") #'denote-add-links)
-    (define-key map (kbd "C-c n b") #'denote-backlinks)
-    (define-key map (kbd "C-c n f f") #'denote-find-link)
-    (define-key map (kbd "C-c n f b") #'denote-find-backlink)
-    ;; Note that `denote-rename-file' can work from any context, not just
-    ;; Dired bufffers.  That is why we bind it here to the `global-map'.
-    (define-key map (kbd "C-c n r") #'denote-rename-file)
-    (define-key map (kbd "C-c n R") #'denote-rename-file-using-front-matter))
-
-  ;; Key bindings specifically for Dired.
-  (let ((map dired-mode-map))
-    (define-key map (kbd "C-c C-d C-i") #'denote-link-dired-marked-notes)
-    (define-key map (kbd "C-c C-d C-r") #'denote-dired-rename-files)
-    (define-key map (kbd "C-c C-d C-k") #'denote-dired-rename-marked-files-with-keywords)
-    (define-key map (kbd "C-c C-d C-R") #'denote-dired-rename-marked-files-using-front-matter))
+  (map! :leader
+        (:prefix-map ("d" . "denote")
+         :desc "Show backlinks" "b" #'denote-backlinks
+         :desc "Create a note" "d" #'denote
+         :desc "Find a note" "f" #'consult-denote-find
+         :desc "Insert a link" "i" #'denote-link
+         :desc "List all links" "l" #'denote-find-link
+         :desc "Create a note in a subdirectory" "s" #'denote-subdirectory
+         :desc "Create a note based on a template" "t" #'denote-template
+         :desc "Rename file" "r" #'denote-rename-file-using-front-matter
+         ))
 
   (with-eval-after-load 'org-capture
     (setq denote-org-capture-specifiers "%l\n%i\n%?")
@@ -903,6 +819,24 @@ Refer to `org-agenda-prefix-format' for more information."
                    :immediate-finish nil
                    :kill-buffer t
                    :jump-to-captured t)))
+
+  (defun aw/gather-agenda-files ()
+    (denote-directory-files "_planning"))
+
+  (defun aw/denote-project-update-tag ()
+    "Update PROJECT tag in the current buffer."
+    (when (and
+           (not (active-minibuffer-window))
+           (aw/org-buffer-p))
+      (if (aw/has-todo-items-p) ;; it has todo items
+          (if (not (seq-contains (vulpea-buffer-tags-get) "planning")) ;; but not yet the planning tag
+              (vulpea-buffer-tags-add "planning"))  ;; add it
+        (if (seq-contains (vulpea-buffer-tags-get) "planning") ;; else (no planning items)
+            (vulpea-buffer-tags-remove "planning")))
+      (denote-rename-file-using-front-matter (buffer-file-name))))
+
+  ;; (add-hook 'find-file-hook #'aw/denote-project-update-tag)
+  (add-hook 'before-save-hook #'aw/denote-project-update-tag)
   )
 
 
@@ -935,11 +869,11 @@ Refer to `org-agenda-prefix-format' for more information."
    ("C-c w e v" . denote-explore-network-regenerate)
    ("C-c w e D" . denote-explore-degree-barchart)))
 
-(use-package consult
-  :ensure t)
-(use-package consult-notes
-  :ensure t
-  :after consult)
+(use-package! consult)
+
+(use-package! consult-denote
+  :bind
+  (("C-c C-d" . consult-denote-find)))
 
 ;; (use-package denote-citar
 ;;   :ensure t

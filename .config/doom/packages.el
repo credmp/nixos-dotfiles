@@ -49,9 +49,6 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
 
-;; Tailwind CSS
-;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
-
 ;; (package! benchmark-init)
 
 ;; (package! org-transclusion)
@@ -118,7 +115,6 @@
 
 ;; (package! langtool)
 
-;; (package! lsp-ltex)
 
 
 ;; Great package for Tiago Forte's [[id:eb517970-7045-49db-8c5b-6bef6ef1e611][Progressive Summarization]]
@@ -134,7 +130,6 @@
 
 (package! org-remark)
 
-(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
 ;; (package! delve
 ;;   :recipe (:host github :repo "publicimageltd/delve" :files ("*.el")))
@@ -152,3 +147,5 @@
 ;; (package! templ-ts-mode)
 
 (package! olivetti)
+(package! consult)
+(package! consult-denote)

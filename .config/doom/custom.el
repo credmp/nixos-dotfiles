@@ -36,6 +36,7 @@
  '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "grey75" :style nil))))
  '(tab-line-tab ((t)))
  '(tab-line-tab-active ((t)))
+ '(tab-line-tab-current ((t)))
  '(tab-line-tab-inactive ((t)))
  '(ts-fold-replacement-face ((t (:foreground unspecified :box nil :inherit font-lock-comment-face :weight light))))
  '(vertical-border ((t :background "white" :foreground "white")))
