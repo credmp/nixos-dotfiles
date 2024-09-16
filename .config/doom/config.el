@@ -45,9 +45,9 @@
 
 (setq modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
 
-(use-package! spacious-padding
-  :config
-  (spacious-padding-mode))
+;; (use-package! spacious-padding
+;;   :config
+;;   (spacious-padding-mode))
 
 (setq
  default-font "JetBrainsMono Nerd Font"

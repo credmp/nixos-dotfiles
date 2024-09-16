@@ -61,6 +61,7 @@ in
     kitty
     alacritty
     rofi
+    wofi
     nitrogen
     xss-lock
     pulseaudio

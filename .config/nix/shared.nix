@@ -62,7 +62,7 @@
   # services.xserver.enable = true;
 
   # Enable the XFCE Desktop Environment.
-  #  services.xserver.displayManager.lightdm.enable = true;
+    services.xserver.displayManager.gdm.enable = true;
   #   services.xserver.desktopManager.xfce.enable = true;
   #   Enable the X11 windowing system.
 
@@ -74,8 +74,6 @@
        xterm.enable = false;
      };
    
-     # displayManager.sddm.enable = true;
-     # desktopManager.plasma6.enable = true;
 
      #windowManager.i3 = {
      #  enable = true;
@@ -87,12 +85,25 @@
      #  ];
      #};
    };
-   services.displayManager.sddm.enable = true;
-   services.desktopManager.plasma6.enable = true;
+   programs.hyprland = {
+     # Install the packages from nixpkgs
+     enable = true;
+     # Whether to enable XWayland
+     xwayland.enable = true;
+   };
+   programs.hyprlock.enable = true;
+   services.hypridle.enable = true;
+   #services.displayManager.sddm.enable = true;
+   # Wayland
+   #environment.sessionVariables.NIXOS_OZONE_WL = "1";
+   #services.displayManager.sddm.wayland.enable = true;
+   # Run plasma in x11 to support steam and such 
+   #services.displayManager.defaultSession = "plasmax11";
+   #services.desktopManager.plasma6.enable = true;
    #services.displayManager = {
    #    defaultSession = "none+i3";
    #};
-   #programs.xwayland.enable = true;
+   programs.xwayland.enable = true;
    xdg.portal.enable = true;
    xdg.portal.config.common.default = "*";
 
@@ -148,7 +159,7 @@ services.avahi = {
   users.users.arjen = {
     isNormalUser = true;
     description = "Arjen Wiersma";
-    extraGroups = [ "networkmanager" "wheel" "docker" "storage"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "storage" "video" "audio"];
     shell = pkgs.zsh;
     packages = with pkgs; [
       alacritty
@@ -176,5 +187,4 @@ services.avahi = {
     "/share/nix-direnv"
   ];
 
-  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

@@ -56,7 +56,7 @@
 (package! modus-themes)
 (package! ef-themes)
 
-(package! spacious-padding)
+;; (package! spacious-padding)
 
 ;; Denote experiments
 (package! denote)
