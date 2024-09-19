@@ -777,6 +777,10 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; (add-to-list 'eglot-server-programs
 ;;              '((web-mode :language-id "html") . ("npx" "tailwindcss-language-server" "--stdio")))
 
+;; (use-package! web-mode
+;;   :config
+;;   (add-to-list 'eglot-server-programs
+;;                '((web-mode :language-id "html") . ("vscode-html-language-server" "--stdio"))))
 
 ;; fix until resolved: https://github.com/doomemacs/doomemacs/issues/7733
 (defun my/org-tab-conditional ()
