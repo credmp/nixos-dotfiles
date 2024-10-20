@@ -149,3 +149,5 @@
 (package! olivetti)
 (package! consult)
 (package! consult-denote)
+
+(package! org-re-reveal)

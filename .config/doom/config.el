@@ -41,9 +41,9 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'modus-vivendi-tinted)
+(setq doom-theme 'modus-vivendi)
 
-(setq modus-themes-to-toggle '(modus-operandi-tinted modus-vivendi-tinted))
+(setq modus-themes-to-toggle '(modus-operandi modus-vivendi))
 
 ;; (use-package! spacious-padding
 ;;   :config
@@ -843,7 +843,9 @@ Refer to `org-agenda-prefix-format' for more information."
   (add-hook 'before-save-hook #'aw/denote-project-update-tag)
   )
 
-
+(use-package! denote-journal-extras
+  :ensure nil
+  :after denote)
 
 (use-package! denote-explore
   :after denote
@@ -882,3 +884,5 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; (use-package denote-citar
 ;;   :ensure t
 ;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))
+
+(use-package! org-re-reveal)

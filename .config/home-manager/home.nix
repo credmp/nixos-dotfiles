@@ -24,7 +24,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    emacs29-pgtk
+    emacs29
     # desktop apps
     firefox
     chromium
@@ -51,6 +51,8 @@ in
     flameshot
     discord
     zotero
+    gitflow
+    git-cliff
     #jetbrains.idea-ultimate
     emote
     # direnv
@@ -76,6 +78,7 @@ in
     nextcloud-client
     notify-osd
     dunst
+    vimix-cursor-theme
     # games
     #unstable.factorio
     # fonts
@@ -90,6 +93,7 @@ in
     # sound and display 
     pavucontrol
     mons
+    arandr
     lxappearance
     brightnessctl
     # networking
@@ -195,20 +199,20 @@ in
   home.sessionVariables = rec {
     OPENAI_API_KEY="$(cat ~/.config/openai/key)";
 
-    NIXOS_OZONE_WL = "1";
+    # NIXOS_OZONE_WL = "1";
   };
 
-  # services.picom = {
-  #  enable = true;
-  #  backend = "glx";
-  #  vSync = true;
-  #  shadow = false;
+  services.picom = {
+   enable = true;
+   backend = "glx";
+   vSync = true;
+   shadow = false;
+  };
+
+  # services.emacs = {
+  #   enable = true;
+  #   package = pkgs.emacs29-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
   # };
-
-  services.emacs = {
-    enable = true;
-    package = pkgs.emacs29-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
-  };
 
  # systemd.user = {
  #  services = {
@@ -241,5 +245,5 @@ in
 
  fonts.fontconfig.enable = true;
 
- nixpkgs.config.chromium.commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland --use-angle=vulkan";
+ #nixpkgs.config.chromium.commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland --use-angle=vulkan";
 }

@@ -39,7 +39,8 @@
     };
   };
   virtualisation.vmware.host.enable = true;
-
+  hardware.nvidia-container-toolkit.enable = true;
+  
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";
 
@@ -62,7 +63,7 @@
   # services.xserver.enable = true;
 
   # Enable the XFCE Desktop Environment.
-    services.xserver.displayManager.gdm.enable = true;
+  #  services.xserver.displayManager.lightdm.enable = true;
   #   services.xserver.desktopManager.xfce.enable = true;
   #   Enable the X11 windowing system.
 
@@ -74,44 +75,47 @@
        xterm.enable = false;
      };
    
+     displayManager.gdm.enable = true;
+     #displayManager.gdm.wayland = true;
+     #windowManager.hypr.enable = true;
+     # desktopManager.plasma6.enable = true;
+     #desktopManager.gnome.enable = true;
 
-     #windowManager.i3 = {
-     #  enable = true;
-     #  extraPackages = with pkgs; [
-     #    dmenu #application launcher most people use
-     #    i3status # gives you the default i3 status bar
-     #    i3lock #default i3 screen locker
-     #    i3blocks #if you are planning on using i3blocks over i3status
-     #  ];
-     #};
+     windowManager.i3 = {
+       enable = true;
+       extraPackages = with pkgs; [
+         dmenu #application launcher most people use
+         i3status # gives you the default i3 status bar
+         i3lock #default i3 screen locker
+         i3blocks #if you are planning on using i3blocks over i3status
+       ];
+     };
    };
-   programs.hyprland = {
-     # Install the packages from nixpkgs
-     enable = true;
-     # Whether to enable XWayland
-     xwayland.enable = true;
-   };
-   programs.hyprlock.enable = true;
-   services.hypridle.enable = true;
    #services.displayManager.sddm.enable = true;
-   # Wayland
-   #environment.sessionVariables.NIXOS_OZONE_WL = "1";
-   #services.displayManager.sddm.wayland.enable = true;
-   # Run plasma in x11 to support steam and such 
-   #services.displayManager.defaultSession = "plasmax11";
    #services.desktopManager.plasma6.enable = true;
-   #services.displayManager = {
-   #    defaultSession = "none+i3";
-   #};
-   programs.xwayland.enable = true;
+
+   # # -- hyprland
+   # programs.hyprland = {
+   #   # Install the packages from nixpkgs
+   #   enable = true;
+   #   # Whether to enable XWayland
+   #   xwayland.enable = true;
+   # };
+   # services.hypridle.enable = true;
+   # programs.hyprlock.enable = true;
+   
+   services.displayManager = {
+       defaultSession = "none+i3";
+   };
+   #programs.xwayland.enable = true;
    xdg.portal.enable = true;
    xdg.portal.config.common.default = "*";
 
    xdg.portal.xdgOpenUsePortal = true;
    xdg.portal.extraPortals = [
-           #pkgs.xdg-desktop-portal-gtk
+           pkgs.xdg-desktop-portal-gtk
 	   pkgs.xdg-desktop-portal-gnome
-	   pkgs.xdg-desktop-portal-wlr
+	   #pkgs.xdg-desktop-portal-wlr
    ];
 
   networking.firewall.trustedInterfaces = [ "p2p-wl+" ];
@@ -128,11 +132,12 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-services.avahi = {
-  enable = true;
-  nssmdns4 = true;
-  openFirewall = true;
-};
+
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
   services.fwupd.enable = true;
 
 
@@ -162,8 +167,6 @@ services.avahi = {
     extraGroups = [ "networkmanager" "wheel" "docker" "storage" "video" "audio"];
     shell = pkgs.zsh;
     packages = with pkgs; [
-      alacritty
-      gnome-network-displays
     ];
   };
 
@@ -175,8 +178,10 @@ services.avahi = {
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  #environment.systemPackages = with pkgs; [
-  #];
+  environment.systemPackages = with pkgs; [
+  	gnomeExtensions.appindicator
+  ];
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
 
   nix.settings = {
     keep-outputs = true;
@@ -187,4 +192,5 @@ services.avahi = {
     "/share/nix-direnv"
   ];
 
+  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }
