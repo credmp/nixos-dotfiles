@@ -75,24 +75,24 @@
        xterm.enable = false;
      };
    
-     displayManager.gdm.enable = true;
+     #displayManager.gdm.enable = true;
      #displayManager.gdm.wayland = true;
      #windowManager.hypr.enable = true;
-     # desktopManager.plasma6.enable = true;
+     #desktopManager.plasma6.enable = true;
      #desktopManager.gnome.enable = true;
 
-     windowManager.i3 = {
-       enable = true;
-       extraPackages = with pkgs; [
-         dmenu #application launcher most people use
-         i3status # gives you the default i3 status bar
-         i3lock #default i3 screen locker
-         i3blocks #if you are planning on using i3blocks over i3status
-       ];
-     };
+     #windowManager.i3 = {
+     #  enable = true;
+     #  extraPackages = with pkgs; [
+     #    dmenu #application launcher most people use
+     #    i3status # gives you the default i3 status bar
+     #    i3lock #default i3 screen locker
+     #    i3blocks #if you are planning on using i3blocks over i3status
+     #  ];
+     #};
    };
-   #services.displayManager.sddm.enable = true;
-   #services.desktopManager.plasma6.enable = true;
+   services.displayManager.sddm.enable = true;
+   services.desktopManager.plasma6.enable = true;
 
    # # -- hyprland
    # programs.hyprland = {
@@ -104,9 +104,9 @@
    # services.hypridle.enable = true;
    # programs.hyprlock.enable = true;
    
-   services.displayManager = {
-       defaultSession = "none+i3";
-   };
+   #services.displayManager = {
+   #    defaultSession = "none+i3";
+   #};
    #programs.xwayland.enable = true;
    xdg.portal.enable = true;
    xdg.portal.config.common.default = "*";
@@ -114,8 +114,8 @@
    xdg.portal.xdgOpenUsePortal = true;
    xdg.portal.extraPortals = [
            pkgs.xdg-desktop-portal-gtk
-	   pkgs.xdg-desktop-portal-gnome
-	   #pkgs.xdg-desktop-portal-wlr
+	   #pkgs.xdg-desktop-portal-gnome
+	   pkgs.xdg-desktop-portal-wlr
    ];
 
   networking.firewall.trustedInterfaces = [ "p2p-wl+" ];
@@ -192,5 +192,5 @@
     "/share/nix-direnv"
   ];
 
-  #environment.sessionVariables.NIXOS_OZONE_WL = "1";
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
 }

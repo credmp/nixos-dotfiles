@@ -24,7 +24,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    emacs29
+    emacs29-pgtk
     # desktop apps
     firefox
     chromium
@@ -53,7 +53,7 @@ in
     zotero
     gitflow
     git-cliff
-    #jetbrains.idea-ultimate
+    unstable.jetbrains.idea-ultimate
     emote
     # direnv
     direnv
@@ -199,15 +199,16 @@ in
   home.sessionVariables = rec {
     OPENAI_API_KEY="$(cat ~/.config/openai/key)";
 
-    # NIXOS_OZONE_WL = "1";
+    NIXOS_OZONE_WL = "1";
   };
 
-  services.picom = {
-   enable = true;
-   backend = "glx";
-   vSync = true;
-   shadow = false;
-  };
+
+  #services.picom = {
+  # enable = true;
+  # backend = "glx";
+  # vSync = true;
+  # shadow = false;
+  #};
 
   # services.emacs = {
   #   enable = true;
@@ -245,5 +246,5 @@ in
 
  fonts.fontconfig.enable = true;
 
- #nixpkgs.config.chromium.commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland --use-angle=vulkan";
+ nixpkgs.config.chromium.commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland --use-angle=vulkan";
 }
