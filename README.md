@@ -8,6 +8,7 @@ To run this configuration you will need to install `home-manager` and add the ch
 
 ``` shell
 sudo nix-channel --add https://github.com/NixOS/nixos-hardware/archive/master.tar.gz nixos-hardware
+sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
 sudo nix-channel --update
 ```
 
@@ -62,7 +63,8 @@ dotfiles checkout
 Install home-manager, matching the current release version. I use the channels method as an installation mechanism.
 
 ``` shell
-sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-23.11.tar.gz home-manager
+sudo nix-channel --add https://github.com/nix-community/home-manager/archive/release-24.05.tar.gz home-manager
+sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
 ```
 
 Update the channels, so that all the indexes are up to date.
