@@ -1,0 +1,11 @@
+import = ["/home/arjen/.config/alacritty/catppuccin/catppuccin-machiatto.yml"]
+
+[font]
+size = 16
+
+[font.normal]
+family = "JetBrainsMono Nerd Font"
+style = "Regular"
+
+[window]
+opacity = 0.9
