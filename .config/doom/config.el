@@ -341,7 +341,7 @@ Refer to `org-agenda-prefix-format' for more information."
                       "#+title: ${title}\n#+filetags: :security:\n")
            :immediate-finish t
            :unnarrowed t)
-         ))
+          ))
   (require 'org-roam-protocol)
   (defun my/preview-fetcher ()
     (let* ((elem (org-element-context))

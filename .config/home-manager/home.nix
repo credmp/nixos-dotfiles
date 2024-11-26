@@ -50,7 +50,6 @@ in
     gitflow
     git-cliff
     unstable.jetbrains.idea-ultimate
-    unstable.excalidraw_export
     emote
     unstable.obsidian
     pandoc
@@ -195,7 +194,7 @@ in
   home.sessionVariables = rec {
     OPENAI_API_KEY="$(cat ~/.config/openai/key)";
 
-    NIXOS_OZONE_WL = "1";
+    # NIXOS_OZONE_WL = "1";
   };
 
   # services.picom = {
