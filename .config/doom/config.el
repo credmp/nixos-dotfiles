@@ -119,8 +119,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/stack/roam-new/")
-(setq org-roam-directory "~/stack/roam-new/")
+(setq org-directory "~/hetzner/roam-new/")
+(setq org-roam-directory "~/hetzner/roam-new/")
 
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
@@ -346,13 +346,7 @@ Refer to `org-agenda-prefix-format' for more information."
                       "#+title: ${title}\n#+filetags: :thesis:\n")
            :immediate-finish nil
            :unnarrowed t)
-          ("u"
-           "substack" plain "* Topic\n\n %?"
-           :if-new
-           (file+head "substack/%<%Y%m%d%H%M%S>-${slug}.org"
-                      "#+title: ${title}\n#+filetags: :substack:\n")
-           :immediate-finish t
-           :unnarrowed t)
+
           ("o"
            "OU Study Notes" plain "%?"
            :if-new
@@ -404,10 +398,10 @@ Refer to `org-agenda-prefix-format' for more information."
   (setq!
    org-agenda-files #'(vulpea-project-files)
 
-   org-attach-directory "~/stack/roam-new/.attach/"
+   org-attach-directory "~/hetzner/roam-new/.attach/"
 
-   org-refile-targets '(("/home/arjen/stack/roam-new/20231008105247-planning.org" :maxlevel . 4)
-                        ("/home/arjen/stack/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
+   org-refile-targets '(("/home/arjen/hetzner/roam-new/20231008105247-planning.org" :maxlevel . 4)
+                        ("/home/arjen/hetzner/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
 
   (setq org-id-link-to-org-use-id t)
   (setq org-image-actual-width 800)
@@ -415,13 +409,13 @@ Refer to `org-agenda-prefix-format' for more information."
 
   ;; (add-load-path! (concat doom-user-dir "org-protocol-capture-html"))
   ;; (require 'org-protocol-capture-html)
-  (setq! org-capture-templates '(("b" "Blog idea" entry (file+olp "~/stack/roam-new/20231008105247-planning.org" "Inbox" "Series")
+  (setq! org-capture-templates '(("b" "Blog idea" entry (file+olp "~/hetzner/roam-new/20231008105247-planning.org" "Inbox" "Series")
                                   "* %?\n%T" :prepend t)
                                  ("t" "todo" entry
-                                  (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
+                                  (file+headline "~/hetzner/roam-new/20231008105247-planning.org" "Inbox")
                                   "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
                                  ("T" "Tickler" entry
-                                  (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
+                                  (file+headline "~/hetzner/roam-new/20231008105247-planning.org" "Inbox")
                                   "* %i%? \n %U")
                                  ("w" "Web site" entry
                                   (file "")
@@ -431,17 +425,17 @@ Refer to `org-agenda-prefix-format' for more information."
                                                  "Links to read later")
                                   "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
                                   :immediate-finish t :empty-lines 1)
-                                 ("e" "email" entry (file+headline "~/stack/roam-new/20231008105247-planning.org" "Inbox")
+                                 ("e" "email" entry (file+headline "~/hetzner/roam-new/20231008105247-planning.org" "Inbox")
                                   "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
 
 
 (after! citar
-  (setq! reftex-default-bibliography "/home/arjen/stack/My-Library.bib"
-         bibtex-completion-bibliography '("/home/arjen/stack/My-Library.bib")
+  (setq! reftex-default-bibliography "/home/arjen/hetzner/My-Library.bib"
+         bibtex-completion-bibliography '("/home/arjen/hetzner/My-Library.bib")
          citar-file-note-org-include '(org-id org-roam-ref)
-         citar-bibliography '("~/stack/My-Library.bib")
-         citar-notes-paths '("~/stack/roam/papers")
-         citar-library-paths '("~/stack/Zotero/pdf"))
+         citar-bibliography '("~/hetzner/My-Library.bib")
+         citar-notes-paths '("~/hetzner/roam/papers")
+         citar-library-paths '("~/hetzner/Zotero/pdf"))
 
 
   (map! :map latex-mode-map
@@ -797,7 +791,7 @@ Refer to `org-agenda-prefix-format' for more information."
 ;; -- denote experiment
 (use-package! denote
   :custom
-  (denote-directory (expand-file-name "~/stack/denote"))
+  (denote-directory (expand-file-name "~/hetzner/denote"))
   (require 'denote-journal-extras)
   :config
   (add-hook 'dired-mode-hook #'denote-dired-mode)

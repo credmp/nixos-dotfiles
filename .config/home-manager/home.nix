@@ -40,10 +40,6 @@ in
     appimage-run # to run stack appimage
     polkit_gnome
     spotify
-    unstable.mu
-    msmtp
-    isync
-    # okular # my goto for presentations
     hunspell
     hunspellDicts.nl_NL
     hunspellDicts.en_US
@@ -55,6 +51,8 @@ in
     git-cliff
     unstable.jetbrains.idea-ultimate
     emote
+    unstable.obsidian
+    #emote
     # direnv
     direnv
     nix-direnv
@@ -63,7 +61,7 @@ in
     kitty
     alacritty
     rofi
-    wofi
+    #wofi
     nitrogen
     xss-lock
     pulseaudio
@@ -73,7 +71,7 @@ in
     gnome.nautilus
     ranger
     evince
-    darkman
+    #darkman
     xfce.xfconf
     nextcloud-client
     notify-osd
@@ -84,7 +82,6 @@ in
     # fonts
     nerdfonts
     emacs-all-the-icons-fonts
-    unstable.emacsPackages.mu4e
     inter
     # shell
     fzf
@@ -92,7 +89,7 @@ in
     termdown
     # sound and display 
     pavucontrol
-    mons
+    #mons
     arandr
     lxappearance
     brightnessctl
@@ -102,8 +99,6 @@ in
     protonvpn-gui
     # lockscreen
     betterlockscreen
-    # docker
-    podman-compose
     audacity
     # tmux-yank dependency
     xsel
@@ -111,7 +106,6 @@ in
     # Office and art
     krita
     libreoffice
-    zathura
     (makeDesktopItem {
       name = "org-protocol";
       exec = "emacsclient -c  %u";
@@ -202,18 +196,13 @@ in
     NIXOS_OZONE_WL = "1";
   };
 
-
-  #services.picom = {
-  # enable = true;
-  # backend = "glx";
-  # vSync = true;
-  # shadow = false;
-  #};
-
-  # services.emacs = {
-  #   enable = true;
-  #   package = pkgs.emacs29-pgtk; # replace with emacs-gtk, or a version provided by the community overlay if desired.
+  # services.picom = {
+  #  enable = true;
+  #  backend = "glx";
+  #  vSync = true;
+  #  shadow = false;
   # };
+
 
  # systemd.user = {
  #  services = {
@@ -237,12 +226,12 @@ in
  # }
  # ;
  
- # dconf.settings = {
- #   "org/gnome/desktop/interface" = {
- #     color-scheme = "prefer-dark";
- #   };
- # }
- #;
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+    };
+  }
+ ;
 
  fonts.fontconfig.enable = true;
 
