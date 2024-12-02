@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: println
+# uuid: 
+# key: p
+# condition: t
+# --
+System.out.println("`%`$0");

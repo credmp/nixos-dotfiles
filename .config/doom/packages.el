@@ -134,8 +134,8 @@
 ;; (package! delve
 ;;   :recipe (:host github :repo "publicimageltd/delve" :files ("*.el")))
 
-;; (package! eglot-java
-;;   :recipe (:host github :repo "yveszoundi/eglot-java"))
+(package! eglot-java
+  :recipe (:host github :repo "yveszoundi/eglot-java"))
 
 (package! all-the-icons
   :recipe (:host github :repo "domtronn/all-the-icons.el"))

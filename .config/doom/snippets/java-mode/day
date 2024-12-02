@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: day 
+# key: day
+# --
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import nl.arjenwiersma.aoc.common.NewDay;
+
+public class Day$1 extends NewDay<$2, $3> {
+    public static final Logger log = LoggerFactory.getLogger(Day$1.class);
+
+    @Override
+    public $2 parseInput($3 input) {
+    }
+
+    @Override
+    public $3 solver1($2 input) {
+    }
+
+    @Override
+    public $3 solver2($2 input) {
+    }
+}

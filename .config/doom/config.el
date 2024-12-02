@@ -60,7 +60,9 @@
                              :size default-font-size)
  doom-variable-pitch-font (font-spec :family "iMWritingDuoNerdFont"
                                      :size default-font-size)
- tab-width 2)
+ doom-modeline-buffer-file-name-style 'truncate-with-project)
+
+(setq-default tab-width 2)
 
 (set-fontset-font t 'symbol "Noto Color Emoji" nil 'append)
 
@@ -339,21 +341,7 @@ Refer to `org-agenda-prefix-format' for more information."
                       "#+title: ${title}\n#+filetags: :security:\n")
            :immediate-finish t
            :unnarrowed t)
-          ("t"
-           "thesis" plain "%?"
-           :if-new
-           (file+head "thesis/%<%Y%m%d%H%M%S>-${slug}.org"
-                      "#+title: ${title}\n#+filetags: :thesis:\n")
-           :immediate-finish nil
-           :unnarrowed t)
-
-          ("o"
-           "OU Study Notes" plain "%?"
-           :if-new
-           (file+head "study/%<%Y%m%d%H%M%S>-${slug}.org"
-                      "#+title: ${title}\n#+filetags: :study:\n")
-           :immediate-finish nil
-           :unnarrowed t)))
+         ))
   (require 'org-roam-protocol)
   (defun my/preview-fetcher ()
     (let* ((elem (org-element-context))
@@ -489,6 +477,7 @@ Refer to `org-agenda-prefix-format' for more information."
       (delete-file old-location))))
 
 (use-package! citar-org-roam
+  :defer t
   :config
   (setq citar-org-roam-capture-template-key "p")
   ;;(setq citar-org-roam-note-title-template "${author} - ${title}\n#+filetags: ${tags}")
@@ -664,7 +653,8 @@ Refer to `org-agenda-prefix-format' for more information."
   :config
   (org-remark-global-tracking-mode t))
 
-(use-package! org-roam-dblocks)
+(use-package! org-roam-dblocks
+  :defer t)
 
 (after! org
   (defun my/org-tags-view (&optional todo-only watch)
@@ -734,34 +724,34 @@ Refer to `org-agenda-prefix-format' for more information."
 
 ;; Instead of lsp-mode, eglot is also available. It is somewhat harder to configure for non-supported
 ;; modes, and it does not allow multi-mode files (web + tailwind)
-;; (use-package! eglot-java
-;;   :hook ((java-mode . eglot-java-mode)))
+(use-package! eglot-java
+  :hook ((java-mode . eglot-java-mode)))
 
-;; (use-package! eglot
-;;   :hook ((( clojure-mode clojurec-mode clojurescript-mode java-mode go-mode . eglot-ensure)
-;;           ((cider-mode eglot-managed-mode) . eglot-disable-in-cider)))
-;;   :preface
-;;   (defun eglot-disable-in-cider ()
-;;     (when (eglot-managed-p)
-;;       (if (bound-and-true-p cider-mode)
-;;           (progn
-;;             (remove-hook 'completion-at-point-functions 'eglot-completion-at-point t)
-;;             (remove-hook 'xref-backend-functions 'eglot-xref-backend t))
-;;         (add-hook 'completion-at-point-functions 'eglot-completion-at-point nil t)
-;;         (add-hook 'xref-backend-functions 'eglot-xref-backend nil t))))
-;;   :custom
-;;   (eglot-autoshutdown t)
-;;   ;; (eglot-events-buffer-size 0)
-;;   ;; (eglot-extend-to-xref nil)
-;;   ;; (eglot-ignored-server-capabilities
-;;   ;;  '(:hoverProvider
-;;   ;;    :documentHighlightProvider
-;;   ;;    :documentFormattingProvider
-;;   ;;    :documentRangeFormattingProvider
-;;   ;;    :documentOnTypeFormattingProvider
-;;   ;;    :colorProvider
-;;   ;;    :foldingRangeProvider))
-;;   (eglot-stay-out-of '(yasnippet)))
+(use-package! eglot
+  ;; :hook ((( clojure-mode clojurec-mode clojurescript-mode java-mode go-mode . eglot-ensure)
+  ;;         ((cider-mode eglot-managed-mode) . eglot-disable-in-cider)))
+  ;; :preface
+  ;; (defun eglot-disable-in-cider ()
+  ;;   (when (eglot-managed-p)
+  ;;     (if (bound-and-true-p cider-mode)
+  ;;         (progn
+  ;;           (remove-hook 'completion-at-point-functions 'eglot-completion-at-point t)
+  ;;           (remove-hook 'xref-backend-functions 'eglot-xref-backend t))
+  ;;       (add-hook 'completion-at-point-functions 'eglot-completion-at-point nil t)
+  ;;       (add-hook 'xref-backend-functions 'eglot-xref-backend nil t))))
+  :custom
+  (eglot-autoshutdown t)
+  (eglot-events-buffer-size 0)
+  (eglot-extend-to-xref nil)
+  (eglot-ignored-server-capabilities
+   '(:hoverProvider
+     :documentHighlightProvider
+     :documentFormattingProvider
+     :documentRangeFormattingProvider
+     :documentOnTypeFormattingProvider
+     :colorProvider
+     :foldingRangeProvider))
+  (eglot-stay-out-of '(yasnippet)))
 
 ;; (after! go-mode
 ;;   (add-hook 'go-mode-hook 'eglot-ensure)

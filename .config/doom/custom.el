@@ -4,6 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(emojify-display-style 'unicode)
+ '(package-selected-packages '(eglot))
  '(safe-local-variable-values
    '((lsp-ltex-language . "nl")
      (lsp-ltex-language . nl-NL)

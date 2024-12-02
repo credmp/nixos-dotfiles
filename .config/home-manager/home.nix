@@ -52,7 +52,8 @@ in
     unstable.jetbrains.idea-ultimate
     emote
     unstable.obsidian
-    #emote
+    pandoc
+    ledger
     # direnv
     direnv
     nix-direnv

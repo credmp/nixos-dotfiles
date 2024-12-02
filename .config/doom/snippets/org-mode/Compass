@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: Idea Compass
+# key: compass
+# --
+* Idea compass
+
+** North (Theme / Question)
+
+$1
+
+** South (What does it lead to)
+
+$2
+
+** West (Similar)
+
+$3
+
+** East (Opposite)
+
+$4
