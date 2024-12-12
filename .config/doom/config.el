@@ -67,7 +67,7 @@
 (set-fontset-font t 'symbol "Noto Color Emoji" nil 'append)
 
 (custom-set-variables '(emojify-display-style 'unicode))
-
+(setq exec-path (append exec-path '("/home/arjen/.local/bin")))
 ;; doom-unicode-font (font-spec :family "IBM Plex Mono"
 ;;                              :size default-font-size)
 ;; doom-serif-font (font-spec :family "IBM Plex Serif"
@@ -392,7 +392,7 @@ Refer to `org-agenda-prefix-format' for more information."
                         ("/home/arjen/hetzner/roam-new/20231008105710-tickler.org" :maxlevel . 2)))
 
   (setq org-id-link-to-org-use-id t)
-  (setq org-image-actual-width 800)
+  (setq org-image-actual-width 400)
   (setq org-log-into-drawer t)
 
   ;; (add-load-path! (concat doom-user-dir "org-protocol-capture-html"))
@@ -870,3 +870,10 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;   :recipe (:type git :host github :repo "pprevos/denote-citar"))
 
 (use-package! org-re-reveal)
+
+(use-package! org-excalidraw
+  :commands (org-excalidraw-create-drawing)
+  :config
+  (setq org-excalidraw-default-directory "~/hetzner/roam-new/.attach/excalidraw/"))
+
+;; (require 'org-excalidraw)

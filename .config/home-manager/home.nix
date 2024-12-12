@@ -50,6 +50,7 @@ in
     gitflow
     git-cliff
     unstable.jetbrains.idea-ultimate
+    unstable.excalidraw_export
     emote
     unstable.obsidian
     pandoc

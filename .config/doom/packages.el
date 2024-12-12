@@ -145,7 +145,9 @@
 
 ;; (package! treesit-auto)
 ;; (package! templ-ts-mode)
-
+(package! org-excalidraw
+  :recipe (:host github :repo "4honor/org-excalidraw"))
+  ;; customize diragram directory
 (package! olivetti)
 (package! consult)
 (package! consult-denote)

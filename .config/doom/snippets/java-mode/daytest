@@ -20,11 +20,11 @@ public class Day$1Test  {
     @Test
     public void testPart1() {
         assertThat(day.part1(extension.getSampleLines())).isEqualTo(1);
-        # assertThat(day.part1(extension.getLines())).isEqualTo(1);
+        // assertThat(day.part1(extension.getLines())).isEqualTo(1);
     }
     @Test
     public void testPart2() {
-        # assertThat(day.part2(extension.getSampleLines())).isEqualTo(1);
-        # assertThat(day.part2(extension.getLines())).isEqualTo(1);
+        // assertThat(day.part2(extension.getSampleLines())).isEqualTo(1);
+        // assertThat(day.part2(extension.getLines())).isEqualTo(1);
     }
 }

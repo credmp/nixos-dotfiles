@@ -12,7 +12,7 @@ public class Day$1 extends NewDay<$2, $3> {
     public static final Logger log = LoggerFactory.getLogger(Day$1.class);
 
     @Override
-    public $2 parseInput($3 input) {
+    public $2 parseInput(List<String> input) {
     }
 
     @Override
