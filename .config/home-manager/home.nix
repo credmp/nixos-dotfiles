@@ -24,7 +24,7 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    emacs29-pgtk
+    unstable.emacs30-pgtk
     # desktop apps
     firefox
     chromium
@@ -52,6 +52,7 @@ in
     unstable.jetbrains.idea-ultimate
     emote
     unstable.obsidian
+    unstable.zed-editor
     pandoc
     ledger
     # direnv

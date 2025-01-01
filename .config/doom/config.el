@@ -877,3 +877,6 @@ Refer to `org-agenda-prefix-format' for more information."
   (setq org-excalidraw-default-directory "~/hetzner/roam-new/.attach/excalidraw/"))
 
 ;; (require 'org-excalidraw)
+(after! corfu
+  (setq corfu-auto nil)
+  (setq corfu-auto-delay 1))
