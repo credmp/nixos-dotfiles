@@ -89,7 +89,25 @@
   :ensure t
   :config
   (setq catppuccin-flavor 'macchiato)
-  (load-theme 'catppuccin t))
+;;  (load-theme 'catppuccin t))
+  )
+
+;;; For packaged versions which must use `require'.
+(use-package modus-themes
+  :ensure t
+  :config
+  ;; Add all your customizations prior to loading the themes
+  (setq modus-themes-italic-constructs t
+        modus-themes-bold-constructs nil)
+
+  ;; Maybe define some palette overrides, such as by using our presets
+  (setq modus-themes-common-palette-overrides
+        modus-themes-preset-overrides-intense)
+
+  ;; Load the theme of your choice.
+  (load-theme 'modus-operandi)
+
+  (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 
 ;; Give my modeline and buffer a little bit of extra padding
 (use-package spacious-padding
@@ -1045,6 +1063,48 @@ Refer to `org-agenda-prefix-format' for more information."
   :init
   (global-corfu-mode))
 
+(use-package corfu-popupinfo
+  :defer t
+  :hook ((corfu-mode . corfu-popupinfo-mode))
+  :config
+  (setq corfu-popupinfo-delay '(0.5 . 1.0)))
+
+(use-package nerd-icons-corfu
+  :ensure t
+  :after corfu
+  :defer t
+  :init
+  (add-to-list 'corfu-margin-formatters #'nerd-icons-corfu-formatter))
+
+;; Add extensions
+(use-package cape
+  :ensure t
+  ;; Bind prefix keymap providing all Cape commands under a mnemonic key.
+  ;; Press C-c p ? to for help.
+  :bind ("C-c p" . cape-prefix-map) ;; Alternative key: M-TAB, M-p, M-+
+  ;; Alternatively bind Cape commands individually.
+  ;; :bind (("C-c p d" . cape-dabbrev)
+  ;;        ("C-c p h" . cape-history)
+  ;;        ("C-c p f" . cape-file)
+  ;;        ...)
+  :init
+  ;; Add to the global default value of `completion-at-point-functions' which is
+  ;; used by `completion-at-point'.  The order of the functions matters, the
+  ;; first function returning a result wins.  Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
+  ;; (add-hook 'completion-at-point-functions #'cape-history)
+  ;; ...
+  ;; Make these capfs composable.
+  (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)
+  (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add #'comint-completion-at-point :around #'cape-wrap-nonexclusive)
+  ;;(advice-add #'eglot-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add #'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive)  
+)
+
 ;; A few more useful configurations...
 (use-package emacs
   :custom
@@ -1346,7 +1406,11 @@ Refer to `org-agenda-prefix-format' for more information."
         org-journal-file-format "%Y.org"
         org-journal-file-type 'yearly
         org-journal-date-format "%A, %d %B %Y"))
-  
+
+(use-package gptel
+  :ensure t
+  :bind (("C-c RET" . gptel-send)))
+
 (set-face-font 'default "JetbrainsMono Nerd Font-12")
 
 
@@ -1356,16 +1420,20 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("fbf73690320aa26f8daffdd1210ef234ed1b0c59f3d001f342b9c0bbf49f531c"
+     default))
  '(package-selected-packages
-   '(all-the-icons catppuccin-theme chatgpt-shell citar-org-roam
-                   clj-refactor company-bibtex corfu dockerfile-mode
-                   doom-modeline emmet-mode envrc flycheck-clj-kondo
-                   format-all imenu-list ledger-mode lsp-mode lsp-ui
-                   magit marginalia markdown-mode neil
-                   nerd-icons-completion nix-mode olivetti orderless
-                   org-download org-journal org-modern org-noter
-                   org-ref org-roam-bibtex org-roam-ui
-                   org-super-agenda ox-hugo paredit-menu
+   '(all-the-icons cape catppuccin-theme chatgpt-shell citar-org-roam
+                   clj-refactor company-bibtex corfu corfu-popupinfo
+                   dockerfile-mode doom-modeline emmet-mode envrc
+                   flycheck-clj-kondo format-all gptel imenu-list
+                   ledger-mode lsp-mode lsp-ui magit marginalia
+                   markdown-mode modus-themes neil
+                   nerd-icons-completion nerd-icons-corfu nix-mode
+                   olivetti orderless org-download org-journal
+                   org-modern org-noter org-ref org-roam-bibtex
+                   org-roam-ui org-super-agenda ox-hugo paredit-menu
                    parinfer-rust-mode pdf-tools projectile-ripgrep
                    rustic smartparens spacious-padding vertico
                    vterm-toggle vulpea web-mode yaml-mode))
