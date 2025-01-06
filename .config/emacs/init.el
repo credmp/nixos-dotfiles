@@ -105,7 +105,7 @@
         modus-themes-preset-overrides-intense)
 
   ;; Load the theme of your choice.
-  (load-theme 'modus-operandi)
+  (load-theme 'modus-operandi t)
 
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 
@@ -1446,21 +1446,21 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fringe ((t :background "#24273a")))
- '(header-line ((t :box (:line-width 4 :color "#1e2030" :style nil))))
- '(header-line-highlight ((t :box (:color "#cad3f5"))))
+ '(fringe ((t :background "#ffffff")))
+ '(header-line ((t :box (:line-width 4 :color "#f2f2f2" :style nil))))
+ '(header-line-highlight ((t :box (:color "#000000"))))
  '(keycast-key ((t)))
- '(line-number ((t :background "#24273a")))
- '(mode-line ((t :box (:line-width 6 :color "#1e2030" :style nil))))
- '(mode-line-active ((t :box (:line-width 6 :color "#1e2030" :style nil))))
- '(mode-line-highlight ((t :box (:color "#cad3f5"))))
- '(mode-line-inactive ((t :box (:line-width 6 :color "#181926" :style nil))))
- '(tab-bar-tab ((t :box (:line-width 4 :color "#2f3244" :style nil))))
- '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#24273a" :style nil))))
+ '(line-number ((t :background "#ffffff")))
+ '(mode-line ((t :box (:line-width 6 :color "#ccdfff" :style nil))))
+ '(mode-line-active ((t :box (:line-width 6 :color "#ccdfff" :style nil))))
+ '(mode-line-highlight ((t :box (:color "#000000"))))
+ '(mode-line-inactive ((t :box (:line-width 6 :color "#e6e6e6" :style nil))))
+ '(tab-bar-tab ((t :box (:line-width 4 :color "#ffffff" :style nil))))
+ '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#c2c2c2" :style nil))))
  '(tab-line-tab ((t)))
  '(tab-line-tab-active ((t)))
  '(tab-line-tab-inactive ((t)))
- '(vertical-border ((t :background "#24273a" :foreground "#24273a")))
- '(window-divider ((t (:background "#24273a" :foreground "#24273a"))))
- '(window-divider-first-pixel ((t (:background "#24273a" :foreground "#24273a"))))
- '(window-divider-last-pixel ((t (:background "#24273a" :foreground "#24273a")))))
+ '(vertical-border ((t :background "#ffffff" :foreground "#ffffff")))
+ '(window-divider ((t (:background "#ffffff" :foreground "#ffffff"))))
+ '(window-divider-first-pixel ((t (:background "#ffffff" :foreground "#ffffff"))))
+ '(window-divider-last-pixel ((t (:background "#ffffff" :foreground "#ffffff")))))

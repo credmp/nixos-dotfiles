@@ -75,11 +75,11 @@
        xterm.enable = false;
      };
    
-     displayManager.gdm.enable = true;
+     #displayManager.gdm.enable = true;
      #displayManager.gdm.wayland = true;
      #windowManager.hypr.enable = true;
      # desktopManager.plasma6.enable = true;
-     desktopManager.gnome.enable = true;
+     #desktopManager.gnome.enable = true;
 
    #  windowManager.i3 = {
    #    enable = true;
@@ -91,8 +91,8 @@
    #    ];
    #  };
    };
-   #services.displayManager.sddm.enable = true;
-   #services.desktopManager.plasma6.enable = true;
+   services.displayManager.sddm.enable = true;
+   services.desktopManager.plasma6.enable = true;
 
    # # -- hyprland
    # programs.hyprland = {
@@ -107,14 +107,14 @@
    #services.displayManager = {
    #    defaultSession = "none+i3";
    #};
-   programs.xwayland.enable = true;
+   #programs.xwayland.enable = true;
    xdg.portal.enable = true;
    xdg.portal.config.common.default = "*";
 
    xdg.portal.xdgOpenUsePortal = true;
    xdg.portal.extraPortals = [
-           #pkgs.xdg-desktop-portal-gtk
-	   pkgs.xdg-desktop-portal-gnome
+           pkgs.xdg-desktop-portal-gtk
+	   #pkgs.xdg-desktop-portal-gnome
 	   pkgs.xdg-desktop-portal-wlr
    ];
 
