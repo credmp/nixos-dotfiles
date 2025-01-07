@@ -260,23 +260,23 @@
 
 (use-package org
   :config
-  (defun aw/gather-agenda-files ()
-    (denote-directory-files "_planning"))
+  ;; (defun aw/gather-agenda-files ()
+  ;;   (denote-directory-files "_planning"))
 
-  (defun aw/denote-project-update-tag ()
-    "Update PROJECT tag in the current buffer."
-    (when (and
-           (not (active-minibuffer-window))
-           (aw/org-buffer-p))
-      (if (aw/has-todo-items-p) ;; it has todo items
-          (if (not (seq-contains (vulpea-buffer-tags-get) "planning")) ;; but not yet the planning tag
-            (vulpea-buffer-tags-add "planning"))  ;; add it
-          (if (seq-contains (vulpea-buffer-tags-get) "planning") ;; else (no planning items)
-            (vulpea-buffer-tags-remove "planning")))
-      (denote-rename-file-using-front-matter (buffer-file-name))))
+  ;; (defun aw/denote-project-update-tag ()
+  ;;   "Update PROJECT tag in the current buffer."
+  ;;   (when (and
+  ;;          (not (active-minibuffer-window))
+  ;;          (aw/org-buffer-p))
+  ;;     (if (aw/has-todo-items-p) ;; it has todo items
+  ;;         (if (not (seq-contains (vulpea-buffer-tags-get) "planning")) ;; but not yet the planning tag
+  ;;           (vulpea-buffer-tags-add "planning"))  ;; add it
+  ;;         (if (seq-contains (vulpea-buffer-tags-get) "planning") ;; else (no planning items)
+  ;;           (vulpea-buffer-tags-remove "planning")))
+  ;;     (denote-rename-file-using-front-matter (buffer-file-name))))
 
   ;; (add-hook 'find-file-hook #'aw/denote-project-update-tag)
-  (add-hook 'before-save-hook #'aw/denote-project-update-tag)
+  ;; (add-hook 'before-save-hook #'aw/denote-project-update-tag)
   
   (setq org-use-property-inheritance t)
   ;; Enable code block execution for python
@@ -385,7 +385,7 @@
   (org-capture-templates '(("b" "Blog idea" entry (file+olp (concat storage "/Notebook/notes.org")  "Personal" "Series")
                             "* %?\n%T" :prepend t)
                            ("t" "todo" entry
-                            (file+headline (concat storage "/roam-new/20231008105247-planning.org") "Inbox")
+                            (file+headline  "~/hetzner/roam-new/20231008105247-planning.org" "Inbox")
                             "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
                            ("T" "Tickler" entry
                             (file+headline (concat storage "/roam-new/20231008105247-planning.org") "Inbox")
@@ -647,7 +647,7 @@ tasks."
   
   (defun vulpea-project-files ()
     "Return a list of note files containing 'planner' tag." ;
-    (append
+    ;; (append
       (seq-uniq
        (seq-map
         #'car
@@ -657,8 +657,9 @@ tasks."
           :left-join nodes
           :on (= tags:node-id nodes:id)
           :where (like tag (quote "%\"planner\"%"))])))
-      (aw/gather-agenda-files))) ;; depends on the function from org definition above
-
+      ;;(aw/gather-agenda-files))
+      ;; depends on the function from org definition above
+)
   (defun vulpea-agenda-files-update (&rest _)
     "Update the value of `org-agenda-files'."
     (setq org-agenda-files (vulpea-project-files)))
@@ -1479,8 +1480,7 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("fbf73690320aa26f8daffdd1210ef234ed1b0c59f3d001f342b9c0bbf49f531c"
-     default))
+   '("fbf73690320aa26f8daffdd1210ef234ed1b0c59f3d001f342b9c0bbf49f531c" default))
  '(package-selected-packages
    '(all-the-icons cape catppuccin-theme chatgpt-shell citar-org-roam
                    clj-refactor clojure-lsp corfu dockerfile-mode
@@ -1496,8 +1496,10 @@ Refer to `org-agenda-prefix-format' for more information."
                    spacious-padding vertico vterm-toggle vulpea
                    web-mode yaml-mode))
  '(safe-local-variable-values
-   '((lsp-ltex-language . "nl") (lsp-ltex-language . nl-NL)
-     (ispell-dictionary . "nl") (lsp-ltex-language . "nl-NL")
+   '((lsp-ltex-language . "nl")
+     (lsp-ltex-language . nl-NL)
+     (ispell-dictionary . "nl")
+     (lsp-ltex-language . "nl-NL")
      (ispell-dictionary . "nl_NL"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
