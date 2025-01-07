@@ -1163,6 +1163,17 @@ Refer to `org-agenda-prefix-format' for more information."
 ;;       (lsp-workspace-folders-remove (car folders))
 ;;       (setq folders (cdr folders)))))
 
+(use-package lsp-ui
+  :ensure t
+  :commands lsp-ui-mode
+  :after lsp-mode
+  :custom
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover nil)
+  (lsp-ui-doc-enable nil)
+  
+  )
+
 ;; https://emacs-lsp.github.io/lsp-mode/tutorials/how-to-turn-off/
 (use-package lsp-mode
   :ensure t
@@ -1173,6 +1184,18 @@ Refer to `org-agenda-prefix-format' for more information."
   :custom
   (lsp-lens-enable nil)
   (lsp-headerline-breadcrumb-enable nil)
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  ;; enable / disable the hints as you prefer:
+  (lsp-inlay-hint-enable t)
+  ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)  
+  (lsp-signature-auto-activate t)
+  
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (rustic-mode . lsp)
          ;; (go-mode . lsp)
@@ -1180,6 +1203,8 @@ Refer to `org-agenda-prefix-format' for more information."
          (java-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
+  :config
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   :commands lsp)
 
 ;; (defun aw/cleanup-lsp ()
@@ -1289,17 +1314,39 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; Run our setup function in ‘rust-mode-hook’.
 ;; (add-hook 'rust-mode-hook #'setup-rust)
 
+;;
+;; The Rust Programming language
+;;
 
 (use-package rustic
- :ensure t
- :bind (:map rustic-mode-map
-             ("C-c C-c l" . flycheck-list-errors)
-             ("C-c d" . consult-flymake))
- :config
- ;; comment to disable rustfmt on save
- (setq rustic-format-on-save t)
- ;; (setq rustic-lsp-client 'eglot)
- )
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
 
 (use-package nix-mode
@@ -1425,18 +1472,17 @@ Refer to `org-agenda-prefix-format' for more information."
      default))
  '(package-selected-packages
    '(all-the-icons cape catppuccin-theme chatgpt-shell citar-org-roam
-                   clj-refactor company-bibtex corfu corfu-popupinfo
-                   dockerfile-mode doom-modeline emmet-mode envrc
-                   flycheck-clj-kondo format-all gptel imenu-list
-                   ledger-mode lsp-mode lsp-ui magit marginalia
-                   markdown-mode modus-themes neil
+                   clj-refactor corfu dockerfile-mode doom-modeline
+                   emmet-mode envrc flycheck-clj-kondo format-all
+                   gptel imenu-list ledger-mode lsp-mode lsp-ui
+                   lsp-ui-mode magit marginalia modus-themes neil
                    nerd-icons-completion nerd-icons-corfu nix-mode
                    olivetti orderless org-download org-journal
                    org-modern org-noter org-ref org-roam-bibtex
                    org-roam-ui org-super-agenda ox-hugo paredit-menu
-                   parinfer-rust-mode pdf-tools projectile-ripgrep
-                   rustic smartparens spacious-padding vertico
-                   vterm-toggle vulpea web-mode yaml-mode))
+                   pdf-tools projectile-ripgrep rustic smartparens
+                   spacious-padding vertico vterm-toggle vulpea
+                   web-mode yaml-mode))
  '(safe-local-variable-values
    '((lsp-ltex-language . "nl") (lsp-ltex-language . nl-NL)
      (ispell-dictionary . "nl") (lsp-ltex-language . "nl-NL")

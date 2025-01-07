@@ -49,10 +49,8 @@ in
     zotero
     gitflow
     git-cliff
-    unstable.jetbrains.idea-ultimate
     emote
     unstable.obsidian
-    unstable.zed-editor
     pandoc
     ledger
     # direnv
@@ -69,8 +67,8 @@ in
     pulseaudio
     gtk-engine-murrine
     catppuccin-gtk
-    gnome.gnome-themes-extra
-    gnome.nautilus
+    gnome-themes-extra
+    nautilus
     ranger
     evince
     #darkman

@@ -39,7 +39,7 @@
     };
   };
   virtualisation.vmware.host.enable = true;
-  hardware.nvidia-container-toolkit.enable = true;
+  #hardware.nvidia-container-toolkit.enable = true;
   
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";
@@ -141,8 +141,6 @@
   services.fwupd.enable = true;
 
 
-  # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
@@ -169,7 +167,12 @@
     packages = with pkgs; [
     ];
   };
-
+   systemd.user.extraConfig = "DefaultLimitNOFILE=32000";
+  #systemd.services."user@1000".serviceConfig.LimitNOFILE = "32768";
+  #security.pam.loginLimits = [
+  #  { domain = "*"; item = "nofile"; type = "-"; value = "32768"; }
+  #  { domain = "*"; item = "memlock"; type = "-"; value = "32768"; }
+  #];
   fonts.packages = with pkgs; [
     nerdfonts
   ];
