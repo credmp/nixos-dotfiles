@@ -1,4 +1,4 @@
-import:
+general.import:
   # uncomment the flavour you want below:
   - ~/.config/alacritty/catppuccin/catppuccin-mocha.yml
 #  - ~/.config/alacritty/catppuccin/catppuccin-macchiato.yml
