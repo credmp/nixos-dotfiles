@@ -1006,19 +1006,20 @@ Refer to `org-agenda-prefix-format' for more information."
   :ensure t)
 
 ;;First install the package:
-(use-package flycheck-clj-kondo
-  :ensure t)
+;; (use-package flycheck-clj-kondo
+;;   :ensure t)
 
-(use-package clj-refactor
-  :ensure t
-  :config
-  (defun my-clojure-mode-hook ()
-    (clj-refactor-mode 1)
-    (yas-minor-mode 1) ; for adding require/use/import statements
-    ;; This choice of keybinding leaves cider-macroexpand-1 unbound
-    (cljr-add-keybindings-with-prefix "C-c C-m"))
-  (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
-  
+;; (use-package clj-refactor
+;;   :ensure t
+;;   :config
+;;   (defun my-clojure-mode-hook ()
+;;     (clj-refactor-mode 1)
+;;     (yas-minor-mode 1) ; for adding require/use/import statements
+;;     ;; This choice of keybinding leaves cider-macroexpand-1 unbound
+;;     (cljr-add-keybindings-with-prefix "C-c C-m"))
+;;   (add-hook 'clojure-mode-hook #'my-clojure-mode-hook))
+
+
 
 ;;then install the checker as soon as `clojure-mode' is loaded
 (use-package clojure-mode
@@ -1168,7 +1169,7 @@ Refer to `org-agenda-prefix-format' for more information."
   :commands lsp-ui-mode
   :after lsp-mode
   :custom
-  (lsp-ui-peek-always-show t)
+  (lsp-ui-peek-always-show nil)
   (lsp-ui-sideline-show-hover nil)
   (lsp-ui-doc-enable nil)
   
@@ -1178,10 +1179,14 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package lsp-mode
   :ensure t
   :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l"
-        lsp-inlay-hint-enable t)
+  :bind (:map lsp-mode-map
+              ("C-M-."      . lsp-find-references)
+              ;;("C-c r"      . lsp-rename)
+              ("M-<return>" . lsp-execute-code-action))  
   :custom
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (lsp-keymap-prefix "C-c l")
+  (lsp-inlay-hint-enable t)
   (lsp-lens-enable nil)
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-rust-analyzer-cargo-watch-command "clippy")
@@ -1189,9 +1194,9 @@ Refer to `org-agenda-prefix-format' for more information."
   (lsp-inlay-hint-enable t)
   ;; These are optional configurations. See https://emacs-lsp.github.io/lsp-mode/page/lsp-rust-analyzer/#lsp-rust-analyzer-display-chaining-hints for a full list
   (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-chaining-hints nil)
   (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-closure-return-type-hints nil)
   (lsp-rust-analyzer-display-parameter-hints nil)
   (lsp-rust-analyzer-display-reborrow-hints nil)  
   (lsp-signature-auto-activate t)
@@ -1201,11 +1206,17 @@ Refer to `org-agenda-prefix-format' for more information."
          ;; (go-mode . lsp)
          (java-ts-mode . lsp)
          (java-mode . lsp)
+         (clojure-mode-hook . lsp)
+         (clojurescript-mode-hook . lsp)
+         (clojurec-mode-hook . lsp)         
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
   :commands lsp)
+
+(use-package lsp-treemacs
+  :ensure t)
 
 ;; (defun aw/cleanup-lsp ()
 ;;   "Remove all the workspace folders from LSP"
@@ -1460,7 +1471,7 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (set-face-font 'default "JetbrainsMono Nerd Font-12")
 
-
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -1472,15 +1483,16 @@ Refer to `org-agenda-prefix-format' for more information."
      default))
  '(package-selected-packages
    '(all-the-icons cape catppuccin-theme chatgpt-shell citar-org-roam
-                   clj-refactor corfu dockerfile-mode doom-modeline
-                   emmet-mode envrc flycheck-clj-kondo format-all
-                   gptel imenu-list ledger-mode lsp-mode lsp-ui
-                   lsp-ui-mode magit marginalia modus-themes neil
-                   nerd-icons-completion nerd-icons-corfu nix-mode
-                   olivetti orderless org-download org-journal
-                   org-modern org-noter org-ref org-roam-bibtex
-                   org-roam-ui org-super-agenda ox-hugo paredit-menu
-                   pdf-tools projectile-ripgrep rustic smartparens
+                   clj-refactor clojure-lsp corfu dockerfile-mode
+                   doom-modeline emmet-mode envrc flycheck-clj-kondo
+                   format-all gptel imenu-list ledger-mode lsp-mode
+                   lsp-treemacs lsp-ui lsp-ui-mode magit marginalia
+                   modus-themes neil nerd-icons-completion
+                   nerd-icons-corfu nix-mode olivetti orderless
+                   org-download org-journal org-modern org-noter
+                   org-ref org-roam-bibtex org-roam-ui
+                   org-super-agenda ox-hugo paredit-menu pdf-tools
+                   projectile-ripgrep rustic smartparens
                    spacious-padding vertico vterm-toggle vulpea
                    web-mode yaml-mode))
  '(safe-local-variable-values
