@@ -39,7 +39,7 @@
     };
   };
   virtualisation.vmware.host.enable = true;
-  #hardware.nvidia-container-toolkit.enable = true;
+  hardware.nvidia-container-toolkit.enable = true;
   
   # Set your time zone.
   time.timeZone = "Europe/Amsterdam";
@@ -75,7 +75,7 @@
        xterm.enable = false;
      };
    
-     #displayManager.gdm.enable = true;
+     displayManager.gdm.enable = true;
      #displayManager.gdm.wayland = true;
      #windowManager.hypr.enable = true;
      # desktopManager.plasma6.enable = true;
@@ -91,18 +91,18 @@
    #    ];
    #  };
    };
-   services.displayManager.sddm.enable = true;
-   services.desktopManager.plasma6.enable = true;
+   #services.displayManager.sddm.enable = true;
+   #services.desktopManager.plasma6.enable = true;
 
    # # -- hyprland
-   # programs.hyprland = {
-   #   # Install the packages from nixpkgs
-   #   enable = true;
-   #   # Whether to enable XWayland
-   #   xwayland.enable = true;
-   # };
-   # services.hypridle.enable = true;
-   # programs.hyprlock.enable = true;
+   programs.hyprland = {
+     # Install the packages from nixpkgs
+     enable = true;
+     # Whether to enable XWayland
+     xwayland.enable = true;
+   };
+   services.hypridle.enable = true;
+   programs.hyprlock.enable = true;
    
    #services.displayManager = {
    #    defaultSession = "none+i3";
@@ -167,12 +167,7 @@
     packages = with pkgs; [
     ];
   };
-   systemd.user.extraConfig = "DefaultLimitNOFILE=32000";
-  #systemd.services."user@1000".serviceConfig.LimitNOFILE = "32768";
-  #security.pam.loginLimits = [
-  #  { domain = "*"; item = "nofile"; type = "-"; value = "32768"; }
-  #  { domain = "*"; item = "memlock"; type = "-"; value = "32768"; }
-  #];
+
   fonts.packages = with pkgs; [
     nerdfonts
   ];
