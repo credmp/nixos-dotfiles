@@ -61,7 +61,7 @@ in
     kitty
     alacritty
     rofi
-    #wofi
+    wofi
     nitrogen
     xss-lock
     pulseaudio
@@ -71,6 +71,9 @@ in
     nautilus
     ranger
     evince
+    wl-clipboard
+    waybar
+    bc
     #darkman
     xfce.xfconf
     nextcloud-client

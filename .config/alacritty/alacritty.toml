@@ -1,4 +1,4 @@
-general.import = ["/home/arjen/.config/alacritty/catppuccin/catppuccin-machiatto.yml"]
+general.import = ["/home/arjen/.config/alacritty/catppuccin/catppuccin-machiatto.toml"]
 
 [font]
 size = 16

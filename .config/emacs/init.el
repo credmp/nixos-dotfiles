@@ -89,7 +89,8 @@
   :ensure t
   :config
   (setq catppuccin-flavor 'macchiato)
-;;  (load-theme 'catppuccin t))
+  (when (window-system)
+    (load-theme 'catppuccin t))
   )
 
 ;;; For packaged versions which must use `require'.
@@ -105,7 +106,9 @@
         modus-themes-preset-overrides-intense)
 
   ;; Load the theme of your choice.
-  (load-theme 'modus-operandi t)
+  ;; (when (window-system)
+  ;;   (load-theme 'modus-operandi t))
+  ;;(load-theme 'modus-operandi t)
 
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
 
@@ -1468,7 +1471,21 @@ Refer to `org-agenda-prefix-format' for more information."
 
 (use-package gptel
   :ensure t
-  :bind (("C-c RET" . gptel-send)))
+  :bind (("C-c RET" . gptel-send))
+  :custom
+  (gptel-directives
+   '((default . "You are a large language model living in Emacs and a helpful assistant. Respond concisely.")
+     (programming . "You are a large language model and a careful programmer. Provide code and only code as output without any additional text, prompt, note or ```.")
+     (writing . "You are a large language model and a writing assistant. Respond concisely.")
+     (chat . "You are a large language model and a conversation partner. Respond concisely.")
+     (novi . "Jij bent een expert op het gebied van content ontwikkeling voor NOVI Hogeschool. Voor de leerlijn Systems Security ga jij mij helpen met het schrijven van content. De content ondersteunt lessen die door docenten worden gegeven.
+
+Het taalgebruik is professioneel, maar ook speels. Voor elke sectie schrijf je geen conclusies en haal je er ook geen andere onderwerpen bij. Je legt concepten uit, maar draaft niet door in details. Zorg er wel voor dat je concepten compleet uit legt. We blijven op het taalgebruik van HBO Bachelor, maar de uitleg is wel opbouwend. Je legt concepten eerst globaal uit, geeft dan toelichting per onderdeel samen met voorbeelden.
+
+Ik zal steeds een onderwerp aangeven en dan schrijf jij daarvoor content. Geef antwoord in org-mode syntax, niet als markdown.
+")))
+  
+  )
 
 (set-face-font 'default "JetbrainsMono Nerd Font-12")
 
@@ -1480,47 +1497,18 @@ Refer to `org-agenda-prefix-format' for more information."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("fbf73690320aa26f8daffdd1210ef234ed1b0c59f3d001f342b9c0bbf49f531c" default))
- '(package-selected-packages
-   '(all-the-icons cape catppuccin-theme chatgpt-shell citar-org-roam
-                   clj-refactor clojure-lsp corfu dockerfile-mode
-                   doom-modeline emmet-mode envrc flycheck-clj-kondo
-                   format-all gptel imenu-list ledger-mode lsp-mode
-                   lsp-treemacs lsp-ui lsp-ui-mode magit marginalia
-                   modus-themes neil nerd-icons-completion
-                   nerd-icons-corfu nix-mode olivetti orderless
-                   org-download org-journal org-modern org-noter
-                   org-ref org-roam-bibtex org-roam-ui
-                   org-super-agenda ox-hugo paredit-menu pdf-tools
-                   projectile-ripgrep rustic smartparens
-                   spacious-padding vertico vterm-toggle vulpea
-                   web-mode yaml-mode))
+   '("0a2168af143fb09b67e4ea2a7cef857e8a7dad0ba3726b500c6a579775129635"
+     "fbf73690320aa26f8daffdd1210ef234ed1b0c59f3d001f342b9c0bbf49f531c"
+     default))
+ '(package-selected-packages nil)
  '(safe-local-variable-values
-   '((lsp-ltex-language . "nl")
-     (lsp-ltex-language . nl-NL)
-     (ispell-dictionary . "nl")
-     (lsp-ltex-language . "nl-NL")
+   '((lsp-ltex-language . "nl") (lsp-ltex-language . nl-NL)
+     (ispell-dictionary . "nl") (lsp-ltex-language . "nl-NL")
      (ispell-dictionary . "nl_NL"))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(fringe ((t :background "#ffffff")))
- '(header-line ((t :box (:line-width 4 :color "#f2f2f2" :style nil))))
- '(header-line-highlight ((t :box (:color "#000000"))))
- '(keycast-key ((t)))
- '(line-number ((t :background "#ffffff")))
- '(mode-line ((t :box (:line-width 6 :color "#ccdfff" :style nil))))
- '(mode-line-active ((t :box (:line-width 6 :color "#ccdfff" :style nil))))
- '(mode-line-highlight ((t :box (:color "#000000"))))
- '(mode-line-inactive ((t :box (:line-width 6 :color "#e6e6e6" :style nil))))
- '(tab-bar-tab ((t :box (:line-width 4 :color "#ffffff" :style nil))))
- '(tab-bar-tab-inactive ((t :box (:line-width 4 :color "#c2c2c2" :style nil))))
- '(tab-line-tab ((t)))
- '(tab-line-tab-active ((t)))
- '(tab-line-tab-inactive ((t)))
- '(vertical-border ((t :background "#ffffff" :foreground "#ffffff")))
- '(window-divider ((t (:background "#ffffff" :foreground "#ffffff"))))
- '(window-divider-first-pixel ((t (:background "#ffffff" :foreground "#ffffff"))))
- '(window-divider-last-pixel ((t (:background "#ffffff" :foreground "#ffffff")))))
+ )
