@@ -218,13 +218,13 @@
       nil)))
 
 (defun set-openai-key ()
-  "Set the OpenAI API key for use in ChatGPT-shell"
+  "Set the OpenAI API key for use in ChatGPT-shell."
   (interactive)
   (setq chatgpt-shell-openai-key (get-openai-key)))
 
 ;; Interact with the OpenAI tooling
-(use-package chatgpt-shell
-  :ensure t)
+;; (use-package chatgpt-shell
+;;   :ensure t)
 
 ;; Easily access a popup menu with all function names in the buffer
 (use-package imenu-list
@@ -1029,6 +1029,16 @@ Refer to `org-agenda-prefix-format' for more information."
 (use-package clojure-mode
   :ensure t
   :after (flycheck-clj-kondo clj-refactor)
+  :bind
+  (:map clojure-mode-map
+        ("M-j" . lsp-ui-imenu)
+        ("M-?" . lsp-find-references)
+        ("C-c C-c l" . flycheck-list-errors)
+        ("C-c C-c a" . lsp-execute-code-action)
+        ("C-c C-c r" . lsp-rename)
+        ("C-c C-c q" . lsp-workspace-restart)
+        ("C-c C-c Q" . lsp-workspace-shutdown))  
+
   :config
   (require 'flycheck-clj-kondo)
   (flycheck-mode 1))
@@ -1502,7 +1512,12 @@ Ik zal steeds een onderwerp aangeven en dan schrijf jij daarvoor content. Geef a
      default))
  '(package-selected-packages nil)
  '(safe-local-variable-values
-   '((lsp-ltex-language . "nl") (lsp-ltex-language . nl-NL)
+   '((eval progn
+           (setenv "DATABASE_URL"
+                   "jdbc:postgresql://localhost:5432/comics")
+           (setenv "DATABASE_USER" "comics-user")
+           (setenv "DATABASE_PASS" "comics-pass"))
+     (lsp-ltex-language . "nl") (lsp-ltex-language . nl-NL)
      (ispell-dictionary . "nl") (lsp-ltex-language . "nl-NL")
      (ispell-dictionary . "nl_NL"))))
 
