@@ -74,6 +74,7 @@ in
     wl-clipboard
     waybar
     bc
+    hyprpaper
     #darkman
     xfce.xfconf
     nextcloud-client

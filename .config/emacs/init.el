@@ -89,8 +89,8 @@
   :ensure t
   :config
   (setq catppuccin-flavor 'macchiato)
-  (when (window-system)
-    (load-theme 'catppuccin t))
+  ;; (when (window-system)
+  ;;   (load-theme 'catppuccin t))
   )
 
 ;;; For packaged versions which must use `require'.
@@ -106,8 +106,8 @@
         modus-themes-preset-overrides-intense)
 
   ;; Load the theme of your choice.
-  ;; (when (window-system)
-  ;;   (load-theme 'modus-operandi t))
+  (when (window-system)
+    (load-theme 'modus-operandi t))
   ;;(load-theme 'modus-operandi t)
 
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle))
@@ -1217,7 +1217,7 @@ Refer to `org-agenda-prefix-format' for more information."
   
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (rustic-mode . lsp)
-         ;; (go-mode . lsp)
+         (go-mode . lsp)
          (java-ts-mode . lsp)
          (java-mode . lsp)
          (clojure-mode-hook . lsp)
@@ -1269,12 +1269,19 @@ Refer to `org-agenda-prefix-format' for more information."
 
 ;; Program in golang
 
-;; (use-package tree-sitter
-;;   :ensure t)
+(use-package tree-sitter
+  :ensure t)
 
-;; (use-package tree-sitter-langs
-;;   :ensure t)
- 
+(use-package tree-sitter-langs
+  :ensure t
+  :custom
+  (go-ts-mode-indent-offset 4))
+
+(use-package go-mode
+  :ensure t)
+
+(use-package templ-ts-mode
+  :ensure t) 
  
   
   
@@ -1510,7 +1517,22 @@ Ik zal steeds een onderwerp aangeven en dan schrijf jij daarvoor content. Geef a
    '("0a2168af143fb09b67e4ea2a7cef857e8a7dad0ba3726b500c6a579775129635"
      "fbf73690320aa26f8daffdd1210ef234ed1b0c59f3d001f342b9c0bbf49f531c"
      default))
- '(package-selected-packages nil)
+ '(org-attach-id-dir (concat storage "/.attach") nil nil "Customized with use-package org")
+ '(package-selected-packages
+   '(all-the-icons cape catppuccin-theme chatgpt-shell citar-org-roam
+                   clj-refactor company-bibtex corfu dockerfile-mode
+                   doom-modeline emmet-mode envrc flycheck-clj-kondo
+                   format-all go-mode gptel imenu-list ledger-mode
+                   lsp-treemacs lsp-ui magit marginalia modus-themes
+                   neil nerd-icons-completion nerd-icons-corfu
+                   nix-mode olivetti orderless org-download
+                   org-journal org-modern org-noter org-ref
+                   org-roam-bibtex org-roam-ui org-super-agenda
+                   ox-hugo paredit-menu parinfer-rust-mode pdf-tools
+                   projectile-ripgrep rustic smartparens
+                   spacious-padding templ-ts-mode tree-sitter
+                   tree-sitter-langs vertico vterm-toggle vulpea
+                   web-mode yaml-mode))
  '(safe-local-variable-values
    '((eval progn
            (setenv "DATABASE_URL"
