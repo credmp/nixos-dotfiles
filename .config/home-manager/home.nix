@@ -29,7 +29,7 @@ in
     firefox
     chromium
     okular
-    neovim
+    unstable.neovim
     ripgrep
     coreutils
     fd
