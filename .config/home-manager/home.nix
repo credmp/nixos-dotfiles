@@ -75,6 +75,8 @@ in
     waybar
     bc
     hyprpaper
+    slurp
+    grim
     #darkman
     xfce.xfconf
     nextcloud-client

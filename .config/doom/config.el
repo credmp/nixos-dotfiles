@@ -43,37 +43,26 @@
 (setq org-directory "~/hetzner/roam-new/")
 (setq org-roam-directory "~/hetzner/roam-new/")
 
-;; Whenever you reconfigure a package, make sure to wrap your config in an
-;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
-;;
-;;   (after! PACKAGE
-;;     (setq x y))
-;;
-;; The exceptions to this rule:
-;;
-;;   - Setting file/directory variables (like `org-directory')
-;;   - Setting variables which explicitly tell you to set them before their
-;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
-;;   - Setting doom variables (which start with 'doom-' or '+').
-;;
-;; Here are some additional functions/macros that will help you configure Doom.
-;;
-;; - `load!' for loading external *.el files relative to this one
-;; - `use-package!' for configuring packages
-;; - `after!' for running code after a package has loaded
-;; - `add-load-path!' for adding directories to the `load-path', relative to
-;;   this file. Emacs searches the `load-path' when you load packages with
-;;   `require' or `use-package'.
-;; - `map!' for binding new keys
-;;
-;; To get information about any of these functions/macros, move the cursor over
-;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
-;; This will open documentation for it, including demos of how they are used.
-;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
-;; etc).
-;;
-;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
-;; they are implemented.
+(after! org
+
+  (setq! org-capture-templates '(("b" "Blog idea" entry (file+olp "~/hetzner/roam-new/20231008105247-planning.org" "Inbox" "Series")
+                                  "* %?\n%T" :prepend t)
+                                 ("t" "todo" entry
+                                  (file+headline "~/hetzner/roam-new/20231008105247-planning.org" "Inbox")
+                                  "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+                                 ("T" "Tickler" entry
+                                  (file+headline "~/hetzner/roam-new/20231008105247-planning.org" "Inbox")
+                                  "* %i%? \n %U")
+                                 ("w" "Web site" entry
+                                  (file "")
+                                  "* %a :website:\n\n%U %?\n\n%:initial")
+                                 ("wN" "Web link" entry
+                                  (file+headline ,(car org-agenda-files)
+                                                 "Links to read later")
+                                  "* TODO [#A]  %?%a \nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"Fri\"))\n"
+                                  :immediate-finish t :empty-lines 1)
+                                 ("e" "email" entry (file+headline "~/hetzner/roam-new/20231008105247-planning.org" "Inbox")
+                                  "* TODO [#A] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n"))))
 
 ;; Clojure coding
 (use-package! paredit
@@ -137,3 +126,19 @@
 ;; git clone git@github.com:chrisbarrett/nursery.git nursery
 (use-package! org-roam-dblocks
   :hook (org-mode . org-roam-dblocks-autoupdate-mode))
+
+(use-package! lsp-java
+  :config
+  (require 'lsp-java-boot)
+
+  :hook
+  ((lsp-mode-hook . #'lsp-lens-mode)
+   (java-mode-hook . #'lsp-java-boot-lens-mode)))
+
+(use-package! denote
+  :config
+  (require 'denote-journal-extras)
+  (setq denote-directory (expand-file-name "~/hetzner/denote/"))
+  (setq denote-journal-extras-title-format 'day-date-month-year)
+  (setq denote-journal-extras-directory (expand-file-name "~/hetzner/denote/20-29 Life Admin/21 Mental Health/21.01 Daily Journal"))
+  (add-hook 'dired-mode-hook #'denote-dired-mode-in-directories))

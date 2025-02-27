@@ -53,3 +53,8 @@
 (package! nursery :recipe (:local-repo "~/.config/doom/nursery/lisp"))
 
 (package! vulpea)
+(package! org-roam-dblocks
+  :recipe (:host github :repo "chrisbarrett/nursery"
+           :files ("lisp/*.el")))
+
+(package! denote)
