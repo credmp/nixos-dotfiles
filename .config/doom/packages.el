@@ -57,4 +57,9 @@
   :recipe (:host github :repo "chrisbarrett/nursery"
            :files ("lisp/*.el")))
 
-(package! denote)
+(unpin! org-roam)
+(package! org-roam-ui)
+
+(package! gptel :recipe (:nonrecursive t))
+
+(package! citar)
