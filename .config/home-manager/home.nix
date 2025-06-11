@@ -24,11 +24,10 @@ in
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-    unstable.emacs30-pgtk
+    unstable.emacs30
     # desktop apps
     firefox
     chromium
-    okular
     unstable.neovim
     ripgrep
     coreutils
@@ -82,11 +81,12 @@ in
     nextcloud-client
     notify-osd
     dunst
-    vimix-cursor-theme
+    vimix-cursors
     # games
     #unstable.factorio
     # fonts
-    nerdfonts
+    nerd-fonts.iosevka
+    nerd-fonts.jetbrains-mono
     emacs-all-the-icons-fonts
     inter
     # shell
@@ -155,9 +155,10 @@ in
     '';
   };
 
+
   programs.lsd = {
     enable = true;
-    enableAliases = true;
+    enableZshIntegration = true;
   };
   
   programs.zsh = {
