@@ -25,6 +25,9 @@ in
 
   home.packages = with pkgs; [
     unstable.emacs30
+    unstable.jetbrains.idea-ultimate
+    jdk23
+    ollama
     # desktop apps
     firefox
     chromium
@@ -50,6 +53,7 @@ in
     git-cliff
     emote
     unstable.obsidian
+    #logseq
     pandoc
     ledger
     # direnv
@@ -85,8 +89,9 @@ in
     # games
     #unstable.factorio
     # fonts
-    nerd-fonts.iosevka
     nerd-fonts.jetbrains-mono
+    nerd-fonts.hack 
+    nerd-fonts.iosevka
     emacs-all-the-icons-fonts
     inter
     # shell
@@ -112,6 +117,7 @@ in
     # Office and art
     krita
     libreoffice
+    kismet
     (makeDesktopItem {
       name = "org-protocol";
       exec = "emacsclient -c  %u";
