@@ -163,24 +163,18 @@
 
 (setq ispell-program-name "hunspell")
 
-(after! projectile
-  (setq! projectile-create-missing-test-files t))
+(use-package! gptel)
+;; :config
+;; (setq gptel-model 'devstral:latest)
+;; (setq gptel-backend (gptel-make-ollama "Ollama"
+;;                       :host "localhost:11434"
+;;                       :stream t
+;;                       :models '(devstral:latest)))
 
-(use-package! gptel
-  :config
-  (setq! gptel-model 'codestral-2501)
-  (setq! gptel-backend (gptel-make-openai "MistralLeChat"  ;Any name you want
-                         :host "codestral.mistral.ai"
-                         :endpoint "/v1/chat/completions"
-                         :protocol "https"
-                         :key #'gptel-api-key-from-auth-source
-                         :stream t
-                         :models '("codestral-2501" "mistral-small")))
-
-  (map! :leader
-        (:prefix-map ("e" . "gptel")
-                     (:desc "gptel menu" "m" #'gptel-menu
-                      :desc "gptel rewrite" "r" #'gptel-rewrite))))
+(map! :leader
+      (:prefix-map ("e" . "gptel")
+                   (:desc "gptel menu" "m" #'gptel-menu
+                    :desc "gptel rewrite" "r" #'gptel-rewrite)))
 
 (use-package! citar
   :custom
@@ -218,3 +212,15 @@ _uw_: Unwind thread
 (map! :map clojure-mode-map
       :localleader
       :desc "refactor" "R" #'lsp-clojure-refactor-menu/body)
+
+(after! epa
+  (setq! epa-pinentry-mode 'loopback))
+
+(setq! lsp-disabled-clients '(ruby-ls rubocop-ls))
+
+(map! :leader
+      :desc "Avy activate lens"
+      "c y" #'lsp-avy-lens)
+
+(after! projectile
+  (setq! projectile-create-missing-test-files t))
