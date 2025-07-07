@@ -241,3 +241,6 @@ _uw_: Unwind thread
        :desc "Denote Dired" "d" #'denote-dired
        :desc "Denote Grep" "g" #'denote-grep
        :desc "Denote subdirectory" "s" #'denote-subdirectory))
+
+(use-package! gptel-aibo
+  :after (gptel flycheck))

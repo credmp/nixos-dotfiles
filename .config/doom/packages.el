@@ -59,9 +59,9 @@
 
 (unpin! org-roam)
 (package! org-roam-ui)
+(package! citar)
 
 (package! gptel :recipe (:nonrecursive t))
-
-(package! citar)
+(package! gptel-aibo)
 
 (package! denote)
