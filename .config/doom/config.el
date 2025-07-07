@@ -41,8 +41,8 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Nextcloud/roam-new/")
-(setq org-roam-directory "~/Nextcloud/roam-new/")
+(setq org-directory "~/Projects/Notebook/")
+(setq org-roam-directory "~/Projects/Notebook/")
 
 (after! org
 
