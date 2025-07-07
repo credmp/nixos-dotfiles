@@ -225,25 +225,6 @@ _uw_: Unwind thread
 (after! projectile
   (setq! projectile-create-missing-test-files t))
 
-(use-package! org-fc
-  :after org
-  :config
-  (require 'org-fc-hydra)
-  (setq! org-fc-directories '("~/Nextcloud/roam-new/"))
-  (evil-define-minor-mode-key '(normal insert emacs) 'org-fc-review-flip-mode
-    (kbd "RET") 'org-fc-review-flip
-    (kbd "n") 'org-fc-review-flip
-    (kbd "s") 'org-fc-review-suspend-card
-    (kbd "q") 'org-fc-review-quit)
-
-  (evil-define-minor-mode-key '(normal insert emacs) 'org-fc-review-rate-mode
-    (kbd "a") 'org-fc-review-rate-again
-    (kbd "h") 'org-fc-review-rate-hard
-    (kbd "g") 'org-fc-review-rate-good
-    (kbd "e") 'org-fc-review-rate-easy
-    (kbd "s") 'org-fc-review-suspend-card
-    (kbd "q") 'org-fc-review-quit))
-
 (use-package! denote
   :ensure t
   :hook (dired-mode . denote-dired-mode)

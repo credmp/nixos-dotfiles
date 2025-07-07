@@ -64,9 +64,4 @@
 
 (package! citar)
 
-(package! org-fc
-  :recipe (:host github
-           :repo "~l3kn/org-fc"
-           :files (:defaults "awk" "demo.org")))
-
 (package! denote)
