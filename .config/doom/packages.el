@@ -56,6 +56,9 @@
 (package! org-roam-dblocks
   :recipe (:host github :repo "chrisbarrett/nursery"
            :files ("lisp/*.el")))
+;; (package! better-org-habit
+;;   :recipe (:host github
+;;            :repo "vberezhnev/better-org-habit.el"))
 
 (unpin! org-roam)
 (package! org-roam-ui)
@@ -65,3 +68,11 @@
 (package! gptel-aibo)
 
 (package! denote)
+;;(package! flyover)
+(package! robe)
+
+(package! typst-ts-mode :recipe (:host nil :repo "https://git.sr.ht/~meow_king/typst-ts-mode"))
+
+(package! magit-gitflow)
+
+(package! rspec-mode)

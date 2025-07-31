@@ -35,6 +35,7 @@
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
 
+
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
@@ -244,3 +245,25 @@ _uw_: Unwind thread
 
 (use-package! gptel-aibo
   :after (gptel flycheck))
+
+;; (use-package! flyover
+;;   :hook ((flycheck-mode . flyover-mode))
+;;   :config
+;;   (setq flyover-levels '(error warning info))
+;;   (setq flyover-use-theme-colors t)
+;;   ;; (setq flyover-virtual-line-icon "— ") ;;; default its nil
+;;   (setq flyover-virtual-line-icon "╰—→") ;;; default its nil
+
+;;   ;; Setting this to t would show the message at end of line instead of below
+;;   ;; In that case I would recommend changing to something like
+;;   ;; (setq flyover-virtual-line-icon "→ ") ;;; default its nil
+;;   (setq flyover-show-at-eol nil))
+
+
+
+
+(setq flymake-show-diagnostics-at-end-of-line 'fancy)
+
+;; (use-package! better-org-habit)
+
+(use-package! magit-gitflow)
