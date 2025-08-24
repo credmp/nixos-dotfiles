@@ -68,11 +68,7 @@
 (package! gptel-aibo)
 
 (package! denote)
-;;(package! flyover)
-(package! robe)
 
-(package! typst-ts-mode :recipe (:host nil :repo "https://git.sr.ht/~meow_king/typst-ts-mode"))
-
+(package! lsp-java)
 (package! magit-gitflow)
-
 (package! rspec-mode)

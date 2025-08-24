@@ -129,13 +129,16 @@
 (use-package! org-roam-dblocks
   :hook (org-mode . org-roam-dblocks-autoupdate-mode))
 
+(use-package! lsp-java)
+
 ;; (use-package! lsp-java
 ;;   :config
 ;;   (require 'lsp-java-boot)
 
 ;;   :hook
-;;   ((lsp-mode-hook . #'lsp-lens-mode)
-;;    (java-mode-hook . #'lsp-java-boot-lens-mode)))
+;;   ((lsp-mode-hook  . #'lsp-lens-mode)))
+;;(java-mode-hook . #'lsp-java-boot-lens-mode)
+
 
 ;; (use-package! denote
 ;;   :config
@@ -244,8 +247,11 @@ _uw_: Unwind thread
        :desc "Denote subdirectory" "s" #'denote-subdirectory))
 
 (use-package! gptel-aibo
-  :after (gptel flycheck))
-
+  :after (gptel flycheck)
+  :config
+  (map! :map prog-mode-map
+        :localleader
+        :desc "AIbo" "a" #'gptel-aibo))
 ;; (use-package! flyover
 ;;   :hook ((flycheck-mode . flyover-mode))
 ;;   :config
@@ -266,4 +272,5 @@ _uw_: Unwind thread
 
 ;; (use-package! better-org-habit)
 
-(use-package! magit-gitflow)
+(use-package! magit-gitflow
+  :hook (magit-mode . 'turn-on-magit-gitflow))
