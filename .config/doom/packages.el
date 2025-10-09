@@ -72,3 +72,9 @@
 (package! lsp-java)
 (package! magit-gitflow)
 (package! rspec-mode)
+
+(package! emacs-asdf-vm :recipe (:type git :host github :repo "zellio/emacs-asdf-vm"))
+
+(package! eca :recipe (:host github :repo "editor-code-assistant/eca-emacs" :files ("*.el")))
+
+(package! lsp-java)

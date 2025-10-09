@@ -129,16 +129,40 @@
 (use-package! org-roam-dblocks
   :hook (org-mode . org-roam-dblocks-autoupdate-mode))
 
-(use-package! lsp-java)
+(use-package! lsp-java
+  :after lsp
+  :config
+  (require 'lsp-java-boot)
+  (setq lsp-java-vmargs
+        '("-XX:+UseParallelGC"
+          "-XX:GCTimeRatio=4"
+          "-Dsun.zip.disableMemoryMapping=true"
+          "-noverify"
+          "-Xmx1G"
+          "-XX:+UseG1GC"
+          "-XX:+UseStringDeduplication"
+          ,(concat "-javaagent:" ;; probably need to update this.
+                   (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"))
+          ,(concat "-Xbootclasspath/a:"
+                   (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")))
 
-;; (use-package! lsp-java
-;;   :config
-;;   (require 'lsp-java-boot)
+        :hook
+        ((lsp-mode-hook . #'lsp-lens-mode)
+         (java-mode-hook . #'lsp-java-boot-lens-mode))))
 
-;;   :hook
-;;   ((lsp-mode-hook  . #'lsp-lens-mode)))
-;;(java-mode-hook . #'lsp-java-boot-lens-mode)
 
+(after! lsp-java
+  ;; (setq lombok-library-path (concat doom-data-dir "lombok.jar"))
+  (setq lombok-library-path "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")
+
+  ;; (unless (file-exists-p lombok-library-path)
+  ;;   (url-copy-file "https://projectlombok.org/downloads/lombok.jar" lombok-library-path))
+
+  (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx4G" "-Xms100m"))
+
+  (push (concat "-javaagent:"
+                lombok-library-path) ;; (expand-file-name lombok-library-path)
+        lsp-java-vmargs))
 
 ;; (use-package! denote
 ;;   :config
@@ -180,6 +204,10 @@
                    (:desc "gptel menu" "m" #'gptel-menu
                     :desc "gptel rewrite" "r" #'gptel-rewrite)))
 
+(map! :leader
+      (:prefix-map ("s" . "search")
+                   (:desc "imenu" "i" #'lsp-ui-imenu)))
+
 (use-package! citar
   :custom
   (citar-bibliography '("~/Nextcloud/My-Library.bib")))
@@ -220,7 +248,7 @@ _uw_: Unwind thread
 (after! epa
   (setq! epa-pinentry-mode 'loopback))
 
-(setq! lsp-disabled-clients '(ruby-ls rubocop-ls))
+(setq! lsp-disabled-clients '(ruby-ls rubocop-ls typeprof-ls))
 
 (map! :leader
       :desc "Avy activate lens"
@@ -274,3 +302,5 @@ _uw_: Unwind thread
 
 (use-package! magit-gitflow
   :hook (magit-mode . 'turn-on-magit-gitflow))
+
+(use-package! asdf-vm)

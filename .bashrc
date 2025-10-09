@@ -120,3 +120,8 @@ alias dotfiles='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 export OPENAI_API_KEY=$(cat ~/openai.key)
 
 eval "$(fzf --bash)"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/arjen/.lmstudio/bin"
+# End of LM Studio CLI section
+
