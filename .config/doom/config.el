@@ -144,11 +144,13 @@
           ,(concat "-javaagent:" ;; probably need to update this.
                    (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"))
           ,(concat "-Xbootclasspath/a:"
-                   (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")))
+                   (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")))))
 
-        :hook
-        ((lsp-mode-hook . #'lsp-lens-mode)
-         (java-mode-hook . #'lsp-java-boot-lens-mode))))
+;; :hook
+;; (
+;;  ;; (lsp-mode-hook . #'lsp-java-lens-mode)
+;;  ;;(java-mode-hook . #'lsp-java-boot-lens-mode)
+;;  )))
 
 
 (after! lsp-java
