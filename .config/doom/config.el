@@ -132,19 +132,19 @@
 (use-package! lsp-java
   :after lsp
   :config
-  (require 'lsp-java-boot)
-  (setq lsp-java-vmargs
-        '("-XX:+UseParallelGC"
-          "-XX:GCTimeRatio=4"
-          "-Dsun.zip.disableMemoryMapping=true"
-          "-noverify"
-          "-Xmx1G"
-          "-XX:+UseG1GC"
-          "-XX:+UseStringDeduplication"
-          ,(concat "-javaagent:" ;; probably need to update this.
-                   (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"))
-          ,(concat "-Xbootclasspath/a:"
-                   (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")))))
+  (require 'lsp-java-boot))
+;; (setq lsp-java-vmargs
+;;       '("-XX:+UseParallelGC"
+;;         "-XX:GCTimeRatio=4"
+;;         "-Dsun.zip.disableMemoryMapping=true"
+;;         "-noverify"
+;;         "-Xmx1G"
+;;         "-XX:+UseG1GC"
+;;         "-XX:+UseStringDeduplication"
+;;         ,(concat "-javaagent:" ;; probably need to update this.
+;;                  (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"))
+;;         ,(concat "-Xbootclasspath/a:"
+;;                  (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")))))
 
 ;; :hook
 ;; (
@@ -155,7 +155,7 @@
 
 (after! lsp-java
   ;; (setq lombok-library-path (concat doom-data-dir "lombok.jar"))
-  (setq lombok-library-path "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")
+  (setq lombok-library-path "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar")
 
   ;; (unless (file-exists-p lombok-library-path)
   ;;   (url-copy-file "https://projectlombok.org/downloads/lombok.jar" lombok-library-path))
