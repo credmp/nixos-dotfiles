@@ -69,7 +69,7 @@
 
 (package! denote)
 
-(package! lsp-java)
+;;(package! lsp-java)
 (package! magit-gitflow)
 (package! rspec-mode)
 
@@ -77,4 +77,6 @@
 
 (package! eca :recipe (:host github :repo "editor-code-assistant/eca-emacs" :files ("*.el")))
 
-(package! lsp-java)
+(package! eglot-java)
+
+(package! maven-test-mode)

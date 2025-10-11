@@ -129,10 +129,11 @@
 (use-package! org-roam-dblocks
   :hook (org-mode . org-roam-dblocks-autoupdate-mode))
 
-(use-package! lsp-java
-  :after lsp
-  :config
-  (require 'lsp-java-boot))
+
+;; (use-package! lsp-java
+;;   :after lsp)
+;; :config
+;; (require 'lsp-java-boot))
 ;; (setq lsp-java-vmargs
 ;;       '("-XX:+UseParallelGC"
 ;;         "-XX:GCTimeRatio=4"
@@ -142,9 +143,10 @@
 ;;         "-XX:+UseG1GC"
 ;;         "-XX:+UseStringDeduplication"
 ;;         ,(concat "-javaagent:" ;; probably need to update this.
-;;                  (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar"))
+;;                  (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar"))
 ;;         ,(concat "-Xbootclasspath/a:"
-;;                  (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.36/lombok-1.18.36.jar")))))
+;;                  (expand-file-name "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar"))))
+
 
 ;; :hook
 ;; (
@@ -152,19 +154,27 @@
 ;;  ;;(java-mode-hook . #'lsp-java-boot-lens-mode)
 ;;  )))
 
+(use-package! eglot-java
+  :config
+  (setq lombok-library-path "~/.m2/repository/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar")
+  (setq lombok-arg  (concat "-javaagent:" (expand-file-name lombok-library-path)))
+  (setq eglot-java-eclipse-jdt-args
+        '("-Xmx4G" "--add-modules=ALL-SYSTEM" "--add-opens" "java.base/java.util=ALL-UNNAMED" "--add-opens" "java.base/java.lang=ALL-UNNAMED"
+          "-javaagent:/home/arjen/.m2/repository/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar"))
+  (add-hook 'java-mode-hook 'eglot-java-mode))
+;; (after! lsp-java
+;;   ;; (setq lombok-library-path (concat doom-data-dir "lombok.jar"))
+;;   (setq lombok-library-path "~/.m2/repository/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar")
 
-(after! lsp-java
-  ;; (setq lombok-library-path (concat doom-data-dir "lombok.jar"))
-  (setq lombok-library-path "/Users/arjen/.m2/repository/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar")
 
-  ;; (unless (file-exists-p lombok-library-path)
-  ;;   (url-copy-file "https://projectlombok.org/downloads/lombok.jar" lombok-library-path))
+;;   ;; (unless (file-exists-p lombok-library-path)
+;;   ;;   (url-copy-file "https://projectlombok.org/downloads/lombok.jar" lombok-library-path))
 
-  (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx4G" "-Xms100m"))
+;;   (setq lsp-java-vmargs '("-XX:+UseParallelGC" "-XX:GCTimeRatio=4" "-XX:AdaptiveSizePolicyWeight=90" "-Dsun.zip.disableMemoryMapping=true" "-Xmx4G" "-Xms100m"))
 
-  (push (concat "-javaagent:"
-                lombok-library-path) ;; (expand-file-name lombok-library-path)
-        lsp-java-vmargs))
+;;   (push (concat "-javaagent:"
+;;                 (expand-file-name lombok-library-path)) ;; (expand-file-name lombok-library-path)
+;;         lsp-java-vmargs))
 
 ;; (use-package! denote
 ;;   :config
@@ -206,55 +216,55 @@
                    (:desc "gptel menu" "m" #'gptel-menu
                     :desc "gptel rewrite" "r" #'gptel-rewrite)))
 
-(map! :leader
-      (:prefix-map ("s" . "search")
-                   (:desc "imenu" "i" #'lsp-ui-imenu)))
+;; (map! :leader
+;;       (:prefix-map ("s" . "search")
+;;                    (:desc "imenu" "i" #'lsp-ui-imenu)))
 
 (use-package! citar
   :custom
   (citar-bibliography '("~/Nextcloud/My-Library.bib")))
 
-(require 'hydra)
+;; (require 'hydra)
 
-(defhydra lsp-clojure-refactor-menu (:color blue :hint nil)
-  "
-Threading                      Code Manip                      Namespace                       Misc
-------------------------------------------------------------------------------------------------------------------------------------------------------
-_th_: Thread first             _el_: Expand let                _cn_: Clean ns                  _cp_: Cycle privacy
-_tf_: Thread first all         _il_: Introduce let             _am_: Add missing libspec       _cc_: Cycle coll
-_tt_: Thread last              _ml_: Move to let
-_tl_: Thread last all          _ef_: Extract function
-_ua_: Unwind all               _rn_: Rename
-_uw_: Unwind thread
-"
+;; (defhydra lsp-clojure-refactor-menu (:color blue :hint nil)
+;;   "
+;; Threading                      Code Manip                      Namespace                       Misc
+;; ------------------------------------------------------------------------------------------------------------------------------------------------------
+;; _th_: Thread first             _el_: Expand let                _cn_: Clean ns                  _cp_: Cycle privacy
+;; _tf_: Thread first all         _il_: Introduce let             _am_: Add missing libspec       _cc_: Cycle coll
+;; _tt_: Thread last              _ml_: Move to let
+;; _tl_: Thread last all          _ef_: Extract function
+;; _ua_: Unwind all               _rn_: Rename
+;; _uw_: Unwind thread
+;; "
 
-  ("cp" lsp-clojure-cycle-privacy)
-  ("cn" lsp-clojure-clean-ns)
-  ("cc" lsp-clojure-cycle-coll)
-  ("am" lsp-clojure-add-missing-libspec)
-  ("el" lsp-clojure-expand-let)
-  ("il" lsp-clojure-introduce-let)
-  ("ef" lsp-clojure-extract-function)
-  ("ml" lsp-clojure-move-to-let)
-  ("th" lsp-clojure-thread-first)
-  ("rn" lsp-rename)
-  ("tf" lsp-clojure-thread-first-all)
-  ("tt" lsp-clojure-thread-last)
-  ("tl" lsp-clojure-thread-last-all)
-  ("ua" lsp-clojure-unwind-all)
-  ("uw" lsp-clojure-unwind-thread))
-(map! :map clojure-mode-map
-      :localleader
-      :desc "refactor" "R" #'lsp-clojure-refactor-menu/body)
+;;   ("cp" lsp-clojure-cycle-privacy)
+;;   ("cn" lsp-clojure-clean-ns)
+;;   ("cc" lsp-clojure-cycle-coll)
+;;   ("am" lsp-clojure-add-missing-libspec)
+;;   ("el" lsp-clojure-expand-let)
+;;   ("il" lsp-clojure-introduce-let)
+;;   ("ef" lsp-clojure-extract-function)
+;;   ("ml" lsp-clojure-move-to-let)
+;;   ("th" lsp-clojure-thread-first)
+;;   ("rn" lsp-rename)
+;;   ("tf" lsp-clojure-thread-first-all)
+;;   ("tt" lsp-clojure-thread-last)
+;;   ("tl" lsp-clojure-thread-last-all)
+;;   ("ua" lsp-clojure-unwind-all)
+;;   ("uw" lsp-clojure-unwind-thread))
+;; (map! :map clojure-mode-map
+;;       :localleader
+;;       :desc "refactor" "R" #'lsp-clojure-refactor-menu/body)
 
 (after! epa
   (setq! epa-pinentry-mode 'loopback))
 
-(setq! lsp-disabled-clients '(ruby-ls rubocop-ls typeprof-ls))
+;; (setq! lsp-disabled-clients '(ruby-ls rubocop-ls typeprof-ls))
 
-(map! :leader
-      :desc "Avy activate lens"
-      "c y" #'lsp-avy-lens)
+;; (map! :leader
+;;       :desc "Avy activate lens"
+;;       "c y" #'lsp-avy-lens)
 
 (after! projectile
   (setq! projectile-create-missing-test-files t))
