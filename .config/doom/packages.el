@@ -50,12 +50,12 @@
 
 (package! paredit)
 
-(package! nursery :recipe (:local-repo "~/.config/doom/nursery/lisp"))
+;; (package! nursery :recipe (:local-repo "~/.config/doom/nursery/lisp"))
 
 (package! vulpea)
-(package! org-roam-dblocks
-  :recipe (:host github :repo "chrisbarrett/nursery"
-           :files ("lisp/*.el")))
+;;(package! org-roam-dblocks
+;;  :recipe (:host github :repo "chrisbarrett/nursery"
+;;          :files ("lisp/*.el")))
 ;; (package! better-org-habit
 ;;   :recipe (:host github
 ;;            :repo "vberezhnev/better-org-habit.el"))
@@ -80,3 +80,5 @@
 (package! eglot-java)
 
 (package! maven-test-mode)
+
+(package! xclip)

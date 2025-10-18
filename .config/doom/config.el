@@ -405,3 +405,10 @@ Returns nil if not inside a function."
     (if name
         (message "Current function: %s" name)
       (message "Not inside a recognized function or method."))))
+
+(use-package! xclip
+  :config
+  (setq xclip-program "wl-copy")
+  (setq xclip-select-enable-clipboard t)
+  (setq xclip-mode t)
+  (setq xclip-method (quote wl-copy)))
